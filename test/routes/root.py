@@ -15,4 +15,4 @@ class TestRoutes():
 
   def test_root_route(self, client):
     response = client.get("/")
-    assert response.status_code == 501
+    assert(response.status_code == 501)
