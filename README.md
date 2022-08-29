@@ -15,3 +15,6 @@ The --debug flag (among other things) automatically reloads the server when chan
 
 ## Running the Tests.
 Just run `pytest` to execute all the tests.
+
+## Useful Resources
+* [Flask API Best Practices](https://auth0.com/blog/best-practices-for-flask-api-development/)
