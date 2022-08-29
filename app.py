@@ -3,11 +3,11 @@ from api.routes.root import root_api
 from api.routes.accounts import account_api
 
 
-def create_app()-> Flask:
+def create_app() -> Flask:
   """"""
   app = Flask(__name__)
   app.register_blueprint(root_api)
-  app.register_blueprint(account_api)
+  app.register_blueprint(account_api, url_prefix="/accounts")
   return app
 
 if __name__ == "__main__":
