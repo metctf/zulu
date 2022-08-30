@@ -5,6 +5,8 @@
 1. Create a virtual environment for the project: `python3 venv zuluapi-env`
 1. Activate the virtual environment: `. zuluapi-env/bin/activate`
 1. Install the dependencies `pip -r requirements.txt`
+1. Create user `zulu` in mysql `sudo mysql -e "CREATE USER zulu@localhost IDENTIFIED BY 'password'"`
+1. Create the database `sudo mysql < zulu.sql`
 
 ## Running the Server.
 1. Make sure you've done the setup above.
