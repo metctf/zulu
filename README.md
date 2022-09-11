@@ -11,12 +11,14 @@
 ## Running the Server.
 1. Make sure you've done the setup above.
 1. Navigate to the root of project
-1. Run `flask --debug run`
-
-The --debug flag (among other things) automatically reloads the server when changes are detected.
+1. Run `bazel run //src/accounts:server`
 
 ## Running the Tests.
-Just run `pytest` to execute all the tests.
+Nothing here yet :)
 
 ## Useful Resources
-* [Flask API Best Practices](https://auth0.com/blog/best-practices-for-flask-api-development/)
+[bazel python rules]("https://bazel.build/reference/be/python")
+[gRPC docs]("https://grpc.io/docs/languages/python/quickstart/")
+[protobuf docs]("https://developers.google.com/protocol-buffers/docs/overview")
+[rules-proto-grpc for python]("https://rules-proto-grpc.com/en/latest/lang/python.html")
+
