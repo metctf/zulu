@@ -18,7 +18,10 @@ Nothing here yet :)
 
 ## Useful Resources
 [bazel python rules]("https://bazel.build/reference/be/python")
+
 [gRPC docs]("https://grpc.io/docs/languages/python/quickstart/")
+
 [protobuf docs]("https://developers.google.com/protocol-buffers/docs/overview")
+
 [rules-proto-grpc for python]("https://rules-proto-grpc.com/en/latest/lang/python.html")
 
