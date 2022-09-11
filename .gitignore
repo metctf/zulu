@@ -1,6 +1,6 @@
 __pycache__/
 zuluapi-env/
-bazel-bin/
-bazel-out/
-bazel-testlogs/
-bazel-zuluapi/
+bazel-bin
+bazel-out
+bazel-testlogs
+bazel-zuluapi
