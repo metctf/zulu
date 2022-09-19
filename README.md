@@ -10,13 +10,16 @@
 
 ## Running the Server.
 1. Make sure you've done the setup above.
-1. Navigate to the root of project
-1. Run `bazel run //src/accounts:server`
+1. Run `bazel run //src/server`
 
 ## Running the Tests.
+1. Run `bazel test --test_output=all //src/server:server_test`
+
+The `--test_output=all` flag is optional, but it saves having to open the testlog file,
+as all the output gets displayed in the console.
 Nothing here yet :)
 
-## Useful Resources
+## Useful Resources.
 [bazel python rules](https://bazel.build/reference/be/python)
 
 [gRPC docs](https://grpc.io/docs/languages/python/quickstart/)
