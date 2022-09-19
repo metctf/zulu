@@ -2,12 +2,12 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//python:defs.bzl", "python_grpc_library")
 
 proto_library(
-  name = "accounts_proto",
-  srcs = ["accounts.proto"],
+  name = "zulu_proto",
+  srcs = ["zulu.proto"],
 )
 
 python_grpc_library(
-    name = "accounts_grpc",
-    protos = [":accounts_proto"],
-    visibility=["//visibility:public"]
+    name = "zulu_grpc",
+    protos = [":zulu_proto"],
+    visibility=["//visibility:public"],
 )

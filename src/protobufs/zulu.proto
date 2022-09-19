@@ -16,6 +16,6 @@ message GetAccountResponse {
   Account account = 1;
 }
 
-service Accounts {
+service Zulu {
   rpc GetAccount (GetAccountRequest) returns (GetAccountResponse);
 }
