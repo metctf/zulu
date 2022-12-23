@@ -1,6 +1,10 @@
-__pycache__/
-zuluapi-env/
-bazel-bin
-bazel-out
-bazel-testlogs
-bazel-zuluapi
+# Added by cargo
+
+/target
+
+
+# Added by cargo
+#
+# already existing elements were commented out
+
+#/target
