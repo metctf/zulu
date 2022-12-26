@@ -20,8 +20,12 @@ under the GPLv3 and is free software.
 * [ ] LDAP account login (@jacob.eva)
 * [ ] JWT auth on successful login (@jacob.eva & @connor.bryan)
 
+#### API
+* [ ] Mutual TLS (@jacob.eva)
+
 #### Frontend
 * [ ] Login functionality via frontend (@hugo.lelubre & @connor.bryan)
+* [ ] Mutual TLS support (@hugo.lelubre & @connor.bryan)
 ### v0.2
 #### User roles
 * [ ] Lecturer role (for those who make challenges) (@jacob.eva)
