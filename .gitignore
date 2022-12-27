@@ -2,7 +2,7 @@
 
 /target
 /Cargo.lock
-config/local
+config/local.toml
 
 
 # Added by cargo
