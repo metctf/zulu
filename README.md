@@ -24,7 +24,7 @@ under the GPLv3 and is free software.
 * [ ] Mutual TLS (@jacob.eva)
 
 #### Frontend
-* [ ] Login functionality via frontend (@hugo.lelubre & @connor.bryan)
+* [ ] Login & registration functionality via frontend (@hugo.lelubre & @connor.bryan)
 * [ ] Mutual TLS support (@hugo.lelubre & @connor.bryan)
 ### v0.2
 #### User roles
