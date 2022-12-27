@@ -2,6 +2,7 @@
 
 /target
 /Cargo.lock
+config/local
 
 
 # Added by cargo
