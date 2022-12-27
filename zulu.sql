@@ -9,9 +9,11 @@ GRANT ALL ON zulu.* TO zulu@localhost;
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
   accountID int(11) NOT NULL AUTO_INCREMENT,
-  studentID varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  fullName varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  password varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  studentID varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  firstName varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  lastName varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  password varchar(255) COLLATE utf8mb4_unicode_ci,
+	origin varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   flagQuantity int(11) NOT NULL,
 	timestamp timestamp NOT NULL,
   PRIMARY KEY (accountID)
