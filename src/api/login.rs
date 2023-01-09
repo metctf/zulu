@@ -20,8 +20,7 @@ pub async fn login(pool: &State<Pool>,jar: &CookieJar<'_>, login: Form<Login>) -
         .await;
     match user {
         Ok(user) => {
-            // I really dont like having an unwrap here
-            if login.verify_password(&user.password.unwrap()){
+            if login.verify_password(&user.password){
                 // Add jwt token to a cookie to be returned to user
                 let token = JwtToken::encode(&user.accountID.to_string(), &user.accessLevel.to_string());
                  // Create a new cookie with the authentication token
