@@ -5,36 +5,128 @@ mod tests{
      * Test library for the major database tests
      */
 
-    use sqlx::MySql;
+    use sqlx::MySqlPool;
     use sqlx::mysql::MySqlPoolOptions;
 
     #[sqlx::test]
-    async fn login(){
-        
+    async fn login(pool: MySqlPool){
+        // Test for checking database for user
+        let accountid: u32 = 1;
+        let _query = sqlx::query!(
+            r#"
+            SELECT *
+            FROM accounts
+            WHERE accountID = ?;
+            "#,
+            accountid
+            )
+            .fetch_one(&pool)
+            .await;
+
+        match _query {
+            Ok(_query) => assert!(true),
+            Err(_query) => {
+                panic!("Error with login fucntion: {}", _query)
+            }
+
+        }
     }
 
     #[sqlx::test]
-    async fn register(){
+    async fn register(pool: MySqlPool){
+        // Test for adding a user to a database
+        let _query = sqlx::query!(
+            r#"
+            INSERT INTO accounts (studentID, firstName, lastName, password, origin)
+            VALUES ("123","Keanu","Reeves","dog","CardiffMet");
+            "#)
+            .execute(&pool)
+            .await;
 
+        match _query {
+            Ok(_query) => assert!(true),
+            Err(_query) => {
+                panic!("Error with register function: {}", _query)
+            }
+
+        }
     }
 
     #[sqlx::test]
-    async fn get_user_info(){
- 
+    async fn get_user_info(pool: MySqlPool){
+        // Test for returning database info
+        let _query = sqlx::query!(
+            r#"
+            SELECT *
+            FROM accounts
+            WHERE studentID = 123;
+            "#)
+            .fetch_one(&pool)
+            .await;
+
+        match _query {
+            Ok(_query) => assert!(true),
+            Err(_query) => {
+                panic!("Error getting user info: {}", _query)
+            }
+
+        }
     }
 
     #[sqlx::test]
-    async fn modify (){
+    async fn modify (pool: MySqlPool){
+        // Test for modifying user info
+        sqlx::query!(
+            r#"
+            INSERT INTO accounts (studentID, firstName, lastName, password, origin)
+            VALUES ("123","Keanu","Reeves","dog","CardiffMet");
+            "#)
+            .execute(&pool)
+            .await
+            .unwrap();
 
+        let _query = sqlx::query!(
+            r#"
+            UPDATE accounts
+            SET password = "goodbye"
+            WHERE studentID = 123
+            AND password = "dog";
+            "#)
+            .execute(&pool)
+            .await;
+
+        match _query {
+            Ok(_query) => assert!(true),
+            Err(_query) => {
+                panic!("Error modifying a user: {}", _query)
+            }
+
+        }
     }
 
     #[sqlx::test]
-    async fn remove(){
+    async fn remove(pool: MySqlPool){
+        // Test for removing users from a database
+        let _query = sqlx::query!(
+            r#"
+            DELETE FROM accounts
+            WHERE studentID = 123;
+            "#)
+            .execute(&pool)
+            .await;
 
+        match _query {
+            Ok(_query) => assert!(true),
+            Err(_query) => {
+                panic!("Error removing a user: {}", _query)
+            }
+
+        }
     }
 
     #[sqlx::test]
     async fn create_connection_test(){
+        // Test for checking if a database can be connected to
         let pool = MySqlPoolOptions::new()
             .max_connections(5)
             .connect("mysql://zulu:zulu@localhost:3306/zulu")
@@ -56,6 +148,7 @@ mod tests{
 
     #[test]
     fn encode_and_decode_from_correct_token(){
+        // Test for encoding and decoding a correct JwtToken
         let message: String = String::from("test");
         let key: Hmac<Sha256> = Hmac::new_varkey(&message.as_bytes()).unwrap();
         let mut claims = BTreeMap::new();
@@ -69,6 +162,7 @@ mod tests{
 
     #[test]
     fn encode_and_decode_from_incorrect_token(){
+        // Test for encoding and decoding an incorrect JwtToken
         let message: String =String::from("test");
         let key: Hmac<Sha256> = Hmac::new_varkey(&message.as_bytes()).unwrap();
         let mut claims = BTreeMap::new();
@@ -85,6 +179,7 @@ mod tests{
 
     #[test]
     fn hash_and_verify_password(){
+        // Test for hashing and verifying a password
         let unhashed_password = String::from("test");
         let cost: u32 = 10;
         let hashed_password = bcrypt::hash(unhashed_password,cost).unwrap();

@@ -30,8 +30,11 @@ pub async fn modify(pool: &State<Pool>, token: JwtToken, user: Form<User>) -> St
         .execute(&pool.0)
         .await;
 
+    /*
+     * Redirect to a page or send a success code, undecided atm
+     */
     match query{
-        Ok(query) => {format!("success")},
+        Ok(_query) => {format!("success")},
         Err(_) => {format!("boooo")}
     }
 
@@ -56,6 +59,9 @@ pub async fn get_user_info(pool: &State<Pool>, token: JwtToken) -> String{
         .fetch_one(&pool.0)
         .await;
 
+    /*
+     * Return info as json
+     */
     match query {
         Ok(query) => format!("{:?}",query),
         Err(_) => format!("Unknown user")

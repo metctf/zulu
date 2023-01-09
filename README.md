@@ -13,12 +13,12 @@ under the GPLv3 and is free software.
 ### v0.1
 #### Users
 * [ ] Local account creation, deletion and modification (@connor.bryan)
-* [ ] Local account login (@connor.bryan)
-* [ ] Access control (@connor.bryan)
-* [ ] Admin role (for those who manage Zulu) (@connor.bryan)
+* [x] Local account login (@connor.bryan)
+* [x] Access control (@connor.bryan)
+* [x] Admin role (for those who manage Zulu) (@connor.bryan)
 * [ ] LDAP account syncing to local accounts (@jacob.eva)
 * [ ] LDAP account login (@jacob.eva)
-* [ ] JWT auth on successful login (@jacob.eva & @connor.bryan)
+* [x] JWT auth on successful login (@jacob.eva & @connor.bryan)
 
 #### API
 * [ ] Mutual TLS (@jacob.eva)

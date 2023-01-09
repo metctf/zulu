@@ -4,8 +4,6 @@
 DROP DATABASE IF EXISTS zulu;
 CREATE DATABASE zulu;
 
-GRANT ALL ON zulu.* TO zulu@localhost;
-
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
   accountID int(11) NOT NULL AUTO_INCREMENT,
@@ -15,7 +13,6 @@ CREATE TABLE zulu.accounts (
   password varchar(255) COLLATE utf8mb4_unicode_ci,
 	origin varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   flagQuantity int(11) NOT NULL,
-  accessLevel varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
 	timestamp timestamp NOT NULL,
   PRIMARY KEY (accountID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
