@@ -6,8 +6,9 @@ use rocket::http::{Method, ContentType, Status};
 use std::io::Cursor;
 use rocket::State;
 use rocket::form::Form;
+use std::str::FromStr;
 
-use crate::auth::user::{Login, User, AccessLevel, FromStr};
+use crate::auth::user::{Login, User, AccessLevel};
 
 pub struct ReRouter;
 
@@ -53,7 +54,7 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
         password: result.password, 
         origin: result.origin, 
         flagquantity: result.flagQuantity.unwrap(), 
-        accesslevel: AccessLevel::from_str(result.accessLevel)
+        accesslevel: AccessLevel::from_str(&result.accessLevel).unwrap()
     };
     Ok(user)
 }
