@@ -8,7 +8,7 @@ GRANT ALL ON zulu.* TO zulu@localhost;
 
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
-    accountID int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    accountID int(11) NOT NULL AUTO_INCREMENT UNSIGNED,
     studentID varchar(50) NOT NULL,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE zulu.accounts (
 
 DROP TABLE IF EXISTS zulu.flags;
 CREATE TABLE zulu.flags (
-    flagID int(11) UNSIGNED UNSIGNED NOT NULL AUTO_INCREMENT,
+    flagID int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     challenge varchar(255) NOT NULL,
     challengeAuthor varchar(255) NOT NULL,
     flagString varchar(255) NOT NULL,
