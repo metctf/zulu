@@ -18,10 +18,10 @@ CREATE TABLE zulu.accounts (
     accessLevel varchar(10) NOT NULL,
 	creationTime timestamp NOT NULL,
     PRIMARY KEY (accountID)
-) 
+); 
 
 
-DROP TABLE IF EXISTS  zulu.flags;
+DROP TABLE IF EXISTS zulu.flags;
 CREATE TABLE zulu.flags (
     flagID int(11) NOT NULL AUTO_INCREMENT,
     challenge varchar(255) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE zulu.flags (
     points int(11) NOT NULL,
 	creationTime timestamp NOT NULL,
     PRIMARY KEY (flagID)
-) 
+); 
 
 
 DROP TABLE IF EXISTS zulu.accountFlags;
@@ -41,4 +41,4 @@ CREATE TABLE zulu.accountFlags (
     PRIMARY KEY (fkAccountId, fkFlagID),
     CONSTRAINT accountFlags_ibfk_1 FOREIGN KEY (fkAccountID) REFERENCES accounts (accountID),
     CONSTRAINT accountFlags_ibfk_2 FOREIGN KEY (fkFlagID) REFERENCES flags (flagID)
-) 
+);
