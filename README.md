@@ -12,7 +12,7 @@ under the GPLv3 and is free software.
 ## Roadmap
 ### v0.1
 #### Users
-* [ ] Local account creation, deletion and modification (@connor.bryan)
+* [x] Local account creation, deletion and modification (@connor.bryan)
 * [x] Local account login (@connor.bryan)
 * [x] Access control (@connor.bryan)
 * [x] Admin role (for those who manage Zulu) (@connor.bryan)
@@ -30,7 +30,7 @@ under the GPLv3 and is free software.
 #### User roles
 * [ ] Lecturer role (for those who make challenges) (@jacob.eva)
 * [ ] Integration of roles with LDAP groups (@jacob.eva)
-* [ ] Store role in JWT (@connor.bryan)
+* [x] Store role in JWT (@connor.bryan)
 
 #### Flags
 * [ ] Flag creation, deletion and modification (@jacob.eva)

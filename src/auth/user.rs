@@ -1,10 +1,28 @@
 use serde::Deserialize;
 use serde::Serialize;
+use rocket::form::FromFormField;
+use std::fmt;
 
 /*
  * File containing structs for all the forms and implementations for those
  * structs
  */
+#[derive(FromFormField,Serialize,Deserialize)]
+pub enum AccessLevel{
+    Admin,
+    Lecturer,
+    User
+}
+
+impl fmt::Display for AccessLevel {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+       match *self {
+           AccessLevel::Admin => write!(f,"Admin"),
+           AccessLevel::Lecturer => write!(f,"Lecturer"),
+           AccessLevel::User => write!(f,"User"),
+       }
+    }
+}
 
 #[derive(FromForm,Serialize,Deserialize)]
 pub struct User{
@@ -15,7 +33,7 @@ pub struct User{
     pub password: String,
     pub origin: String,
     pub flagquantity: u32,
-    pub accesslevel: String,
+    pub accesslevel: AccessLevel,
 }
 
 #[derive(FromForm,Serialize,Deserialize)]
@@ -54,24 +72,7 @@ impl User{
  *
  * The access levels for the user in decending order are:
  * 1. Admin
- * 2. User
- * 3. Guest
+ * 2. Lecturer
+ * 3. User
  *
  */
-
-impl Default for User {
-    fn default() -> User {
-        User { 
-            accountid: 0,
-            studentid: format!("Default"),
-            firstname: format!("Default"),
-            lastname: format!("Default"),
-            password: format!("Default"),
-            origin: format!("Default"),
-            flagquantity: 0,
-            accesslevel: format!("User")
-        }
-    }
-}
-
-
