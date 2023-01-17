@@ -48,5 +48,15 @@ under the GPLv3 and is free software.
 ## Running Zulu
 Simply `git clone` this repo and run `cargo run` in your terminal :)
 
+To run the frontend use these commands:
+
+```
+cargo install trunk
+
+rustup target add wasm32-unknown-unknown
+
+trunk serve --open
+```
+
 ## Useful Resources.
 [Rocket](https://rocket.rs/)
