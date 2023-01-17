@@ -4,10 +4,8 @@ use rocket::{Request, Response, State};
 use rocket::fairing::{Fairing,Info,Kind};
 use rocket::http::{Method, ContentType, Status};
 use std::io::Cursor;
-<<<<<<< HEAD
 use crate::auth::jwt::JwtToken;
-=======
-use rocket::State;
+
 use rocket::form::Form;
 use std::str::FromStr;
 
