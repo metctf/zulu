@@ -23,7 +23,7 @@ CREATE TABLE zulu.accounts (
 
 DROP TABLE IF EXISTS zulu.flags;
 CREATE TABLE zulu.flags (
-    flagID int(11) UNSIGNED UNSIGNED NOT NULL AUTO_INCREMENT,
+    flagID int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     challenge varchar(255) NOT NULL,
     challengeAuthor varchar(255) NOT NULL,
     flagString varchar(255) NOT NULL,

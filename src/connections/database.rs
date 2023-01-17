@@ -4,6 +4,10 @@ use rocket::{Request, Response};
 use rocket::fairing::{Fairing,Info,Kind};
 use rocket::http::{Method, ContentType, Status};
 use std::io::Cursor;
+use rocket::State;
+use rocket::form::Form;
+
+use crate::auth::user::{Login, User, AccessLevel, FromStr};
 
 pub struct ReRouter;
 
@@ -27,6 +31,31 @@ impl Fairing for ReRouter {
             }
         return
     }
+}
+
+pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,sqlx::Error>{
+    let result = sqlx::query!(
+        r#"
+        SELECT *
+        FROM accounts
+        WHERE studentID = ?;
+        "#,
+        &login.studentid
+        )
+        .fetch_one(&pool.0)
+        .await?;
+    
+    let user = User { 
+        accountid: result.accountID, 
+        studentid: result.studentID, 
+        firstname: result.firstName, 
+        lastname: result.lastName, 
+        password: result.password, 
+        origin: result.origin, 
+        flagquantity: result.flagQuantity.unwrap(), 
+        accesslevel: AccessLevel::from_str(result.accessLevel)
+    };
+    Ok(user)
 }
 
 /* 
