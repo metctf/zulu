@@ -4,7 +4,14 @@ use rocket::{Request, Response, State};
 use rocket::fairing::{Fairing,Info,Kind};
 use rocket::http::{Method, ContentType, Status};
 use std::io::Cursor;
+<<<<<<< HEAD
 use crate::auth::jwt::JwtToken;
+=======
+use rocket::State;
+use rocket::form::Form;
+
+use crate::auth::user::{Login, User, AccessLevel, FromStr};
+>>>>>>> 052d83f5180b9f51e67e2316b51e4275bd0414bb
 
 pub struct ReRouter;
 
@@ -28,6 +35,31 @@ impl Fairing for ReRouter {
             }
         return
     }
+}
+
+pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,sqlx::Error>{
+    let result = sqlx::query!(
+        r#"
+        SELECT *
+        FROM accounts
+        WHERE studentID = ?;
+        "#,
+        &login.studentid
+        )
+        .fetch_one(&pool.0)
+        .await?;
+    
+    let user = User { 
+        accountid: result.accountID, 
+        studentid: result.studentID, 
+        firstname: result.firstName, 
+        lastname: result.lastName, 
+        password: result.password, 
+        origin: result.origin, 
+        flagquantity: result.flagQuantity.unwrap(), 
+        accesslevel: AccessLevel::from_str(result.accessLevel)
+    };
+    Ok(user)
 }
 
 /* 

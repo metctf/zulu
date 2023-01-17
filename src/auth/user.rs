@@ -2,6 +2,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use rocket::form::FromFormField;
 use std::fmt;
+use std::str::FromStr;
 
 /*
  * File containing structs for all the forms and implementations for those
@@ -24,6 +25,19 @@ impl fmt::Display for AccessLevel {
     }
 }
 
+impl FromStr for AccessLevel {
+
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Admin"  => Ok(AccessLevel::Admin),
+            "Lecturer"  => Ok(AccessLevel::Lecturer),
+            "User"  => Ok(AccessLevel::User),
+            _      => Err(()),
+        }
+    }
+}
 #[derive(FromForm,Serialize,Deserialize)]
 pub struct User{
     pub accountid: u32,
