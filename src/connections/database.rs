@@ -1,9 +1,12 @@
 use sqlx::MySqlPool;
 use sqlx::mysql::MySqlPoolOptions;
-use rocket::{Request, Response};
+use rocket::{Request, Response, State};
 use rocket::fairing::{Fairing,Info,Kind};
 use rocket::http::{Method, ContentType, Status};
 use std::io::Cursor;
+<<<<<<< HEAD
+use crate::auth::jwt::JwtToken;
+=======
 use rocket::State;
 use rocket::form::Form;
 use std::str::FromStr;
@@ -71,4 +74,25 @@ pub async fn create_connection() -> Result<MySqlPool, sqlx::Error> {
         .connect("mysql://zulu:zulu@localhost:3306/zulu")
         .await?;
     Ok(pool)
+}
+
+pub async fn delete_account(pool: &State<Pool>, token: JwtToken) -> Result<bool, sqlx::Error> {
+    let decoded = JwtToken::decode(token.body).unwrap();
+    let query = sqlx::query!(
+        r#"
+        DELETE FROM accounts
+        WHERE accountID = ?;"#,
+        &decoded.user_id
+    )
+    .execute(&pool.0)
+    .await?
+    .rows_affected();
+
+    if query >= 1 {
+        Ok(true)
+    }
+    
+    else {
+        Ok(false)
+    }
 }
