@@ -11,7 +11,7 @@ mod tests{
     #[sqlx::test]
     async fn login(pool: MySqlPool){
         // Test for checking database for user
-        let accountid: u32 = 1;
+        let accountid: u32 = 1940;
         let _query = sqlx::query!(
             r#"
             SELECT *
@@ -26,7 +26,7 @@ mod tests{
         match _query {
             Ok(_query) => assert!(true),
             Err(_query) => {
-                panic!("Error with login fucntion: {}", _query)
+                panic!("Error with login function: {}", _query)
             }
 
         }
@@ -37,8 +37,8 @@ mod tests{
         // Test for adding a user to a database
         let _query = sqlx::query!(
             r#"
-            INSERT INTO accounts (studentID, firstName, lastName, password, origin)
-            VALUES ("123","Keanu","Reeves","dog","CardiffMet");
+            INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
+            VALUES ("123","Keanu","Reeves","dog","internal", "student");
             "#)
             .execute(&pool)
             .await;
@@ -59,7 +59,7 @@ mod tests{
             r#"
             SELECT *
             FROM accounts
-            WHERE studentID = 123;
+            WHERE studentID = 121;
             "#)
             .fetch_one(&pool)
             .await;
@@ -78,8 +78,8 @@ mod tests{
         // Test for modifying user info
         sqlx::query!(
             r#"
-            INSERT INTO accounts (studentID, firstName, lastName, password, origin)
-            VALUES ("123","Keanu","Reeves","dog","CardiffMet");
+            INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
+            VALUES ("122","Keanu","Reeves","dog","internal", "student");
             "#)
             .execute(&pool)
             .await
