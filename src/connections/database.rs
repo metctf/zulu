@@ -60,6 +60,66 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
     Ok(user)
 }
 
+pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>) -> Result<bool,sqlx::Error>{
+    /* 
+     * From the information pre occupied in the form fields this function
+     * updates the database with any info thats changed.
+     */
+    sqlx::query!(
+        r#"
+        UPDATE accounts
+        SET studentID = ?,
+        firstName = ?,
+        lastName = ?,
+        password = ?,
+        origin = ?
+        WHERE accountID = ?;
+        "#,
+        &user.studentid,
+        &user.firstname,
+        &user.lastname,
+        User::hash_password(&user.password),
+        &user.origin,
+        &token.user_id
+        )
+        .execute(&pool.0)
+        .await?;
+
+    Ok(true)
+}
+
+pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,sqlx::Error>{
+    /*
+     * Function that returns the user information to be displayed in the 
+     * webpage to be edited by the user.
+     */
+
+    let result = sqlx::query!(
+        r#"
+        SELECT *
+        FROM accounts
+        WHERE accountID = ?;
+        "#,
+        &token.body
+        )
+        .fetch_one(&pool.0)
+        .await?;
+
+    let user = User { 
+        accountid: result.accountID, 
+        studentid: result.studentID, 
+        firstname: result.firstName, 
+        lastname: result.lastName, 
+        password: result.password, 
+        origin: result.origin, 
+        flagquantity: result.flagQuantity.unwrap(), 
+        accesslevel: AccessLevel::from_str(&result.accessLevel).unwrap()
+    };
+
+    Ok(user)
+ 
+}
+
 /* 
  * Empty pool struct to be managed by rocket, its been abstracted out 
  * of the api module so that module can be added to easier
