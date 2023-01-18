@@ -1,3 +1,4 @@
+use rocket::time::OffsetDateTime;
 use serde::Deserialize;
 use serde::Serialize;
 use rocket::form::FromFormField;
@@ -48,6 +49,12 @@ pub struct User{
     pub origin: String,
     pub flagquantity: u32,
     pub accesslevel: AccessLevel,
+}
+
+#[derive(Debug,Serialize,Deserialize)]
+pub struct Leaderboard{
+    pub studentid: String,
+    pub flagquantity: u32,
 }
 
 #[derive(FromForm,Serialize,Deserialize)]
