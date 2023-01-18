@@ -9,7 +9,7 @@ use crate::auth::jwt::JwtToken;
 use rocket::form::Form;
 use std::str::FromStr;
 
-use crate::auth::user::{Login, User, AccessLevel};
+use crate::auth::user::{Login, User, AccessLevel, Leaderboard};
 
 pub struct ReRouter;
 
@@ -48,14 +48,14 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
         .await?;
     
     let user = User { 
-        accountid: result.accountID, 
-        studentid: result.studentID, 
-        firstname: result.firstName, 
-        lastname: result.lastName, 
+        accountid: result.accountid, 
+        studentid: result.studentid, 
+        firstname: result.firstname, 
+        lastname: result.lastname, 
         password: result.password, 
         origin: result.origin, 
-        flagquantity: result.flagQuantity.unwrap(), 
-        accesslevel: AccessLevel::from_str(&result.accessLevel).unwrap()
+        flagquantity: result.flagquantity, 
+        accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
     };
     Ok(user)
 }
@@ -106,18 +106,29 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
         .await?;
 
     let user = User { 
-        accountid: result.accountID, 
-        studentid: result.studentID, 
-        firstname: result.firstName, 
-        lastname: result.lastName, 
+        accountid: result.accountid, 
+        studentid: result.studentid, 
+        firstname: result.firstname, 
+        lastname: result.lastname, 
         password: result.password, 
         origin: result.origin, 
-        flagquantity: result.flagQuantity.unwrap(), 
-        accesslevel: AccessLevel::from_str(&result.accessLevel).unwrap()
+        flagquantity: result.flagquantity, 
+        accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
     };
 
     Ok(user)
  
+}
+
+pub async fn get_top_30(pool: &State<Pool>) -> Result<Vec<Leaderboard>,sqlx::Error> {
+    let query = sqlx::query_as!(
+        Leaderboard,
+        "SELECT studentid, flagquantity FROM accounts
+        ORDER BY flagquantity DESC
+        LIMIT 30;")
+        .fetch_all(&pool.0)
+        .await?;
+    Ok(query)
 }
 
 /* 

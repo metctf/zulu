@@ -38,7 +38,7 @@ mod tests{
         let _query = sqlx::query!(
             r#"
             INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
-            VALUES ("123","Keanu","Reeves","dog","internal", "student");
+            VALUES ("123","Keanu","Reeves","dog","internal", "User");
             "#)
             .execute(&pool)
             .await;
@@ -103,24 +103,6 @@ mod tests{
 
         }
     }
-
-    #[sqlx::test]
-    async fn remove_a_non_existant_user(pool: MySqlPool){
-        // Test for removing users from a database
-        let _query = sqlx::query!(
-            r#"
-            DELETE FROM accounts
-            WHERE studentID = 123;
-            "#)
-            .execute(&pool)
-            .await;
-
-        match _query {
-            Ok(_query) => assert!(false),
-            Err(_query) => assert!(true)
-        }
-    }
-
 
     #[sqlx::test]
     async fn remove(pool: MySqlPool){

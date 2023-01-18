@@ -5,7 +5,7 @@ mod settings;
 use settings::LdapConfig;
 
 mod api;
-use api::{login,register,modify,remove};
+use api::{login,register,modify,remove,leaderboard};
 
 mod auth;
 mod tests;
@@ -25,7 +25,8 @@ async fn rocket() -> _ {
                register::register,
                modify::modify,
                modify::display_user_info,
-               remove::remove_account
+               remove::remove_account,
+               leaderboard::leaderboard
         ])
         .attach(ReRouter)
         

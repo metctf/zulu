@@ -38,7 +38,7 @@ under the GPLv3 and is free software.
 * [ ] Access control (@jacob.eva)
 
 #### Leaderboard
-* [ ] Generate leaderboard (most points) for top 30 users (@connor.bryan)
+* [x] Generate leaderboard (most points) for top 30 users (@connor.bryan)
 
 #### Frontend
 * [ ] Ability to manage own flag strings as a user (@hugo.lelubre & @connor.bryan)

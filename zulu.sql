@@ -8,16 +8,16 @@ GRANT ALL ON zulu.* TO zulu@localhost;
 
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
-    accountID int(11) NOT NULL AUTO_INCREMENT UNSIGNED,
-    studentID varchar(50) NOT NULL,
-    firstName varchar(50) NOT NULL,
-    lastName varchar(50) NOT NULL,
+    accountid int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    studentid varchar(50) NOT NULL,
+    firstname varchar(50) NOT NULL,
+    lastname varchar(50) NOT NULL,
     password varchar(255) NOT NULL,
 	origin varchar(50) NOT NULL,
-    flagQuantity int(11) UNSIGNED DEFAULT 0,
-    accessLevel varchar(10) NOT NULL,
-	creationTime timestamp NOT NULL,
-    PRIMARY KEY (accountID)
+    flagquantity int(11) UNSIGNED NOT NULL DEFAULT 0,
+    accesslevel varchar(10) NOT NULL,
+	creationtime timestamp NOT NULL,
+    PRIMARY KEY (accountid)
 ); 
 
 
