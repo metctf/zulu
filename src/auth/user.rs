@@ -8,7 +8,7 @@ use std::str::FromStr;
  * File containing structs for all the forms and implementations for those
  * structs
  */
-#[derive(FromFormField,Serialize,Deserialize)]
+#[derive(FromFormField,Serialize,Deserialize,Debug)]
 pub enum AccessLevel{
     Admin,
     Lecturer,
@@ -38,7 +38,7 @@ impl FromStr for AccessLevel {
         }
     }
 }
-#[derive(FromForm,Serialize,Deserialize)]
+#[derive(FromForm,Serialize,Deserialize,Debug)]
 pub struct User{
     pub accountid: u32,
     pub studentid: String,

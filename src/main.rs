@@ -24,7 +24,7 @@ async fn rocket() -> _ {
                login::login,
                register::register,
                modify::modify,
-               modify::get_user_info,
+               modify::display_user_info,
                remove::remove_account
         ])
         .attach(ReRouter)
