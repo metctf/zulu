@@ -4,10 +4,5 @@
 /Cargo.lock
 config/local.toml
 /.cargo
-
-
-# Added by cargo
-#
-# already existing elements were commented out
-
-#/target
+/drift/target
+/drift/Cargo.lock

@@ -1,8 +1,0 @@
-[package]
-name = "drift"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-yew = { git = "https://github.com/yewstack/yew/", features = ["ssr"]}
-tokio = { version = "1.24.1", features = ["full"]}
