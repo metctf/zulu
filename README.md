@@ -39,6 +39,10 @@ under the GPLv3 and is free software.
 
 #### Leaderboard
 * [x] Generate leaderboard (most points) for top 30 users (@connor.bryan)
+* [ ] Implement caching in drift to cache the current leaderboard status to reduce
+expensive database calls, have it refreshed on correct flag submission.
+If same frontend requests leaderboard and it hasnt changed use the http status
+code 304 unmodified.
 
 #### Frontend
 * [ ] Ability to manage own flag strings as a user (@hugo.lelubre & @connor.bryan)
