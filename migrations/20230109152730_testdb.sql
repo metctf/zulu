@@ -3,7 +3,7 @@ CREATE TABLE accounts (
     studentID varchar(50) NOT NULL,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
-    password varchar(255) NOT NULL,
+    password varchar(255),
     origin varchar(50) NOT NULL,
     flagQuantity int(11) UNSIGNED DEFAULT 0,
     accessLevel varchar(10) NOT NULL,

@@ -12,7 +12,7 @@ CREATE TABLE zulu.accounts (
     studentid varchar(50) NOT NULL,
     firstname varchar(50) NOT NULL,
     lastname varchar(50) NOT NULL,
-    password varchar(255) NOT NULL,
+    password varchar(255),
 	origin varchar(50) NOT NULL,
     flagquantity int(11) UNSIGNED NOT NULL DEFAULT 0,
     accesslevel varchar(10) NOT NULL,
