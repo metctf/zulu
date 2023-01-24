@@ -1,5 +1,5 @@
 use sqlx::MySqlPool;
-use sqlx::mysql::MySqlPoolOptions;
+use sqlx::mysql::{MySqlPoolOptions, MySqlQueryResult};
 use rocket::{Request, Response, State};
 use rocket::fairing::{Fairing,Info,Kind};
 use rocket::http::{Method, ContentType, Status};
@@ -46,18 +46,25 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
         )
         .fetch_one(&pool.0)
         .await?;
-    
-    let user = User { 
-        accountid: result.accountid, 
-        studentid: result.studentid, 
-        firstname: result.firstname, 
-        lastname: result.lastname, 
-        password: result.password, 
-        origin: result.origin, 
-        flagquantity: result.flagquantity, 
-        accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
-    };
-    Ok(user)
+
+    let pass = result.password;
+
+    match pass {
+        Some(pass) => {
+            let user = User { 
+                accountid: result.accountid, 
+                studentid: result.studentid, 
+                firstname: result.firstname, 
+                lastname: result.lastname, 
+                password: pass, 
+                origin: result.origin, 
+                flagquantity: result.flagquantity, 
+                accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
+            };
+            Ok(user)
+        },
+        None => Err(sqlx::Error::RowNotFound)
+    }
 }
 
 pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>) -> Result<bool,sqlx::Error>{
@@ -105,19 +112,24 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
         .fetch_one(&pool.0)
         .await?;
 
-    let user = User { 
-        accountid: result.accountid, 
-        studentid: result.studentid, 
-        firstname: result.firstname, 
-        lastname: result.lastname, 
-        password: result.password, 
-        origin: result.origin, 
-        flagquantity: result.flagquantity, 
-        accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
-    };
+    let pass = result.password;
 
-    Ok(user)
- 
+    match pass {
+        Some(pass) => {
+            let user = User { 
+                accountid: result.accountid, 
+                studentid: result.studentid, 
+                firstname: result.firstname, 
+                lastname: result.lastname, 
+                password: pass, 
+                origin: result.origin, 
+                flagquantity: result.flagquantity, 
+                accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
+            };
+            Ok(user)
+        },
+        None => Err(sqlx::Error::RowNotFound)
+    }
 }
 
 pub async fn get_top_30(pool: &State<Pool>) -> Result<Vec<Leaderboard>,sqlx::Error> {
@@ -144,6 +156,26 @@ pub async fn create_connection() -> Result<MySqlPool, sqlx::Error> {
         .await?;
     Ok(pool)
 }
+
+pub async fn register_account(pool: &State<Pool>, user: &Form<User>) -> Result<MySqlQueryResult, sqlx::Error> {
+    //Create a new user in the database
+    let query = sqlx::query!(
+        r#"
+        INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
+        VALUES (?,?,?,?,?,?);"#,
+        &user.studentid,
+        &user.firstname,
+        &user.lastname,
+        User::hash_password(&user.password),
+        &user.origin,
+        AccessLevel::User.to_string(),
+        )
+        .execute(&pool.0)
+        .await?;
+
+    Ok(query)
+}
+
 
 pub async fn delete_account(pool: &State<Pool>, token: JwtToken) -> Result<bool, sqlx::Error> {
     let decoded = JwtToken::decode(token.body).unwrap();
