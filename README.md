@@ -24,8 +24,8 @@ under the GPLv3 and is free software.
 * [ ] Mutual TLS (@jacob.eva)
 
 #### Frontend
-* [ ] Login & registration functionality via frontend (@hugo.lelubre & @connor.bryan)
-* [ ] Mutual TLS support (@hugo.lelubre & @connor.bryan)
+* [ ] Login & registration functionality via frontend (@connor.bryan)
+* [ ] Mutual TLS support (@connor.bryan)
 ### v0.2
 #### User roles
 * [ ] Lecturer role (for those who make challenges) (@jacob.eva)
@@ -45,9 +45,9 @@ If same frontend requests leaderboard and it hasnt changed use the http status
 code 304 unmodified.
 
 #### Frontend
-* [ ] Ability to manage own flag strings as a user (@hugo.lelubre & @connor.bryan)
-* [ ] Ability to manage own flags as a lecturer (@hugo.lelubre & @connor.bryan)
-* [ ] Ability to view leaderboard (@hugo.lelubre & @connor.bryan)
+* [ ] Ability to manage own flag strings as a user (@connor.bryan)
+* [ ] Ability to manage own flags as a lecturer (@connor.bryan)
+* [ ] Ability to view leaderboard (@connor.bryan)
 
 ## Running Zulu
 Simply `git clone` this repo and run `cargo run` in your terminal :)
