@@ -4,6 +4,7 @@ use rocket::{Request, Response, State};
 use rocket::fairing::{Fairing,Info,Kind};
 use rocket::http::{Method, ContentType, Status};
 use std::io::Cursor;
+use log::{error, info};
 use crate::auth::jwt::JwtToken;
 
 use rocket::form::Form;
@@ -61,9 +62,13 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
                 flagquantity: result.flagquantity, 
                 accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
             };
+            info!("Logged in user: {}", &user.username);
             Ok(user)
         },
-        None => Err(sqlx::Error::RowNotFound)
+        None => {
+            error!("Incorrect login credentials");
+            Err(sqlx::Error::RowNotFound)
+            }
     }
 }
 

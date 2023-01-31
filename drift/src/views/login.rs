@@ -1,31 +1,53 @@
 use yew::prelude::*;
+use std::ops::Deref;
 
-#[function_component]
-pub fn Login() -> Html {
+use super::components::text_input::TextInput;
+use super::components::custom_button::CustomButton;
+
+#[derive(Default, Clone)]
+pub struct LoginData {
+    pub username: String,
+    pub password: String,
+}
+
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    pub onsubmit: Callback<LoginData>,
+}
+
+
+#[function_component(Login)]
+pub fn login(props: &Props) -> Html {
+
+    let state = use_state(|| LoginData::default());
+
+    let cloned_state = state.clone();
+    let username_changed = Callback::from(move |username| {
+        let mut data = cloned_state.deref().clone();
+        data.username = username;
+        cloned_state.set(data);
+    });
+
+    let cloned_state = state.clone();
+    let password_changed = Callback::from(move |language| {
+        let mut data = cloned_state.deref().clone();
+        data.password = language;
+        cloned_state.set(data);
+    });
+
+    let form_onsubmit = props.onsubmit.clone();
+    let cloned_state = state.clone();
+    let onsubmit = Callback::from(move |event: SubmitEvent| {
+        event.prevent_default();
+        let data = cloned_state.deref().clone();
+        form_onsubmit.emit(data);
+    });
+    
     html! {
-        <>
-            <div class={classes! {"header"}}>
-              <h1>{"Zulu"}</h1>
-              
-            </div>
-
-            <div class={classes! {"topnav"}}>
-              <a href="#">{"Home"}</a>
-              <a href="#" style="float:right">{"Login"}</a>
-            </div>
-            <div class={classes! {"box"}}>
-                <h2 style="color:chartreuse">{"Login"}</h2>
-                <form method="post" action="http://127.0.0.1:8000/api/v1/login">
-                    <label for="studentid">{"Username"}</label>
-                    <input type="text" id="studentid" name="studentid" placeholder="Your Student ID.." style="color:black;" />
-                    <br/>
-                    <label for="Password">{"Password"}</label>
-                    <input type="text" id="Password" name="password" placeholder="Your Password.." style="color:black;" />
-                    <br/>
-                    <input id="submit" type="submit" value="Submit" />
-                  </form>
-
-            </div>
-        </>
+       <form onsubmit={onsubmit}>
+            <TextInput name="username" handle_onchange={username_changed} />
+            <TextInput name="password" handle_onchange={password_changed} />
+            <CustomButton label="Submit" />
+        </form>
     }
 }

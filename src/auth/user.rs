@@ -41,13 +41,16 @@ impl FromStr for AccessLevel {
 }
 #[derive(FromForm,Serialize,Deserialize,Debug)]
 pub struct User{
+    #[field(default = 0)]
     pub accountid: u32,
     pub username: String,
     pub firstname: String,
     pub lastname: String,
     pub password: String,
     pub origin: String,
+    #[field(default = 0)]
     pub flagquantity: u32,
+    #[field(default = AccessLevel::User)]
     pub accesslevel: AccessLevel,
 }
 

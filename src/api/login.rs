@@ -37,6 +37,7 @@ pub async fn login(pool: &State<Pool>,jar: &CookieJar<'_>, login: Form<Login>) -
         },
         // Error message for server error, returns 500
         Err(_) => {
+            info!("Error from DB");
             let settings_result = crate::settings::LdapConfig::new();
 
             let settings = match settings_result {

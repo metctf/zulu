@@ -1,3 +1,6 @@
+use env_logger::Builder;
+use log::LevelFilter;
+
 mod connections;
 use connections::{ldap, database::ReRouter};
 
@@ -14,6 +17,11 @@ mod tests;
 
 #[launch]
 async fn rocket() -> _ {
+    //Builder for good looking logs
+    let mut builder = Builder::from_default_env();
+    builder
+        .filter(None, LevelFilter::Info)
+        .init();
     // Starts a Database connection
     let pool = connections::database::create_connection().await.unwrap();
 
