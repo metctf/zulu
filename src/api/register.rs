@@ -12,10 +12,10 @@ pub async fn register(pool: &State<Pool>, user: Form<User>){
      */
     match query {
         Ok(_query) => {
-            info!("Registered new user: {}", &user.studentid); 
+            info!("Registered new user: {}", &user.username); 
         },
         Err(_) =>{
-            error!("Couldn't register user: {}", &user.studentid);
+            error!("Couldn't register user: {}", &user.username);
         } 
     }
 }

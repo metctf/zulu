@@ -8,9 +8,9 @@ pub async fn remove_account(pool: &State<Pool>, token: JwtToken) -> String{
     match query{
         Ok(query) => {
             if query{
-                return format!("Deleted Account")
+                return format!("Deleted account")
             }
-            return format!("Not Deleted Account")
+            return format!("Did not delete account")
         },
         Err(_) => return format!("Bad Request")
     }

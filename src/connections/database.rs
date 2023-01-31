@@ -40,9 +40,9 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
         r#"
         SELECT *
         FROM accounts
-        WHERE studentID = ?;
+        WHERE username = ?;
         "#,
-        &login.studentid
+        &login.username
         )
         .fetch_one(&pool.0)
         .await?;
@@ -53,7 +53,7 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
         Some(pass) => {
             let user = User { 
                 accountid: result.accountid, 
-                studentid: result.studentid, 
+                username: result.username, 
                 firstname: result.firstname, 
                 lastname: result.lastname, 
                 password: pass, 
@@ -75,19 +75,19 @@ pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>)
     sqlx::query!(
         r#"
         UPDATE accounts
-        SET studentID = ?,
+        SET username = ?,
         firstName = ?,
         lastName = ?,
         password = ?,
         origin = ?
         WHERE accountID = ?;
         "#,
-        &user.studentid,
+        &user.username,
         &user.firstname,
         &user.lastname,
         User::hash_password(&user.password),
         &user.origin,
-        &token.user_id
+        &token.accountid
         )
         .execute(&pool.0)
         .await?;
@@ -118,7 +118,7 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
         Some(pass) => {
             let user = User { 
                 accountid: result.accountid, 
-                studentid: result.studentid, 
+                username: result.username, 
                 firstname: result.firstname, 
                 lastname: result.lastname, 
                 password: pass, 
@@ -135,7 +135,7 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
 pub async fn get_top_30(pool: &State<Pool>) -> Result<Vec<Leaderboard>,sqlx::Error> {
     let query = sqlx::query_as!(
         Leaderboard,
-        "SELECT studentid, flagquantity FROM accounts
+        "SELECT username, flagquantity FROM accounts
         ORDER BY flagquantity DESC
         LIMIT 30;")
         .fetch_all(&pool.0)
@@ -152,7 +152,7 @@ pub struct Pool(pub MySqlPool);
 pub async fn create_connection() -> Result<MySqlPool, sqlx::Error> {
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
-        .connect("mysql://zulu:zulu@localhost:3306/zulu")
+        .connect("mysql://zulu:zulu@127.0.0.1:3306/zulu")
         .await?;
     Ok(pool)
 }
@@ -161,9 +161,9 @@ pub async fn register_account(pool: &State<Pool>, user: &Form<User>) -> Result<M
     //Create a new user in the database
     let query = sqlx::query!(
         r#"
-        INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
+        INSERT INTO accounts (username, firstName, lastName, password, origin, accessLevel)
         VALUES (?,?,?,?,?,?);"#,
-        &user.studentid,
+        &user.username,
         &user.firstname,
         &user.lastname,
         User::hash_password(&user.password),
@@ -183,7 +183,7 @@ pub async fn delete_account(pool: &State<Pool>, token: JwtToken) -> Result<bool,
         r#"
         DELETE FROM accounts
         WHERE accountID = ?;"#,
-        &decoded.user_id
+        &decoded.accountid
     )
     .execute(&pool.0)
     .await?

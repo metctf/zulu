@@ -42,7 +42,7 @@ impl FromStr for AccessLevel {
 #[derive(FromForm,Serialize,Deserialize,Debug)]
 pub struct User{
     pub accountid: u32,
-    pub studentid: String,
+    pub username: String,
     pub firstname: String,
     pub lastname: String,
     pub password: String,
@@ -53,13 +53,13 @@ pub struct User{
 
 #[derive(Debug,Serialize,Deserialize)]
 pub struct Leaderboard{
-    pub studentid: String,
+    pub username: String,
     pub flagquantity: u32,
 }
 
 #[derive(FromForm,Serialize,Deserialize)]
 pub struct Login{
-    pub studentid: String,
+    pub username: String,
     pub password: String,
 }
 

@@ -12,8 +12,8 @@ pub async fn modify(pool: &State<Pool>, token: JwtToken, user: Form<User>) -> St
      * Redirect to a page or send a success code, undecided atm
      */
     match query{
-        Ok(_query) => {format!("success")},
-        Err(_) => {format!("boooo")}
+        Ok(_query) => format!("success"),
+        Err(_) => format!("boooo")
     }
 
 }

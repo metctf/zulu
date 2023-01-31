@@ -9,7 +9,7 @@ GRANT ALL ON zulu.* TO zulu@localhost;
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
     accountid int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    studentid varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     firstname varchar(50) NOT NULL,
     lastname varchar(50) NOT NULL,
     password varchar(255),

@@ -9,8 +9,8 @@ use rocket::outcome::Outcome;
 
 #[derive(Debug)]
 pub struct JwtToken {
-    pub user_id: String,
-    pub access_level: String,
+    pub accountid: String,
+    pub accesslevel: String,
     pub body: String,
 }
 
@@ -44,8 +44,8 @@ impl<'r> FromRequest<'r> for JwtToken{
 }
 
 impl JwtToken {
-    //Encodes the JWT using a hashmap and Sha256 encryption
-    pub fn encode(user_id: &String, access_level: &String) -> String{
+    //Encodes the JWT using a hashmap and attaches a SHA256 hash 
+    pub fn encode(accountid: &String, accesslevel: &String) -> String{
         let secret_key: String = String::from("secret");
         let key: Hmac<Sha256> = Hmac::new_varkey(&secret_key.as_bytes())
             .unwrap();
@@ -53,8 +53,8 @@ impl JwtToken {
          *  The private claims for the jwt should be as follows
          *
          *  {
-         *      "user_id": user_id,
-         *      "access_level": access_level,
+         *      "accountid": accountid,
+         *      "accesslevel": accesslevel,
          *  }
          *
          *  These claims allow for user identification as well as access 
@@ -62,8 +62,8 @@ impl JwtToken {
          */
 
         let mut claims = BTreeMap::new();
-        claims.insert("user_id", user_id);
-        claims.insert("access_level", access_level);
+        claims.insert("accountid", accountid);
+        claims.insert("accesslevel", accesslevel);
 
         let token_str = claims.sign_with_key(&key).unwrap();
         return String::from(token_str)
@@ -80,8 +80,8 @@ impl JwtToken {
 
         match token {
             Ok(token) => Ok( JwtToken {
-                user_id: token.claims()["user_id"].to_string(),
-                access_level: token.claims()["access_level"].to_string(),
+                accountid: token.claims()["accountid"].to_string(),
+                accesslevel: token.claims()["accesslevel"].to_string(),
                 body: webtoken}),
             Err(_) => Err("Couldnt Decode token")
             }

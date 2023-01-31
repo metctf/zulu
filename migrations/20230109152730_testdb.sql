@@ -1,6 +1,6 @@
 CREATE TABLE accounts (
     accountID int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-    studentID varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     firstName varchar(50) NOT NULL,
     lastName varchar(50) NOT NULL,
     password varchar(255),
@@ -32,5 +32,5 @@ CREATE TABLE accountFlags (
     CONSTRAINT accountFlags_ibfk_2 FOREIGN KEY (fkFlagID) REFERENCES flags (flagID)
 );
 
-INSERT INTO accounts(accountID, studentID, firstName, lastName, password, origin, accessLevel) 
-VALUES ("1940", "121", "Winston", "Churchill", "neversurrender", "internal", "student");
+INSERT INTO accounts(accountID, username, firstName, lastName, password, origin, accessLevel) 
+VALUES ("1940", "winston.churchill", "Winston", "Churchill", "neversurrender", "internal", "student");
