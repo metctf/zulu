@@ -1,20 +1,28 @@
 use yew::prelude::*;
+use super::components::leaderboard::{LeaderboardList, Leaderboard};
+use gloo_net::http::Request;
 
 #[function_component(Home)]
 pub fn home() -> Html {
-    let onclick = Callback::from(move |_| {
-        wasm_bindgen_futures::spawn_local( async move {
-            let url = format!("http://127.0.0.1:8000/api/v1/leaderboard");
-
-            let _body = reqwest::get(&url)
-                .await
-                .unwrap()
-                .text()
-                .await
-                .unwrap();
+    let users = use_state(|| vec![]);
+    {
+        let users = users.clone();
+        use_effect_with_deps(move |_| {
+            let users = users.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_users: Vec<Leaderboard> = Request::get("http://127.0.0.1:8000/api/v1/leaderboard")
+                    .send()
+                    .await
+                    .unwrap()
+                    .json()
+                    .await
+                    .unwrap();
+                users.set(fetched_users);
             });
-    });
+            || ()
+        }, ());
+    }
     html! {
-        <button {onclick}>{ "Click" }</button>
+        <LeaderboardList users={(*users).clone()} />
     }
 }

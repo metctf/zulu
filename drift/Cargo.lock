@@ -96,6 +96,7 @@ name = "drift"
 version = "0.1.0"
 dependencies = [
  "gloo 0.6.1",
+ "gloo-net 0.2.6",
  "reqwasm",
  "reqwest",
  "serde",
