@@ -13,6 +13,8 @@ use api::{login,register,modify,remove,leaderboard};
 mod auth;
 mod tests;
 
+use auth::cors::CORS;
+
 #[macro_use] extern crate rocket;
 
 #[launch]
@@ -37,5 +39,6 @@ async fn rocket() -> _ {
                leaderboard::leaderboard
         ])
         .attach(ReRouter)
+        .attach(CORS)
         
 }

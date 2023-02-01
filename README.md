@@ -22,6 +22,7 @@ under the GPLv3 and is free software.
 
 #### API
 * [ ] Mutual TLS (@jacob.eva)
+* [x] Fix CORS header (https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin) (@connor.bryan)
 
 #### Frontend
 * [x] Login & registration functionality via frontend (@connor.bryan)
@@ -47,7 +48,7 @@ code 304 unmodified.
 #### Frontend
 * [ ] Ability to manage own flag strings as a user (@connor.bryan)
 * [ ] Ability to manage own flags as a lecturer (@connor.bryan)
-* [ ] Ability to view leaderboard (@connor.bryan)
+* [x] Ability to view leaderboard (@connor.bryan)
 
 ## Running Zulu
 Simply `git clone` this repo and run `cargo run` in your terminal :)
