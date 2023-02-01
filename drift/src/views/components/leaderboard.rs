@@ -3,8 +3,8 @@ use yew::prelude::*;
 
 #[derive(Clone, PartialEq, Deserialize)]
 pub struct Leaderboard {
-    pub user: String,
-    pub score: u32,
+    pub username: String,
+    pub flagquantity: u32,
 }
 
 #[derive(Properties, PartialEq)]
@@ -15,6 +15,6 @@ pub struct LeaderboardProps {
 #[function_component(LeaderboardList)]
 pub fn leaderboard_component(LeaderboardProps { users }: &LeaderboardProps) -> Html {
     users.iter().map(|user| html! {
-        <div>{format!{"{}: {}",user.user, user.score}}</div>
+        <div>{format!{"{}: {}",user.username, user.flagquantity}}</div>
     }).collect()
 }
