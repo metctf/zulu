@@ -65,14 +65,19 @@ pub fn register(props: &Props) -> Html {
         let data = cloned_state.deref().clone();
         form_onsubmit.emit(data);
     });
-    
+
     html! {
-       <form onsubmit={onsubmit}>
+        <form onsubmit={onsubmit}>
             <TextInput name="username" handle_onchange={username_changed} />
+            <br />
             <TextInput name="firstname" handle_onchange={firstname_changed} />
+            <br />
             <TextInput name="lastname" handle_onchange={lastname_changed} />
+            <br />
             <TextInput name="password" handle_onchange={password_changed} />
+            <br />
             <TextInput name="origin" handle_onchange={origin_changed} />
+            <br />
             <CustomButton label="Submit" />
         </form>
     }
