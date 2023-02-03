@@ -110,7 +110,7 @@ mod tests{
         let _query = sqlx::query!(
             r#"
             DELETE FROM accounts
-            WHERE username = 123;
+            WHERE username = "winston.churchill";
             "#)
             .execute(&pool)
             .await;

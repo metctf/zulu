@@ -1,6 +1,6 @@
 use rocket::form::Form;
 use rocket::State;
-use super::super::auth::user::{User,AccessLevel};
+use super::super::auth::user::User;
 use super::super::connections::database::{Pool, register_account};
 
 #[post("/register", data = "<user>")]

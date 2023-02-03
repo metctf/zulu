@@ -8,10 +8,11 @@ mod settings;
 use settings::LdapConfig;
 
 mod api;
-use api::{login,register,modify,remove,leaderboard};
+use api::{login,register,modify,remove,leaderboard,create_flag,modify_flag,delete_flag};
 
 mod auth;
 mod tests;
+mod structs;
 
 use auth::cors::CORS;
 
@@ -36,7 +37,11 @@ async fn rocket() -> _ {
                modify::modify,
                modify::display_user_info,
                remove::remove_account,
-               leaderboard::leaderboard
+               leaderboard::leaderboard,
+               create_flag::create_flag_api,
+               delete_flag::delete_flag_api,
+               modify_flag::modify_flag_api,
+               modify_flag::display_flag
         ])
         .attach(ReRouter)
         .attach(CORS)
