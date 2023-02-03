@@ -1,29 +1,49 @@
-use ldap3::{LdapConnAsync, Scope, SearchEntry, LdapError, Ldap, ResultEntry};
-use crate::auth::user::{Login, User, AccessLevel, Leaderboard};
+use ldap3::{LdapConnAsync, Scope, LdapError, ResultEntry, SearchEntry};
+use crate::auth::user::{Login, User, AccessLevel, Leaderboard, Origin};
 use log::{info, trace, warn};
+use std::str::FromStr;
+
+pub struct LdapUser {
+    username: String,
+    firstname: String,
+    lastname: String,
+    origin: Origin,
+    accesslevel: AccessLevel
+}
 
 // This function checks if the user with the given UID can authenticate to the LDAP server, which
 // if true means they have valid LDAP credentials.
-pub async fn login_user(hostname: String, port: u16, bind_dn: String, uid: String, password: String, search_base: String, user_filter: String) -> Result<Vec<ResultEntry>, LdapError> {
+pub async fn login_user(hostname: String, port: u16, bind_dn: String, bind_dn_password: String, uid: String, password: String, search_base: String, user_filter: String) -> Result<bool, LdapError> {
     let (conn, mut ldap) = LdapConnAsync::new(&*(String::from("ldap://") + &hostname + ":" + &port.to_string())).await?;
     ldap3::drive!(conn);
     ldap
-        .simple_bind(&bind_dn, &password).await?
+        .simple_bind(&bind_dn, &bind_dn_password).await?
         .success()?;
 
     let (search, _res) = ldap.search(
         &search_base,
         Scope::Subtree,
         &user_filter.replace("%s", &uid),
-        vec!["uid"]
+        vec!["dn"]
     ).await?.success()?;
 
-    Ok(search)
+    if search.len() >= 1 {
+        let entry = search[0].clone(); // have to clone the search entry else rust complains about
+                                       // moving out of the var behind a shared reference
+        ldap
+            .simple_bind(&format!("{}", SearchEntry::construct(entry).dn), &password).await?
+            .success()?;
+        Ok(true)
+    }
+    else {
+        Ok(false)
+    }
 }
 
 // This function creates a User struct based on the attributes we can retrieve about the user from
 // the LDAP server and returns it.
-/*pub async fn retrieve_user(hostname: String, port: u16, bind_dn: String, uid: String, password: String, search_base: String, user_filter: String, lecturer_filter: String, admin_filter: String) -> Result<String, LdapError> {
+pub async fn retrieve_user(hostname: String, port: u16, bind_dn: String, uid: String, password: String, search_base: String, user_filter: String, lecturer_filter: String, admin_filter: String) -> Result<LdapUser, LdapError> {
+    let role;
     let (conn, mut ldap) = LdapConnAsync::new(&*(String::from("ldap://") + &hostname + ":" + &port.to_string())).await?;
     ldap3::drive!(conn);
     ldap
@@ -39,7 +59,7 @@ pub async fn login_user(hostname: String, port: u16, bind_dn: String, uid: Strin
     ).await?.success()?;
 
     if search.len() > 0 {
-        let role = String::from("Admin");
+        role = String::from("Admin");
     }
 
     else {
@@ -52,35 +72,23 @@ pub async fn login_user(hostname: String, port: u16, bind_dn: String, uid: Strin
         ).await?.success()?;
 
         if search.len() > 0 {
-            let role = String::from("Lecturer");
+            role = String::from("Lecturer");
         }
 
         else {
-            let role = String::from("User");
+            role = String::from("User");
         }
     }
 
-    let user = User { 
-        accountid: result.accountid, 
-        username: result.username, 
-        firstname: result.firstname, 
-        lastname: result.lastname, 
-        password: pass, 
-        origin: result.origin, 
-        flagquantity: result.flagquantity, 
-            let user = User { 
-                accountid: result.accountid, 
-                username: result.username, 
-                firstname: result.firstname, 
-                lastname: result.lastname, 
-                password: pass, 
-                origin: result.origin, 
-                flagquantity: result.flagquantity, 
-                accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
-            };
-            Ok(user)
-        accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
+    let split: Vec<&str> = uid.split(".").collect(); // split the uid in two, as the first part is
+                                                     // the forename, and last part is the surname
+
+    let user = LdapUser { 
+        username: uid.clone(),  // clone as uid is used earlier in the split
+        firstname: split[0].to_string(), 
+        lastname: split[1].to_string(), 
+        origin: Origin::from_str("Ldap").unwrap(), 
+        accesslevel: AccessLevel::from_str(&role).unwrap(),
     };
     Ok(user)
 }
-*/

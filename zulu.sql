@@ -8,37 +8,35 @@ GRANT ALL ON zulu.* TO zulu@localhost;
 
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
-    accountid int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    accountID uuid DEFAULT UUID() PRIMARY KEY,
     username varchar(50) NOT NULL,
-    firstname varchar(50) NOT NULL,
-    lastname varchar(50) NOT NULL,
+    firstName varchar(50) NOT NULL,
+    lastName varchar(50) NOT NULL,
     password varchar(255),
 	origin varchar(50) NOT NULL,
-    flagquantity int(11) UNSIGNED NOT NULL DEFAULT 0,
-    accesslevel varchar(10) NOT NULL,
-	creationtime timestamp NOT NULL,
-    PRIMARY KEY (accountid)
+    flagQuantity int(11) UNSIGNED DEFAULT 0 NOT NULL,
+    accessLevel varchar(10) NOT NULL,
+	creationTime timestamp NOT NULL
 ); 
 
 
 DROP TABLE IF EXISTS zulu.flags;
 CREATE TABLE zulu.flags (
-    flagID int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    flagID uuid DEFAULT uuid() PRIMARY KEY,
     challenge varchar(255) NOT NULL,
     challengeAuthor varchar(255) NOT NULL,
     flagString varchar(255) NOT NULL,
-    points int(11) UNSIGNED NOT NULL,
-	creationTime timestamp NOT NULL,
-    PRIMARY KEY (flagID)
+    points int(11) UNSIGNED DEFAULT 0 NOT NULL,
+	creationTime timestamp NOT NULL
 ); 
 
 
 DROP TABLE IF EXISTS zulu.accountFlags;
 CREATE TABLE zulu.accountFlags (
-    fkAccountID int(11) UNSIGNED NOT NULL,
-    fkFlagID int(11) UNSIGNED NOT NULL,
+    fkAccountID uuid DEFAULT uuid(),
+    fkFlagID uuid DEFAULT uuid(),
     creationTime timestamp NOT NULL,
-    PRIMARY KEY (fkAccountId, fkFlagID),
     CONSTRAINT accountFlags_ibfk_1 FOREIGN KEY (fkAccountID) REFERENCES accounts (accountID),
-    CONSTRAINT accountFlags_ibfk_2 FOREIGN KEY (fkFlagID) REFERENCES flags (flagID)
+    CONSTRAINT accountFlags_ibfk_2 FOREIGN KEY (fkFlagID) REFERENCES flags (flagID),
+    PRIMARY KEY(fkAccountID, fkFlagID)
 );

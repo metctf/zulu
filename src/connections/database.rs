@@ -53,22 +53,33 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
     match pass {
         Some(pass) => {
             let user = User { 
-                accountid: result.accountid, 
+                accountid: result.accountID, 
                 username: result.username, 
-                firstname: result.firstname, 
-                lastname: result.lastname, 
+                firstname: result.firstName, 
+                lastname: result.lastName, 
                 password: pass, 
                 origin: result.origin, 
-                flagquantity: result.flagquantity, 
-                accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
+                flagquantity: result.flagQuantity, 
+                accesslevel: AccessLevel::from_str(&result.accessLevel).unwrap(),
             };
             info!("Logged in user: {}", &user.username);
             Ok(user)
         },
         None => {
-            error!("Incorrect login credentials");
-            Err(sqlx::Error::RowNotFound)
-            }
+            info!("Incorrect login credentials");
+            // initialise a none user which is used to convey no match from the DB
+            let user = User { 
+                accountid: String::from("none"),
+                username: String::from("none"), 
+                firstname: String::from("none"),
+                lastname: String::from("none"), 
+                password: String::from("none"), 
+                origin: String::from("none"), 
+                flagquantity: 0, 
+                accesslevel: AccessLevel::from_str("User").unwrap(),
+            };
+            Ok(user)
+        }
     }
 }
 
@@ -122,14 +133,14 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
     match pass {
         Some(pass) => {
             let user = User { 
-                accountid: result.accountid, 
+                accountid: result.accountID, 
                 username: result.username, 
-                firstname: result.firstname, 
-                lastname: result.lastname, 
+                firstname: result.firstName, 
+                lastname: result.lastName, 
                 password: pass, 
                 origin: result.origin, 
-                flagquantity: result.flagquantity, 
-                accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
+                flagquantity: result.flagQuantity, 
+                accesslevel: AccessLevel::from_str(&result.accessLevel).unwrap(),
             };
             Ok(user)
         },

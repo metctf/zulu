@@ -4,14 +4,14 @@ mod tests{
     /*
      * Test library for the major database tests
      */
-
+    
     use sqlx::MySqlPool;
     use sqlx::mysql::MySqlPoolOptions;
 
     #[sqlx::test]
     async fn login(pool: MySqlPool){
         // Test for checking database for user
-        let accountid: u32 = 1940;
+        let accountid = "cd41294a-afb0-11df-bc9b-00241dd75637";
         let _query = sqlx::query!(
             r#"
             SELECT *
@@ -37,8 +37,8 @@ mod tests{
         // Test for adding a user to a database
         let _query = sqlx::query!(
             r#"
-            INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
-            VALUES ("123","Keanu","Reeves","dog","internal", "User");
+            INSERT INTO accounts (username, firstName, lastName, password, origin, accessLevel)
+            VALUES ("keanu.reeves","Keanu","Reeves","dog","internal", "User");
             "#)
             .execute(&pool)
             .await;
@@ -59,7 +59,7 @@ mod tests{
             r#"
             SELECT *
             FROM accounts
-            WHERE studentID = 121;
+            WHERE username = "winston.churchill";
             "#)
             .fetch_one(&pool)
             .await;
@@ -78,8 +78,8 @@ mod tests{
         // Test for modifying user info
         sqlx::query!(
             r#"
-            INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
-            VALUES ("122","Keanu","Reeves","dog","internal", "student");
+            INSERT INTO accounts (username, firstName, lastName, password, origin, accessLevel)
+            VALUES ("keanu.reeves","Keanu","Reeves","dog","Internal", "User");
             "#)
             .execute(&pool)
             .await
@@ -89,7 +89,7 @@ mod tests{
             r#"
             UPDATE accounts
             SET password = "goodbye"
-            WHERE studentID = 123
+            WHERE username = "keanu.reeves"
             AND password = "dog";
             "#)
             .execute(&pool)
@@ -110,7 +110,7 @@ mod tests{
         let _query = sqlx::query!(
             r#"
             DELETE FROM accounts
-            WHERE studentID = 123;
+            WHERE username = 123;
             "#)
             .execute(&pool)
             .await;
@@ -129,7 +129,7 @@ mod tests{
         // Test for checking if a database can be connected to
         let pool = MySqlPoolOptions::new()
             .max_connections(5)
-            .connect("mysql://zulu:zulu@localhost:3306/zulu")
+            .connect("mysql://zulu:zulu@127.0.0.1:3306/zulu")
             .await;
         match pool{
             Ok(_pool) => assert!(true),
@@ -189,4 +189,56 @@ mod tests{
         assert_eq!(verify,true);
     }
 
+    /*
+     * Test for LDAP API login functionality
+     */
+
+    /*use rocket::http::{ContentType, Status};
+    use rocket::local::asynchronous::Client;
+
+    #[rocket::async_test]
+    async fn api_ldap_login(){
+        let rocket = rocket::build();
+        let client = Client::tracked(rocket).await.expect("valid rocket");
+        let mut response = client.post("/api/v1/login")
+            .body("username=jacob.eva&password=Edno8euzDE9BOdxENVbCZPhK5&origin=Ldap")
+            .dispatch();
+        assert_eq!(verify,true);
+    }*/
+
+    /*
+     * Tests for loading config file
+     */ 
+
+    #[test]
+    fn load_ldap_config() {
+        let settings = crate::settings::LdapConfig::new();
+        
+        match settings {
+            Ok(_) => assert!(true),
+            Err(_) => assert!(false),
+        }
+    }
+
+
+    /*
+     * Tests for LDAP functions
+     */
+
+    #[tokio::test]
+    async fn ldap_login() {
+        let settings_result = crate::settings::LdapConfig::new();
+
+        let settings = match settings_result {
+            Ok(settings) => settings,
+            Err(e) => panic!("Error, {}", e),
+        };
+
+        let login_result = crate::connections::ldap::login_user(settings.hostname, settings.port, settings.bind_dn, settings.password, String::from("jacob.eva"), String::from("password"), settings.search_base, settings.user_filter).await;
+
+        let login = match login_result {
+            Ok(login) => login,
+            Err(e) => panic!("Error, {}", e),
+        };
+    }
 }

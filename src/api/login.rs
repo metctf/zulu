@@ -4,18 +4,22 @@ use rocket::http::{Cookie,CookieJar};
 use rocket::State;
 use crate::connections::database;
 
+use std::io::ErrorKind;
+
+use rocket::http::Status;
+
 use super::super::auth::jwt::JwtToken;
 use super::super::auth::user::{Login,Verify};
 use super::super::connections::database::Pool;
 use super::super::connections::ldap;
 
 #[post("/login", data = "<login>")]
-pub async fn login(pool: &State<Pool>,jar: &CookieJar<'_>, login: Form<Login>) -> Result<(),std::string::String>{
+pub async fn login(pool: &State<Pool>,jar: &CookieJar<'_>, login: Form<Login>) -> (Status, String) {
     info!("enter login");
     let user = database::login_user(&login, pool).await;
     match user {
         Ok(user) => {
-            if login.verify_password(&user.password){
+            if login.verify_password(&user.password) {
                 info!("Verified");
                 // Add jwt token to a cookie to be returned to user
                 let token = JwtToken::encode(&user.accountid.to_string(), &user.accesslevel.to_string());
@@ -28,30 +32,40 @@ pub async fn login(pool: &State<Pool>,jar: &CookieJar<'_>, login: Form<Login>) -
                 // Adds the cookie to the users browser
                 jar.add_private(cookie);
                 // Redirects to the sensitive page with Status 200
-                Ok(())
-            }else{
-                info!("else!");
-                // Deny access to website, returns a 401 Error
-                Ok(())
+                return (Status::Ok, String::from("Successfully authenticated!"))
+            }
+            else {
+                info!("Password invalid or no match in DB");
+                let settings_result = crate::settings::LdapConfig::new();
+
+                let settings = match settings_result {
+                    Ok(settings) => settings,
+                    Err(e) => return (Status::InternalServerError, String::from(format!("Error, {}", e))),
+                };
+
+                if user.accountid == "none" { // if no user was returned from the DB
+                    let login_result = ldap::login_user(settings.hostname, settings.port, settings.bind_dn, settings.password, user.username, user.password, settings.search_base, settings.user_filter); // attempt to retrieve user from LDAP
+
+                    let login = match login_result.await {
+                        Ok(login) => login,
+                        Err(e) => return (Status::InternalServerError, String::from(format!("Error, {}", e))), // Error message for server
+                                                                       // error, returns 500
+                    };
+
+                    if login {
+                        return (Status::Ok, String::from("Successfully authenticated!"))
+                    }
+                    else {
+                        return (Status::Unauthorized, String::from("Unauthorised."))
+                    }
+                }
+
+                else { // if user returned, but password was invalid
+                    return (Status::Unauthorized, String::from("Unauthorised."))
+                }
             }
         },
         // Error message for server error, returns 500
-        Err(_) => {
-            info!("Error from DB");
-            let settings_result = crate::settings::LdapConfig::new();
-
-            let settings = match settings_result {
-                Ok(settings) => settings,
-                Err(e) => return Err(format!("Error, {}", e)),
-            };
-
-            let login_result = ldap::login_user(settings.hostname, settings.port, settings.bind_dn, String::from("jacob.eva"), settings.password, settings.search_base, settings.user_filter);
-
-            let login = match login_result.await {
-                Ok(login) => login,
-                Err(e) => return Err(format!("Error, {}", e)),
-            };
-            Ok(())
-        }
+        Err(e) => return (Status::InternalServerError, String::from(format!("Error, {}", e)))
     }
 }
