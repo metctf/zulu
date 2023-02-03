@@ -16,7 +16,7 @@ mod tests{
             r#"
             SELECT *
             FROM accounts
-            WHERE accountID = ?;
+            WHERE accountid = ?;
             "#,
             accountid
             )
@@ -37,8 +37,8 @@ mod tests{
         // Test for adding a user to a database
         let _query = sqlx::query!(
             r#"
-            INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
-            VALUES ("123","Keanu","Reeves","dog","internal", "User");
+            INSERT INTO accounts (accountid, username, firstname, lastname, password, origin, accesslevel)
+            VALUES ("123","bigman", "Keanu","Reeves","dog","internal", "User");
             "#)
             .execute(&pool)
             .await;
@@ -55,11 +55,20 @@ mod tests{
     #[sqlx::test]
     async fn get_user_info(pool: MySqlPool){
         // Test for returning database info
+        sqlx::query!(
+            r#"
+            INSERT INTO accounts (accountid, username, firstname, lastname, password, origin, accesslevel)
+            VALUES ("123","bigman", "Keanu","Reeves","dog","internal", "User");
+            "#)
+            .execute(&pool)
+            .await
+            .unwrap();
+
         let _query = sqlx::query!(
             r#"
             SELECT *
             FROM accounts
-            WHERE studentID = 121;
+            WHERE accountid = 123;
             "#)
             .fetch_one(&pool)
             .await;
@@ -78,8 +87,8 @@ mod tests{
         // Test for modifying user info
         sqlx::query!(
             r#"
-            INSERT INTO accounts (studentID, firstName, lastName, password, origin, accessLevel)
-            VALUES ("122","Keanu","Reeves","dog","internal", "student");
+            INSERT INTO accounts (accountid, username, firstName, lastName, password, origin, accessLevel)
+            VALUES ("122", "smallman", "Keanu","Reeves","dog","internal", "student");
             "#)
             .execute(&pool)
             .await
@@ -89,7 +98,7 @@ mod tests{
             r#"
             UPDATE accounts
             SET password = "goodbye"
-            WHERE studentID = 123
+            WHERE accountid = 123
             AND password = "dog";
             "#)
             .execute(&pool)
@@ -110,7 +119,7 @@ mod tests{
         let _query = sqlx::query!(
             r#"
             DELETE FROM accounts
-            WHERE studentID = 123;
+            WHERE accountid = 123;
             "#)
             .execute(&pool)
             .await;

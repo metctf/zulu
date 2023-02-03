@@ -23,12 +23,12 @@ CREATE TABLE zulu.accounts (
 
 DROP TABLE IF EXISTS zulu.flags;
 CREATE TABLE zulu.flags (
-    flagID int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    flagid int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     challenge varchar(255) NOT NULL,
-    challengeAuthor varchar(255) NOT NULL,
-    flagString varchar(255) NOT NULL,
+    challengeauthor varchar(255) NOT NULL,
+    flagstring varchar(255) NOT NULL,
     points int(11) UNSIGNED NOT NULL,
-	creationTime timestamp NOT NULL,
+	creationtime timestamp NOT NULL,
     PRIMARY KEY (flagID)
 ); 
 

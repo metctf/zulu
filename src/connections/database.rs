@@ -11,6 +11,7 @@ use rocket::form::Form;
 use std::str::FromStr;
 
 use crate::auth::user::{Login, User, AccessLevel, Leaderboard};
+use crate::structs::flag::Flag;
 
 pub struct ReRouter;
 
@@ -34,6 +35,98 @@ impl Fairing for ReRouter {
             }
         return
     }
+}
+
+pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+    let result = sqlx::query!(
+        r#"
+        DELETE FROM flags
+        WHERE flagID = ?;
+        "#,
+        id)
+        .fetch_all(&pool.0)
+        .await;
+    match result {
+        Ok(_) => Ok(true),
+        Err(_) => Err(sqlx::Error::RowNotFound)
+    }
+}
+
+pub async fn create_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+    let result = sqlx::query!(
+        r#"
+        INSERT INTO flags
+        (flagID, challenge, challengeAuthor, flagString, points)
+        VALUES
+        (?,?,?,?,?)
+        "#,
+        &flag.flagid,
+        &flag.challenge,
+        &flag.challengeauthor,
+        &flag.flagstring,
+        &flag.points)
+        .execute(&pool.0)
+        .await;
+
+    match result {
+        Ok(_) => Ok(true),
+        Err(_) => Err(sqlx::Error::PoolTimedOut)
+    }
+}
+
+pub async fn submit_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+    let result = sqlx::query!(
+        r#"
+        SELECT *
+        FROM flags
+        WHERE flagString = ?;
+        "#,
+        &flag.flagstring
+        )
+        .fetch_one(&pool.0)
+        .await;
+
+    match result{
+        Ok(_) => Ok(true),
+        Err(_) => Err(sqlx::Error::RowNotFound)
+    }
+}
+
+pub async fn modify_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+    let result = sqlx::query!(
+        r#"
+        UPDATE flags
+        SET challenge = ?,
+        challengeAuthor = ?,
+        flagString = ?,
+        points = ?
+        WHERE
+        flagID = ?;
+        "#,
+        &flag.challenge,
+        &flag.challengeauthor,
+        &flag.flagstring,
+        &flag.points,
+        &flag.flagid)
+        .execute(&pool.0)
+        .await;
+
+    match result {
+        Ok(_) => Ok(true),
+        Err(_) => Err(sqlx::Error::RowNotFound)
+    }
+}
+
+pub async fn return_flag(pool: &State<Pool>, id: String) -> Result<Flag, sqlx::Error>{
+    let result = sqlx::query_as!(
+        Flag,
+        "SELECT flagid, challenge, challengeauthor, flagstring, points
+        FROM flags
+        WHERE flagID = ?;",
+        id)
+        .fetch_one(&pool.0)
+        .await?;
+   Ok(result) 
 }
 
 pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,sqlx::Error>{
