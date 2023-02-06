@@ -1,8 +1,8 @@
 # Added by cargo
 
-/target
-/Cargo.lock
-config/local.toml
+zulu/target
+zulu/Cargo.lock
+zulu/config/local.toml
 /.cargo
 /drift/target
 /drift/Cargo.lock

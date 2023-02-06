@@ -1,4 +1,0 @@
-[default.database.main_connection]
-url = 'mysql://zulu:zulu@localhost/zulu'
-[release]
-address = "0.0.0.0"
