@@ -6,3 +6,4 @@ pub mod leaderboard;
 pub mod create_flag;
 pub mod modify_flag;
 pub mod delete_flag;
+pub mod submit_flag;
