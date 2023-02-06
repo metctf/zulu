@@ -18,6 +18,8 @@ impl Component for TopBarComponent {
                     <Link<MainRoute> to={MainRoute::Home}>{"Home"}</Link<MainRoute>>
                     <Link<MainRoute> to={MainRoute::Register}>{"Register"}</Link<MainRoute>>
                     <Link<MainRoute> to={MainRoute::Login}>{"Login"}</Link<MainRoute>>
+                    <Link<MainRoute> to={MainRoute::CreateFlag}>{"Create Flag"}</Link<MainRoute>>
+                    <Link<MainRoute> to={MainRoute::SubmitFlag}>{"Submit Flag"}</Link<MainRoute>>
                 </div>
         }
     }
