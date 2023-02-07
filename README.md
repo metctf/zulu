@@ -35,7 +35,7 @@ under the GPLv3 and is free software.
 
 #### Flags
 * [ ] Flag creation, deletion and modification (@jacob.eva)
-* [ ] Flag string submission and deletion for users (@jacob.eva)
+* [ ] Flag string submission for users (@jacob.eva)
 * [ ] Access control (@jacob.eva)
 
 #### Leaderboard
@@ -46,7 +46,7 @@ If same frontend requests leaderboard and it hasnt changed use the http status
 code 304 unmodified.
 
 #### Frontend
-* [ ] Ability to manage own flag strings as a user (@connor.bryan)
+* [ ] Ability to submit flags as a user (@connor.bryan)
 * [ ] Ability to manage own flags as a lecturer (@connor.bryan)
 * [x] Ability to view leaderboard (@connor.bryan)
 
