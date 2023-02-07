@@ -4,7 +4,7 @@ use yew_router::prelude::*;
 mod views;
 mod router;
 
-use views::components::top_bar::TopBarComponent;
+use views::components::top_bar::{Tab, NavBar};
 use crate::router::{MainRoute,switch_main};
 
 
@@ -13,7 +13,7 @@ fn App() -> Html {
 
     html! {
         <BrowserRouter>
-            <TopBarComponent />
+            <NavBar tab={Tab::Unauthorized}/>
             <Switch<MainRoute> render={switch_main} />
         </BrowserRouter>
     }

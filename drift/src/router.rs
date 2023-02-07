@@ -7,8 +7,6 @@ use crate::views::login::{Login, LoginData};
 use crate::views::home::Home;
 use crate::views::register::{Register, RegisterData};
 use crate::views::notfound::NotFound;
-use crate::views::settings::delete::Delete;
-use crate::views::settings::modify::Modify;
 use crate::views::submitflag::{FlagStringData, SubmitFlag};
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
@@ -37,8 +35,6 @@ pub enum MainRoute{
 pub enum SettingsRoute{
     #[at("/settings/modify")]
     Modify,
-    #[at("/settings/delete")]
-    Delete,
     #[not_found]
     #[at("/settings/404")]
     NotFound,
@@ -65,7 +61,7 @@ pub fn switch_main(route: MainRoute) -> Html {
                 });
             });
             html! {
-                    <Login onsubmit={custom_form_submit} />
+                <Login onsubmit={custom_form_submit} />
             }
         },
         MainRoute::Register => {
@@ -145,8 +141,49 @@ pub fn switch_main(route: MainRoute) -> Html {
 
 pub fn switch_settings(route: SettingsRoute) -> Html {
     match route {
-        SettingsRoute::Modify => html! {<Modify />},
-        SettingsRoute::Delete => html! {<Delete />},
+        SettingsRoute::Modify => {
+            let custom_form_submit = Callback::from(|data: RegisterData| {
+                log!("username is", &data.username);
+                log!("password is", &data.password);
+
+                wasm_bindgen_futures::spawn_local( async move {
+                    let url = format!("http://127.0.0.1:8000/api/v1/modify");
+                    let form = [
+                        ("username",data.username),
+                        ("firstname",data.firstname),
+                        ("lastname",data.lastname),
+                        ("password", data.password),
+                        ("origin", data.origin)
+                    ];
+                    let client = reqwest::Client::new();
+
+                    client.post(&url)
+                        .form(&form)
+                        .send()
+                        .await
+                        .unwrap(); //Getting an error here
+                });
+            });
+
+            let delete = Callback::from(|_| {
+                wasm_bindgen_futures::spawn_local(async {
+                    let url = format!("http://127.0.0.1:8000/api/v1/remove");
+                    let client = reqwest::Client::new();
+
+                    client.delete(&url)
+                        .send()
+                        .await
+                        .unwrap();
+                });
+            });
+
+            html! {
+                <>
+                    <Register onsubmit={custom_form_submit} />
+                    <button onclick={delete}>{"Delete"}</button>
+                </>
+            }
+        },
         SettingsRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::NotFound}/>}
     }
 }
