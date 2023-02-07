@@ -12,8 +12,6 @@ use crate::structs::login::Login;
 use crate::structs::leaderboard::Leaderboard;
 use crate::structs::flag::Flag;
 
-
-
 pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
     let result = sqlx::query!(
         r#"
@@ -51,14 +49,14 @@ pub async fn create_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, 
     }
 }
 
-pub async fn submit_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+pub async fn submit_flag(flag: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
     let result = sqlx::query!(
         r#"
         SELECT *
         FROM flags
         WHERE flagString = ?;
         "#,
-        &flag.flagstring
+        &flag
         )
         .fetch_one(&pool.0)
         .await;

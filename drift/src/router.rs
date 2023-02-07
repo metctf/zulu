@@ -124,12 +124,10 @@ pub fn switch_main(route: MainRoute) -> Html {
                 log!("String is", &data.flagstring);
 
                 wasm_bindgen_futures::spawn_local( async move {
-                    let url = format!("http://127.0.0.1:8000/api/v1/submit_flag");
-                    let form = [("username",data.flagstring)];
+                    let url = format!("http://127.0.0.1:8000/api/v1/submit_flag/{}", &data.flagstring);
                     let client = reqwest::Client::new();
 
-                    client.post(&url)
-                        .form(&form)
+                    client.get(&url)
                         .send()
                         .await
                         .unwrap(); //Getting error here

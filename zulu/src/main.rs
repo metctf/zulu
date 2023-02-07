@@ -8,7 +8,7 @@ mod settings;
 use settings::LdapConfig;
 
 mod api;
-use api::{login,register,modify,remove,leaderboard,create_flag,modify_flag,delete_flag};
+use api::{login,register,modify,remove,leaderboard,create_flag,modify_flag,delete_flag,submit_flag};
 
 mod auth;
 mod tests;
@@ -41,7 +41,8 @@ async fn rocket() -> _ {
                create_flag::create_flag_api,
                delete_flag::delete_flag_api,
                modify_flag::modify_flag_api,
-               modify_flag::display_flag
+               modify_flag::display_flag,
+               submit_flag::submit_flag_api
         ])
         .attach(ReRouter)
         .attach(CORS)
