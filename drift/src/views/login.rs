@@ -44,7 +44,7 @@ pub fn login(props: &Props) -> Html {
     });
     
     html! {
-       <form onsubmit={onsubmit}>
+        <form onsubmit={onsubmit}>
             <TextInput name="username" handle_onchange={username_changed} />
             <br />
             <TextInput name="password" handle_onchange={password_changed} />
