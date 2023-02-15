@@ -8,7 +8,7 @@ GRANT ALL ON zulu.* TO zulu@localhost;
 
 DROP TABLE IF EXISTS zulu.accounts;
 CREATE TABLE zulu.accounts (
-    accountid uuid DEFAULT UUID() PRIMARY KEY,
+    accountid varchar(255) NOT NULL PRIMARY KEY,
     username varchar(50) NOT NULL,
     firstname varchar(50) NOT NULL,
     lastname varchar(50) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE zulu.accounts (
 
 DROP TABLE IF EXISTS zulu.flags;
 CREATE TABLE zulu.flags (
-    flagid uuid DEFAULT uuid() PRIMARY KEY,
+    flagid varchar(255) NOT NULL PRIMARY KEY,
     challenge varchar(255) NOT NULL,
     challengeauthor varchar(255) NOT NULL,
     flagstring varchar(255) NOT NULL,
@@ -33,8 +33,8 @@ CREATE TABLE zulu.flags (
 
 DROP TABLE IF EXISTS zulu.accountFlags;
 CREATE TABLE zulu.accountFlags (
-    fkaccountid uuid DEFAULT uuid(),
-    fkflagid uuid DEFAULT uuid(),
+    fkaccountid varchar(255),
+    fkflagid varchar(255),
     creationtime timestamp NOT NULL,
     CONSTRAINT accountflags_ibfk_1 FOREIGN KEY (fkaccountid) REFERENCES accounts (accountid),
     CONSTRAINT accountFlags_ibfk_2 FOREIGN KEY (fkFlagID) REFERENCES flags (flagid),
