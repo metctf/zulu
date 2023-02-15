@@ -3,6 +3,6 @@
 zulu/target
 zulu/Cargo.lock
 zulu/config/local.toml
-/.cargo
+zulu/.cargo
 /drift/target
 /drift/Cargo.lock
