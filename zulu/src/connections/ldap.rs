@@ -8,11 +8,11 @@ use log::{info, trace, warn};
 use std::str::FromStr;
 
 pub struct LdapUser {
-    username: String,
-    firstname: String,
-    lastname: String,
-    origin: Origin,
-    accesslevel: AccessLevel
+    pub username: String,
+    pub firstname: String,
+    pub lastname: String,
+    pub origin: Origin,
+    pub accesslevel: AccessLevel
 }
 
 // This function checks if the user with the given UID can authenticate to the LDAP server, which
@@ -46,12 +46,12 @@ pub async fn login_user(hostname: String, port: u16, bind_dn: String, bind_dn_pa
 
 // This function creates a User struct based on the attributes we can retrieve about the user from
 // the LDAP server and returns it.
-pub async fn retrieve_user(hostname: String, port: u16, bind_dn: String, uid: String, password: String, search_base: String, user_filter: String, lecturer_filter: String, admin_filter: String) -> Result<LdapUser, LdapError> {
+pub async fn retrieve_user(hostname: String, port: u16, bind_dn: String, bind_dn_password: String, uid: String, search_base: String, lecturer_filter: String, admin_filter: String) -> Result<LdapUser, LdapError> {
     let role;
     let (conn, mut ldap) = LdapConnAsync::new(&*(String::from("ldap://") + &hostname + ":" + &port.to_string())).await?;
     ldap3::drive!(conn);
     ldap
-        .simple_bind(&bind_dn, &password).await?
+        .simple_bind(&bind_dn, &bind_dn_password).await?
         .success()?;
 
     // Checks if the user is an admin

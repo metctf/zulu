@@ -1,9 +1,13 @@
 use rocket::State;
 use crate::auth::jwt::JwtToken;
 use super::super::connections::database::{Pool,remove_flag};
+use rocket::response::{content, status};
+use rocket::http::Status;
+use super::super::structs::json::JsonResponse;
+use rocket::serde::{Serialize, json::Json};
 
 #[delete("/delete_flag/<id>")]
-pub async fn delete_flag_api(pool: &State<Pool>, token: JwtToken, id: String) -> String{
+pub async fn delete_flag_api(pool: &State<Pool>, token: JwtToken, id: String) -> status::Custom<Json<JsonResponse>> {
     let access = JwtToken::decode(token.body);
 
     match access {
@@ -11,14 +15,18 @@ pub async fn delete_flag_api(pool: &State<Pool>, token: JwtToken, id: String) ->
             let query = remove_flag(id, pool).await;
             match query{
                 Ok(query) => {
-                    if query{
-                        return format!("Deleted flag")
-                    }
-                    return format!("Did not delete flag")
+                    let resp = JsonResponse {
+                        id: String::from(query)
+                    };
+                    status::Custom(Status::Ok, Json(resp))
                 },
-                Err(_) => return format!("Bad Request")
+                Err(_) => {
+                    status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+                }
             }
         },
-        Err(_) => return format!("Unauthorized")
+        Err(_) => {
+            status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+        }
     }
 }

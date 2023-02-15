@@ -1,10 +1,14 @@
-use sqlx::MySqlPool;
 use sqlx::mysql::{MySqlPoolOptions, MySqlQueryResult};
 use crate::auth::jwt::JwtToken;
+use crate::structs::origin::Origin;
+
+use sqlx::MySqlPool;
 
 use rocket::State;
 use rocket::form::Form;
 use std::str::FromStr;
+
+use uuid::Uuid;
 
 use crate::auth::accesslevel::AccessLevel;
 use crate::structs::user::User;
@@ -12,7 +16,7 @@ use crate::structs::login::Login;
 use crate::structs::leaderboard::Leaderboard;
 use crate::structs::flag::Flag;
 
-pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let result = sqlx::query!(
         r#"
         DELETE FROM flags
@@ -22,20 +26,21 @@ pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<bool, sqlx::E
         .fetch_all(&pool.0)
         .await;
     match result {
-        Ok(_) => Ok(true),
+        Ok(_) => Ok(id),
         Err(_) => Err(sqlx::Error::RowNotFound)
     }
 }
 
-pub async fn create_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+pub async fn create_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
+    let uuid = Uuid::new_v4();
     let result = sqlx::query!(
         r#"
         INSERT INTO flags
-        (flagID, challenge, challengeAuthor, flagString, points)
+        (flagid, challenge, challengeAuthor, flagString, points)
         VALUES
         (?,?,?,?,?)
         "#,
-        &flag.flagid,
+        format!("{}", uuid),
         &flag.challenge,
         &flag.challengeauthor,
         &flag.flagstring,
@@ -44,7 +49,7 @@ pub async fn create_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, 
         .await;
 
     match result {
-        Ok(_) => Ok(true),
+        Ok(_) => Ok(format!("{}", uuid)),
         Err(_) => Err(sqlx::Error::PoolTimedOut)
     }
 }
@@ -67,7 +72,7 @@ pub async fn submit_flag(flag: String, pool: &State<Pool>) -> Result<bool, sqlx:
     }
 }
 
-pub async fn modify_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+pub async fn modify_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let result = sqlx::query!(
         r#"
         UPDATE flags
@@ -87,7 +92,7 @@ pub async fn modify_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<bool, 
         .await;
 
     match result {
-        Ok(_) => Ok(true),
+        Ok(_) => Ok(flag.flagid.clone()),
         Err(_) => Err(sqlx::Error::RowNotFound)
     }
 }
@@ -109,8 +114,7 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
         r#"
         SELECT *
         FROM accounts
-        WHERE username = ?;
-        "#,
+        WHERE username = ?;"#,
         &login.username
         )
         .fetch_one(&pool.0)
@@ -118,40 +122,21 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
 
     let pass = result.password;
 
-    match pass {
-        Some(pass) => {
-            let user = User { 
-                accountid: result.accountid, 
-                username: result.username, 
-                firstname: result.firstname, 
-                lastname: result.lastname, 
-                password: pass, 
-                origin: result.origin, 
-                flagquantity: result.flagquantity, 
-                accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
-            };
-            info!("Logged in user: {}", &user.username);
-            Ok(user)
-        },
-        None => {
-            info!("Incorrect login credentials");
-            // initialise a none user which is used to convey no match from the DB
-            let user = User { 
-                accountid: 0,
-                username: String::from("none"), 
-                firstname: String::from("none"),
-                lastname: String::from("none"), 
-                password: String::from("none"), 
-                origin: String::from("none"), 
-                flagquantity: 0, 
-                accesslevel: AccessLevel::from_str("User").unwrap(),
-            };
-            Ok(user)
-        }
-    }
+    let user = User { 
+        accountid: result.accountid, 
+        username: result.username, 
+        firstname: result.firstname, 
+        lastname: result.lastname, 
+        password: pass.unwrap(), 
+        origin: Origin::from_str(&result.origin).unwrap(),
+        flagquantity: result.flagquantity, 
+        accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
+    };
+    info!("Logged in user: {}", &user.username);
+    Ok(user)
 }
 
-pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>) -> Result<bool,sqlx::Error>{
+pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>) -> Result<String,sqlx::Error>{
     /* 
      * From the information pre occupied in the form fields this function
      * updates the database with any info thats changed.
@@ -170,13 +155,13 @@ pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>)
         &user.firstname,
         &user.lastname,
         User::hash_password(&user.password),
-        &user.origin,
+        &user.origin.to_string(),
         &token.accountid
         )
         .execute(&pool.0)
         .await?;
 
-    Ok(true)
+    Ok(token.accountid)
 }
 
 pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,sqlx::Error>{
@@ -206,7 +191,7 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
                 firstname: result.firstname, 
                 lastname: result.lastname, 
                 password: pass, 
-                origin: result.origin, 
+                origin: Origin::from_str(&result.origin).unwrap(),
                 flagquantity: result.flagquantity, 
                 accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
             };
@@ -241,23 +226,25 @@ pub async fn create_connection() -> Result<MySqlPool, sqlx::Error> {
     Ok(pool)
 }
 
-pub async fn register_account(pool: &State<Pool>, user: &Form<User>) -> Result<MySqlQueryResult, sqlx::Error> {
+pub async fn register_account(pool: &State<Pool>, user: &User) -> Result<String, sqlx::Error> {
+    let uuid = Uuid::new_v4();
     //Create a new user in the database
-    let query = sqlx::query!(
+    let _query = sqlx::query!(
         r#"
-        INSERT INTO accounts (username, firstName, lastName, password, origin, accessLevel)
-        VALUES (?,?,?,?,?,?);"#,
+        INSERT INTO accounts (accountid, username, firstName, lastName, password, origin, accessLevel)
+        VALUES (?,?,?,?,?,?,?);"#,
+        format!("{}", uuid),
         &user.username,
         &user.firstname,
         &user.lastname,
         User::hash_password(&user.password),
-        &user.origin,
+        &user.origin.to_string(),
         AccessLevel::User.to_string(),
         )
         .execute(&pool.0)
         .await?;
 
-    Ok(query)
+    Ok(format!("{}", uuid))
 }
 
 

@@ -1,4 +1,5 @@
 use crate::auth::accesslevel::AccessLevel;
+use crate::structs::origin::Origin;
 use crate::structs::Verify;
 
 use serde::Deserialize;
@@ -9,13 +10,13 @@ use rand::rngs::OsRng;
 
 #[derive(FromForm,Serialize,Deserialize,Debug)]
 pub struct User{
-    #[field(default = 0)]
-    pub accountid: u32,
+    #[field(default = "")]
+    pub accountid: String,
     pub username: String,
     pub firstname: String,
     pub lastname: String,
     pub password: String,
-    pub origin: String,
+    pub origin: Origin,
     #[field(default = 0)]
     pub flagquantity: u32,
     #[field(default = AccessLevel::User)]
