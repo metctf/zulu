@@ -36,10 +36,13 @@ pub fn submit_flag(props: &Props) -> Html {
     });
     
     html! {
-       <form onsubmit={onsubmit}>
+        <div class={classes!("form-div")}>
+            <h1>{"Submit Flag"}</h1>
+            <form onsubmit={onsubmit}>
             <TextInput name="flagstring" handle_onchange={flagstring_changed} />
             <br />
             <CustomButton label="Submit" />
-        </form>
+            </form>
+        </div>
     }
 }

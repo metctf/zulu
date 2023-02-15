@@ -23,6 +23,11 @@ pub fn home() -> Html {
         }, ());
     }
     html! {
-        <LeaderboardList users={(*users).clone()} />
+        <>
+            <div class={classes!("leaderboard-div")}>
+                <h1>{"Global Leaderboard (Top 30 pwners)"}</h1>
+                <LeaderboardList users={(*users).clone()} />
+            </div>
+        </>
     }
 }

@@ -15,6 +15,6 @@ pub struct LeaderboardProps {
 #[function_component(LeaderboardList)]
 pub fn leaderboard_component(LeaderboardProps { users }: &LeaderboardProps) -> Html {
     users.iter().map(|user| html! {
-        <div>{format!{"{}: {}",user.username, user.flagquantity}}</div>
+        <div class={classes!("leaderboard")}>{format!{"{}: {}",user.username, user.flagquantity}}</div>
     }).collect()
 }

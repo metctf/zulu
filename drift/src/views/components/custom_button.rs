@@ -8,6 +8,6 @@ pub struct Props {
 #[function_component(CustomButton)]
 pub fn custom_button(props: &Props) -> Html {
     html! {
-      <button>{&props.label}</button>
+      <button class={classes!("button")}>{&props.label}</button>
     }
 }
