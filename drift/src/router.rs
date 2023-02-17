@@ -13,6 +13,7 @@ use crate::views::register::RegisterComponent;
 use crate::views::notfound::NotFound;
 use crate::views::submitflag::{FlagStringData, SubmitFlag};
 use crate::views::settings::modify::ModifyComponent;
+use crate::views::flaginfo::DisplayFlag;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum MainRoute{
@@ -22,6 +23,8 @@ pub enum MainRoute{
     Register,
     #[at("/")]
     Home,
+    #[at("/displayflag")]
+    DisplayFlag,
     #[at("/create_flag")]
     CreateFlag,
     #[at("/submit_flag")]
@@ -47,7 +50,22 @@ pub enum SettingsRoute{
     NotFound,
 }
 pub fn switch_main(route: MainRoute) -> Html {
+    
+    let string: Result<String,StorageError>= LocalStorage::get("Response"); 
+    let auth: Tab;
 
+    match string {
+        Ok(string) => {
+            if string.eq("Successfully authenticated!") {
+                auth = Tab::Authorized;
+            } else {
+                auth = Tab::Unauthorized;
+                }
+            },
+            Err(_) => {
+                auth = Tab::Unauthorized;
+            }
+        }
     match route {
         MainRoute::Login => {
             html! {
@@ -110,21 +128,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             }
         },
         MainRoute::Home => {
-            let string: Result<String,StorageError>= LocalStorage::get("Response"); 
-            let auth: Tab;
-
-            match string {
-                Ok(string) => {
-                    if string.eq("Successfully authenticated!") {
-                        auth = Tab::Authorized;
-                    } else {
-                        auth = Tab::Unauthorized;
-                    }
-                },
-                Err(_) => {
-                    auth = Tab::Unauthorized;
-                }
-            }
+            
             html! {
             <>
                 <NavBar tab={auth}/>
@@ -132,23 +136,16 @@ pub fn switch_main(route: MainRoute) -> Html {
             </>
             }
         },
+        MainRoute::DisplayFlag => {
+            html! {
+            <>
+                <NavBar tab={auth}/>
+                <DisplayFlag />
+            </>
+            }
+        },
         MainRoute::SettingsRoot | MainRoute::Settings => html! { <Switch<SettingsRoute> render={switch_settings} /> },
         MainRoute::NotFound => {
-            let string: Result<String,StorageError>= LocalStorage::get("Response"); 
-            let auth: Tab;
-
-            match string {
-                Ok(string) => {
-                    if string.eq("Successfully authenticated!") {
-                        auth = Tab::Authorized;
-                    } else {
-                        auth = Tab::Unauthorized;
-                    }
-                },
-                Err(_) => {
-                    auth = Tab::Unauthorized;
-                }
-            }
             html! {
             <>
                 <NavBar tab={auth}/>

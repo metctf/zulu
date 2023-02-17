@@ -78,17 +78,17 @@ pub fn register(props: &Props) -> Html {
         <div class={classes!("form-div")}>
             <h1>{props.name.clone()}</h1>
             <form onsubmit={onsubmit}>
-                <TextInput name="username" handle_onchange={username_changed} />
+                <TextInput name="username" class="form-input" handle_onchange={username_changed} />
                 <br />
-                <TextInput name="firstname" handle_onchange={firstname_changed} />
+                <TextInput name="firstname" class="form-input" handle_onchange={firstname_changed} />
                 <br />
-                <TextInput name="lastname" handle_onchange={lastname_changed} />
+                <TextInput name="lastname" class="form-input" handle_onchange={lastname_changed} />
                 <br />
-                <TextInput name="password" handle_onchange={password_changed} />
+                <TextInput name="password" class="form-input" handle_onchange={password_changed} />
                 <br />
-                <TextInput name="origin" handle_onchange={origin_changed} />
+                <TextInput name="origin" class="form-input" handle_onchange={origin_changed} />
                 <br />
-                <CustomButton label="Submit" />
+                <CustomButton label="Submit"  />
             </form>
             { for props.children.iter() }
         </div>

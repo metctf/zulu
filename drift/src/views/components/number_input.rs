@@ -4,6 +4,7 @@ use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
+    pub class: String,
     pub name: String,
     pub handle_onchange: Callback<u32>,
 }
@@ -20,6 +21,6 @@ pub fn text_input(props: &Props) -> Html {
         handle_onchange.emit(value as u32);
     });
     html! {
-      <input type="number" name={props.name.clone()} onchange={onchange} placeholder={props.name.clone()} />
+      <input type="number" class={classes!(props.class.clone())} name={props.name.clone()} onchange={onchange} placeholder={props.name.clone()} />
     }
 }

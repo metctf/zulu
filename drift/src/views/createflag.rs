@@ -71,15 +71,15 @@ pub fn create_flag(props: &Props) -> Html {
         <div class={classes!("form-div")}>
             <h1>{"Create a Flag"}</h1>
             <form onsubmit={onsubmit}>
-                <NumberInput name="flagid" handle_onchange={flagid_changed} />
+                <NumberInput name="flagid" class="form-input" handle_onchange={flagid_changed} />
                 <br />
-                <TextInput name="challenge" handle_onchange={challenge_changed} />
+                <TextInput name="challenge" class="form-input" handle_onchange={challenge_changed} />
                 <br />
-                <TextInput name="challengeauthor" handle_onchange={challengeauthor_changed} />
+                <TextInput name="challengeauthor" class="form-input" handle_onchange={challengeauthor_changed} />
                 <br />
-                <TextInput name="flagstring" handle_onchange={flagstring_changed} />
+                <TextInput name="flagstring" class="form-input" handle_onchange={flagstring_changed} />
                 <br />
-                <NumberInput name="points" handle_onchange={points_changed} />
+                <NumberInput name="points" class="form-input" handle_onchange={points_changed} />
                 <br />
                 <CustomButton label="Submit" />
             </form>

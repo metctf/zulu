@@ -55,9 +55,9 @@ pub fn login(props: &Props) -> Html {
         <div class={classes!("form-div")}>
             <h1>{"Login"}</h1>
             <form onsubmit={onsubmit}>
-                <TextInput name="username" handle_onchange={username_changed} />
+                <TextInput name="username" class="form-input" handle_onchange={username_changed} />
                 <br />
-                <TextInput name="password" handle_onchange={password_changed} />
+                <TextInput name="password" class="form-input" handle_onchange={password_changed} />
                 <br />
                 <CustomButton label="Submit" />
             </form>

@@ -18,6 +18,10 @@ body {
   padding: 0px 20px;
 }
 
+.wide {
+    width: 80%;
+}
+
 /* Style the topnav links */
 .topnav a {
   min-width: 120px;
@@ -35,14 +39,35 @@ body {
   color: black;
 }
 
-input[type=text],input[type=number], select { /*Username/password*/
+.block {
+    display: block;
+}
+
+.form-input{
     width: 30%;
+    display: block;
+}
+
+input[type=text],input[type=number], select { /*Username/password*/
     padding: 12px 20px;
     margin: 2px auto;
-    display: block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.search {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    margin: 2px 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search:hover {
+    background-color: #0ece34;
 }
 
 
@@ -86,14 +111,6 @@ input[type=text],input[type=number], select { /*Username/password*/
 }
 .right {
     float: right;
-}
-
-.left {
-    float: left;
-}
-
-.center {
-    float: center;
 }
 
 .dropdown {
