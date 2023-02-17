@@ -67,7 +67,7 @@ pub fn new_bar(props: &Props) -> Html{
                     </div>
                     <Link<MainRoute> classes={classes!("right")} to={MainRoute::SubmitFlag}>{"Submit Flag"}</Link<MainRoute>>
                     <Link<MainRoute> classes={classes!("right")} to={MainRoute::CreateFlag}>{"Create Flag"}</Link<MainRoute>>
-                    <div style={"width: 20%; display: inline-block;"}>
+                    <div style={"width: 20%; display: inline-block; left: 10px; position: relative;"}>
                         <SearchBar onsubmit={search}/>
                     </div>
                 </div>
@@ -79,7 +79,7 @@ pub fn new_bar(props: &Props) -> Html{
                     <Link<MainRoute> to={MainRoute::Home}>{"Home"}</Link<MainRoute>>
                     <Link<MainRoute> classes={classes!("right")} to={MainRoute::Register}>{"Register"}</Link<MainRoute>>
                     <Link<MainRoute> classes={classes!("right")} to={MainRoute::Login}>{"Login"}</Link<MainRoute>>
-                    <div style={"width: 20%; display: inline-block;"}>
+                    <div style={"width: 20%; display: inline-block; left: 10px; position: relative;"}>
                         <SearchBar onsubmit={search}/>
                     </div>
                 </div>
