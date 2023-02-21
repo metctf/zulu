@@ -7,11 +7,13 @@ use gloo_storage::Storage;
 
 use crate::views::components::top_bar::{NavBar, Tab};
 use crate::views::createflag::{CreateFlag, FlagData};
-use crate::views::login::{Login, LoginData};
+use crate::views::login::LoginComponent;
 use crate::views::home::Home;
-use crate::views::register::{Register, RegisterData};
+use crate::views::register::RegisterComponent;
 use crate::views::notfound::NotFound;
 use crate::views::submitflag::{FlagStringData, SubmitFlag};
+use crate::views::settings::modify::ModifyComponent;
+use crate::views::flaginfo::DisplayFlag;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum MainRoute{
@@ -21,6 +23,8 @@ pub enum MainRoute{
     Register,
     #[at("/")]
     Home,
+    #[at("/displayflag")]
+    DisplayFlag,
     #[at("/create_flag")]
     CreateFlag,
     #[at("/submit_flag")]
@@ -37,74 +41,31 @@ pub enum MainRoute{
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum SettingsRoute{
+    #[at("/settings")]
+    Settings,
     #[at("/settings/modify")]
     Modify,
     #[not_found]
     #[at("/settings/404")]
     NotFound,
 }
+pub fn switch_main(route: MainRoute) -> Html {
+    
+    let string: Result<String,StorageError>= LocalStorage::get("Response"); 
+    let auth: Tab;
 
-#[function_component(LoginComponent)]
-pub fn login_component() -> Html {
-    let navigator = use_navigator().unwrap();
-    let custom_form_submit = Callback::from(move |data: LoginData| {
-        log!("username is", &data.username);
-        log!("password is", &data.password);
-        let navigator = navigator.clone();
-
-        wasm_bindgen_futures::spawn_local( async move {
-            let url = format!("http://127.0.0.1:8000/api/v1/login");
-            let form = [("username",data.username), ("password", data.password)];
-            let client = reqwest::Client::builder()
-                .build()
-                .unwrap();
-
-            let req = client.post(&url)
-                .form(&form)
-                .send()
-                .await
-                .unwrap()
-                .text()
-                .await;
-
-            match req {
-                Ok(req) => {
-                    LocalStorage::set("Response", &req).unwrap();
-                    navigator.push(&MainRoute::Home);
-                },
-                Err(req) => {
-                    let err = req.to_string();
-                }
-            }
-
-                    
-            });
-        });
-        let string: Result<String,StorageError>= LocalStorage::get("Response"); 
-        let auth: Tab;
-
-        match string {
-            Ok(string) => {
-                if string.eq("Successfully authenticated!") {
-                    auth = Tab::Authorized;
-                } else {
-                    auth = Tab::Unauthorized;
+    match string {
+        Ok(string) => {
+            if string.eq("Successfully authenticated!") {
+                auth = Tab::Authorized;
+            } else {
+                auth = Tab::Unauthorized;
                 }
             },
             Err(_) => {
                 auth = Tab::Unauthorized;
             }
         }
-        html! {
-            <>
-                <NavBar tab={auth}/>
-                <Login onsubmit={custom_form_submit} />
-            </>
-        }
-}
-
-pub fn switch_main(route: MainRoute) -> Html {
-
     match route {
         MainRoute::Login => {
             html! {
@@ -112,35 +73,9 @@ pub fn switch_main(route: MainRoute) -> Html {
             }
         },
         MainRoute::Register => {
-            let custom_form_submit = Callback::from(|data: RegisterData| {
-                log!("username is", &data.username);
-                log!("password is", &data.password);
-
-                wasm_bindgen_futures::spawn_local( async move {
-                    let url = format!("http://127.0.0.1:8000/api/v1/register");
-                    let form = [
-                        ("username",data.username),
-                        ("firstname",data.firstname),
-                        ("lastname",data.lastname),
-                        ("password", data.password),
-                        ("origin", data.origin)
-                    ];
-                    let client = reqwest::Client::new();
-
-                    client.post(&url)
-                        .form(&form)
-                        .send()
-                        .await
-                        .unwrap(); //Getting an error here
-                });
-            });
-            
-            html! {
-                <>
-                    <NavBar tab={Tab::Unauthorized}/>
-                    <Register onsubmit={custom_form_submit} />
-                </>
-            }
+           html! {
+                <RegisterComponent />
+           } 
         },
         MainRoute::CreateFlag => {
             let custom_form_submit = Callback::from(|data: FlagData| {
@@ -193,21 +128,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             }
         },
         MainRoute::Home => {
-            let string: Result<String,StorageError>= LocalStorage::get("Response"); 
-            let auth: Tab;
-
-            match string {
-                Ok(string) => {
-                    if string.eq("Successfully authenticated!") {
-                        auth = Tab::Authorized;
-                    } else {
-                        auth = Tab::Unauthorized;
-                    }
-                },
-                Err(_) => {
-                    auth = Tab::Unauthorized;
-                }
-            }
+            
             html! {
             <>
                 <NavBar tab={auth}/>
@@ -215,23 +136,16 @@ pub fn switch_main(route: MainRoute) -> Html {
             </>
             }
         },
+        MainRoute::DisplayFlag => {
+            html! {
+            <>
+                <NavBar tab={auth}/>
+                <DisplayFlag />
+            </>
+            }
+        },
         MainRoute::SettingsRoot | MainRoute::Settings => html! { <Switch<SettingsRoute> render={switch_settings} /> },
         MainRoute::NotFound => {
-            let string: Result<String,StorageError>= LocalStorage::get("Response"); 
-            let auth: Tab;
-
-            match string {
-                Ok(string) => {
-                    if string.eq("Successfully authenticated!") {
-                        auth = Tab::Authorized;
-                    } else {
-                        auth = Tab::Unauthorized;
-                    }
-                },
-                Err(_) => {
-                    auth = Tab::Unauthorized;
-                }
-            }
             html! {
             <>
                 <NavBar tab={auth}/>
@@ -244,50 +158,10 @@ pub fn switch_main(route: MainRoute) -> Html {
 
 pub fn switch_settings(route: SettingsRoute) -> Html {
     match route {
+        SettingsRoute::Settings =>  html! {<Redirect<MainRoute> to={MainRoute::NotFound}/>},
         SettingsRoute::Modify => {
-            let custom_form_submit = Callback::from(|data: RegisterData| {
-                log!("username is", &data.username);
-                log!("password is", &data.password);
-
-                wasm_bindgen_futures::spawn_local( async move {
-                    let url = format!("http://127.0.0.1:8000/api/v1/modify");
-                    let form = [
-                        ("username",data.username),
-                        ("firstname",data.firstname),
-                        ("lastname",data.lastname),
-                        ("password", data.password),
-                        ("origin", data.origin)
-                    ];
-                    let client = reqwest::Client::new();
-
-                    client.post(&url)
-                        .form(&form)
-                        .send()
-                        .await
-                        .unwrap(); //Getting an error here
-                });
-            });
-
-            let delete = Callback::from(|_| {
-                wasm_bindgen_futures::spawn_local(async {
-                    let url = format!("http://127.0.0.1:8000/api/v1/remove");
-                    let client = reqwest::Client::new();
-
-                    client.delete(&url)
-                        .send()
-                        .await
-                        .unwrap();
-                });
-            });
-
-            html! {
-                <>
-                    <NavBar tab={Tab::Authorized}/>
-                    <Register onsubmit={custom_form_submit} />
-                    <button onclick={delete}>{"Delete"}</button>
-                </>
-            }
-        },
+            html!(<ModifyComponent />)
+       },
         SettingsRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::NotFound}/>}
     }
 }
