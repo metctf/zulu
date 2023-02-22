@@ -51,21 +51,17 @@ pub enum SettingsRoute{
 }
 pub fn switch_main(route: MainRoute) -> Html {
     
-    let string: Result<String,StorageError>= LocalStorage::get("Response"); 
+    let jwt: Result<String,StorageError>= LocalStorage::get("_AuthToken"); 
     let auth: Tab;
 
-    match string {
-        Ok(string) => {
-            if string.eq("Successfully authenticated!") {
+    match jwt {
+        Ok(_) => {
                 auth = Tab::Authorized;
-            } else {
-                auth = Tab::Unauthorized;
-                }
             },
-            Err(_) => {
-                auth = Tab::Unauthorized;
-            }
+        Err(_) => {
+            auth = Tab::Unauthorized;
         }
+    }
     match route {
         MainRoute::Login => {
             html! {

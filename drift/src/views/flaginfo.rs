@@ -1,6 +1,6 @@
+use gloo_storage::{LocalStorage, Storage};
 use yew::prelude::*;
 use crate::views::flag::{Flag, FlagInfo};
-use gloo_net::http::Request;
 
 #[function_component(DisplayFlag)]
 pub fn flag() -> Html {
@@ -10,7 +10,14 @@ pub fn flag() -> Html {
         use_effect_with_deps(move |_| {
             let flags = flags.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_flags: Vec<Flag> = Request::get("http://127.0.0.1:8000/api/v1/get_flag/1")
+                let jwt: String = LocalStorage::get("_AuthToken").unwrap();
+
+                let client = reqwest::Client::builder()
+                    .build()
+                    .unwrap();
+
+                let fetched_flags: Vec<Flag> = client.get("http://127.0.0.1:8000/api/v1/get_flag/hello")
+                    .header("auth", jwt)
                     .send()
                     .await
                     .unwrap()

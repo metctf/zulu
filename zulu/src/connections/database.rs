@@ -97,13 +97,13 @@ pub async fn modify_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<String
     }
 }
 
-pub async fn return_flag(pool: &State<Pool>, id: String) -> Result<Flag, sqlx::Error>{
+pub async fn return_flag(pool: &State<Pool>, challenge: String) -> Result<Flag, sqlx::Error>{
     let result = sqlx::query_as!(
         Flag,
         "SELECT flagid, challenge, challengeauthor, flagstring, points
         FROM flags
-        WHERE flagID = ?;",
-        id)
+        WHERE challenge = ?;",
+        challenge)
         .fetch_one(&pool.0)
         .await?;
    Ok(result) 

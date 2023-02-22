@@ -1,4 +1,5 @@
 use jwt::{Header, Token, VerifyWithKey, SignWithKey};
+use log::info;
 use sha2::Sha256;
 use std::collections::BTreeMap;
 use std::result::Result;
@@ -25,20 +26,20 @@ impl<'r> FromRequest<'r> for JwtToken{
     type Error = ApiKeyError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self,Self::Error> {
-        // Gets the cookie in the browser for the Authorization token
-        let cookie = req.cookies().get_private("Authentication");
-        match cookie {
-            Some(cookie) => {
-                let token = cookie.value().to_string();
-                // Decodes the token stored in the Authorization header
-                let decoded = JwtToken::decode(token.to_string());
+        // Pulls all the headers from the request
+        let header = req.headers().get_one("auth");
+        // Decodes the token stored in the Authorization header
+        match header {
+            Some(header) => {
+                let decoded = JwtToken::decode(header.to_string());
                 // Checks the token for Authorization
                 match decoded {
                     Ok(decoded) => Outcome::Success(decoded),
                     Err(_) => Outcome::Failure((Status::Unauthorized, ApiKeyError::Invalid))
                     }
                 },
-            None => Outcome::Failure((Status::Unauthorized, ApiKeyError::Missing))
+            // If the Header is wrong the user is forbidden from accessing it
+            None => Outcome::Failure((Status::Forbidden, ApiKeyError::Missing))
         }
     }
 }

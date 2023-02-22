@@ -1,5 +1,6 @@
 use rocket::form::Form;
 use rocket::State;
+use log::log;
 
 use super::super::structs::flag::Flag;
 use super::super::auth::jwt::JwtToken;
@@ -33,18 +34,19 @@ pub async fn modify_flag_api(pool: &State<Pool>, token: JwtToken, flag: Form<Fla
 
 }
 
-#[get("/get_flag/<id>")]
-pub async fn display_flag(pool: &State<Pool>, id: String) -> status::Custom<Json<Flag>> {
+#[get("/get_flag/<challenge>")]
+pub async fn display_flag(pool: &State<Pool>, challenge: String) -> status::Custom<Json<Flag>> {
     /*
      * Return info as json
      */
-    let query = return_flag(pool, id).await;
+    let query = return_flag(pool, challenge).await;
 
     match query {
         Ok(_query) => {
             status::Custom(Status::Ok, Json(_query))
         }
-        Err(_) => {
+        Err(query) => {
+            error!("{:?}",query);
             let flag = Flag {
                 flagid: String::from(""),
                 challenge: String::from(""),
@@ -52,7 +54,7 @@ pub async fn display_flag(pool: &State<Pool>, id: String) -> status::Custom<Json
                 flagstring: String::from(""),
                 points: 0,
             };
-            status::Custom(Status::Forbidden, Json(flag))
+            status::Custom(Status::NotFound, Json(flag))
         }
 
     }

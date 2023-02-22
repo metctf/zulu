@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use yew::prelude::*;
 use std::ops::Deref;
 use gloo_storage::errors::StorageError;
@@ -12,10 +13,16 @@ use crate::MainRoute;
 use super::components::text_input::TextInput;
 use super::components::custom_button::CustomButton;
 
+#[derive(Deserialize)]
+pub struct Jwt {
+    pub jwt: String,
+}
+
 #[derive(Default, Clone)]
 pub struct LoginData {
     pub username: String,
     pub password: String,
+    pub origin: String,
 }
 
 #[derive(Properties, PartialEq)]
@@ -37,9 +44,17 @@ pub fn login(props: &Props) -> Html {
     });
 
     let cloned_state = state.clone();
-    let password_changed = Callback::from(move |language| {
+    let password_changed = Callback::from(move |password| {
         let mut data = cloned_state.deref().clone();
-        data.password = language;
+        data.password = password;
+        cloned_state.set(data);
+    });
+
+
+    let cloned_state = state.clone();
+    let origin_changed = Callback::from(move |origin| {
+        let mut data = cloned_state.deref().clone();
+        data.origin = origin;
         cloned_state.set(data);
     });
 
@@ -59,6 +74,8 @@ pub fn login(props: &Props) -> Html {
                 <br />
                 <TextInput name="password" class="form-input" handle_onchange={password_changed} />
                 <br />
+                <TextInput name="origin" class="form-input" handle_onchange={origin_changed} />
+                <br />
                 <CustomButton label="Submit" />
             </form>
         </div>
@@ -75,7 +92,7 @@ pub fn login_component() -> Html {
 
         wasm_bindgen_futures::spawn_local( async move {
             let url = format!("http://127.0.0.1:8000/api/v1/login");
-            let form = [("username",data.username), ("password", data.password)];
+            let form = [("username",data.username), ("password", data.password), ("origin", data.origin)];
             let client = reqwest::Client::builder()
                 .build()
                 .unwrap();
@@ -85,17 +102,17 @@ pub fn login_component() -> Html {
                 .send()
                 .await
                 .unwrap()
-                .text()
+                .json::<Jwt>()
                 .await;
 
             match req {
                 Ok(req) => {
-                    LocalStorage::set("Response", &req).unwrap();
+                    LocalStorage::set("_AuthToken", &req.jwt).unwrap();
                     navigator.push(&MainRoute::Home);
                 },
                 Err(req) => {
                     let err = req.to_string();
-                    log!("{:?}",err);
+                    log!(err);
                 }
             }
 

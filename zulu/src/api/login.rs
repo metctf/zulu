@@ -23,7 +23,7 @@ use crate::structs::user::User;
 use super::super::connections::database::{Pool, register_account};
 
 #[post("/login", data = "<login>")]
-pub async fn login(pool: &State<Pool>,jar: &CookieJar<'_>, login: Form<Login>) -> status::Custom<Json<JsonJwtResponse>> {
+pub async fn login(pool: &State<Pool>, login: Form<Login>) -> status::Custom<Json<JsonJwtResponse>> {
     info!("enter login");
     let user = database::login_user(&login, pool).await;
     match user {
