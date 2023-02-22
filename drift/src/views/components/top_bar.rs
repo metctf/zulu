@@ -7,7 +7,6 @@ use serde::{Serialize,Deserialize};
 use crate::MainRoute;
 use crate::router::SettingsRoute;
 use crate::views::components::search_bar::SearchBar;
-use crate::views::flag::Flag;
 
 use super::search_bar::SearchData;
 
@@ -35,22 +34,7 @@ pub fn new_bar(props: &Props) -> Html{
         log!("search for", &data.searchterm);
         let navigator = navigator.clone();
 
-        wasm_bindgen_futures::spawn_local( async move {
-            let jwt: String = LocalStorage::get("_AuthToken").unwrap();
-            let url = format!("http://127.0.0.1:8000/api/v1/get_flag/{}", data.searchterm);
-
-            let req = reqwest::Client::new()
-                .get(&url)
-                .header("auth", jwt)
-                .send()
-                .await
-                .unwrap()
-                .json::<Flag>()
-                .await
-                .unwrap();
-            log!(&req.challenge);
-            navigator.push(&MainRoute::DisplayFlag)
-        })
+        navigator.push(&MainRoute::DisplayFlag{id: data.searchterm});
     });
  
     match &props.tab {

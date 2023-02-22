@@ -23,8 +23,8 @@ pub enum MainRoute{
     Register,
     #[at("/")]
     Home,
-    #[at("/displayflag")]
-    DisplayFlag,
+    #[at("/displayflag/:id")]
+    DisplayFlag {id:String},
     #[at("/create_flag")]
     CreateFlag,
     #[at("/submit_flag")]
@@ -132,11 +132,11 @@ pub fn switch_main(route: MainRoute) -> Html {
             </>
             }
         },
-        MainRoute::DisplayFlag => {
+        MainRoute::DisplayFlag { id } => {
             html! {
             <>
                 <NavBar tab={auth}/>
-                <DisplayFlag />
+                <DisplayFlag flag={id}/>
             </>
             }
         },
