@@ -33,9 +33,11 @@ under the GPLv3 and is free software.
 * [ ] Integration of roles with LDAP groups (@jacob.eva)
 * [x] Store role in JWT (@connor.bryan)
 
-#### Flags
-* [ ] Flag creation, deletion and modification (@jacob.eva)
-* [ ] Flag string submission for users (@jacob.eva)
+#### Challenges
+* [ ] Challenge creation, deletion and modification (@jacob.eva)
+* [ ] Challenge string submission for users (@jacob.eva)
+* [ ] Challenge file downloads (@jacob.eva)
+* [ ] Hashed flags for challenges in DB (@jacob.eva)
 * [ ] Access control (@jacob.eva)
 
 #### Leaderboard
@@ -49,6 +51,11 @@ code 304 unmodified.
 * [ ] Ability to submit flags as a user (@connor.bryan)
 * [ ] Ability to manage own flags as a lecturer (@connor.bryan)
 * [x] Ability to view leaderboard (@connor.bryan)
+* [ ] Search bar for entities
+
+## Long term goals
+* [ ] Federation between different Zulu instances a la [ActivityPub](https://activitypub.rocks/)
+* [ ] Community made challenges
 
 ## Running Zulu
 Simply `git clone` this repo and run `cargo run` in your terminal :)
