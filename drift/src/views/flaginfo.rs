@@ -9,7 +9,7 @@ pub struct Props {
 
 #[function_component(DisplayFlag)]
 pub fn flag(props: &Props) -> Html {
-    let flags = use_state(|| Flag::default());
+    let flags = use_state(|| vec![]);
     let search = props.flag.clone();
     {
         let flags = flags.clone();
@@ -22,7 +22,7 @@ pub fn flag(props: &Props) -> Html {
                     .build()
                     .unwrap();
                 let url = format!("http://127.0.0.1:8000/api/v1/get_flag/{}", search);
-                let fetched_flags: Flag = client.get(&url)
+                let fetched_flags: Vec<Flag> = client.get(&url)
                     .header("auth", jwt)
                     .send()
                     .await

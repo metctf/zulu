@@ -35,15 +35,15 @@ pub async fn modify_flag_api(pool: &State<Pool>, token: JwtToken, flag: Form<Fla
 }
 
 #[get("/get_flag/<challenge>")]
-pub async fn display_flag(pool: &State<Pool>, challenge: String) -> status::Custom<Json<Flag>> {
+pub async fn display_flag(pool: &State<Pool>, challenge: String) -> status::Custom<Json<Vec<Flag>>> {
     /*
      * Return info as json
      */
     let query = return_flag(pool, challenge).await;
 
     match query {
-        Ok(_query) => {
-            status::Custom(Status::Ok, Json(_query))
+        Ok(query) => {
+            status::Custom(Status::Ok, Json(query))
         }
         Err(query) => {
             error!("{:?}",query);
@@ -54,7 +54,11 @@ pub async fn display_flag(pool: &State<Pool>, challenge: String) -> status::Cust
                 flagstring: String::from(""),
                 points: 0,
             };
-            status::Custom(Status::NotFound, Json(flag))
+
+            let mut vec: Vec<Flag> = vec![];
+            vec.push(flag);
+
+            status::Custom(Status::NotFound, Json(vec))
         }
 
     }
