@@ -21,7 +21,7 @@ pub async fn create_flag_api(pool: &State<Pool>, flag: Form<Flag>) -> status::Cu
         },
         Err(query) =>{
             error!("Couldn't create flag: {}", query);
-            status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+            status::Custom(Status::InternalServerError, Json(JsonResponse { id: String::from("") }))
         } 
     }
 }

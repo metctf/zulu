@@ -21,7 +21,7 @@ pub async fn delete_flag_api(pool: &State<Pool>, token: JwtToken, id: String) ->
                     status::Custom(Status::Ok, Json(resp))
                 },
                 Err(_) => {
-                    status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+                    status::Custom(Status::NotFound, Json(JsonResponse { id: String::from("") }))
                 }
             }
         },

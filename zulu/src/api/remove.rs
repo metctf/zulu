@@ -21,8 +21,8 @@ pub async fn remove_account(pool: &State<Pool>, token: JwtToken) -> status::Cust
                 };
                 return status::Custom(Status::Ok, Json(resp))
             }
-            return status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+            return status::Custom(Status::InternalServerError, Json(JsonResponse { id: String::from("") }))
         },
-        Err(_) => return status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+        Err(_) => return status::Custom(Status::NotFound, Json(JsonResponse { id: String::from("") }))
     }
 }

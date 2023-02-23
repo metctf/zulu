@@ -27,7 +27,7 @@ pub async fn register(pool: &State<Pool>, user: Form<User>) -> status::Custom<Js
         },
         Err(_) => {
             error!("Couldn't register user: {}", &user.username);
-            status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+            status::Custom(Status::InternalServerError, Json(JsonResponse { id: String::from("") }))
         } 
     }
 }

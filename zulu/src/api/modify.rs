@@ -29,7 +29,7 @@ pub async fn modify(pool: &State<Pool>, token: JwtToken, user: Form<User>) -> st
         }
 
         Err(_) => {
-            status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+            status::Custom(Status::NotFound, Json(JsonResponse { id: String::from("") }))
         }
     }
 

@@ -25,7 +25,7 @@ pub async fn modify_flag_api(pool: &State<Pool>, token: JwtToken, flag: Form<Fla
                     };
                     status::Custom(Status::Ok, Json(resp))
                 }
-                Err(_) => status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
+                Err(_) => status::Custom(Status::NotFound, Json(JsonResponse { id: String::from("") }))
             }
         },
         Err(_) => status::Custom(Status::Forbidden, Json(JsonResponse { id: String::from("") }))
