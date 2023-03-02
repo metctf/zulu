@@ -41,7 +41,7 @@ async fn rocket() -> _ {
                create_challenge::create_challenge_api,
                delete_challenge::delete_challenge_api,
                modify_challenge::modify_challenge_api,
-               modify_challenge::display_challenge,
+               modify_challenge::display_flag,
                submit_flag::submit_flag_api
         ])
         .attach(ReRouter)
