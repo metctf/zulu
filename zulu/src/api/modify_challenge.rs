@@ -43,7 +43,10 @@ pub async fn display_flag(pool: &State<Pool>, flag: String) -> status::Custom<Js
 
     match query {
         Ok(query) => {
-            status::Custom(Status::Ok, Json(query))
+            let mut vec: Vec<Challenge> = vec![];
+            vec.push(query);
+
+            status::Custom(Status::NotFound, Json(vec))
         }
         Err(query) => {
             error!("{:?}",query);
