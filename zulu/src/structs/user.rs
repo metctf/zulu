@@ -18,12 +18,15 @@ pub struct User{
     pub password: String,
     pub origin: Origin,
     #[field(default = 0)]
-    pub flagquantity: u32,
+    pub solves: u32,
     #[field(default = AccessLevel::User)]
     pub accesslevel: AccessLevel,
 }
 
 impl Verify for User {
+    fn verify_flag(&self, flag: &str) -> bool { // stub
+        true
+    }
     fn verify_password(&self, password: &str) -> bool{
         let argon2 = Argon2::default();
         let password_u8 = &self.password.as_bytes();

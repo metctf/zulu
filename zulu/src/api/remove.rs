@@ -10,7 +10,7 @@ use crate::structs::json::JsonResponse;
 #[delete("/remove")]
 pub async fn remove_account(pool: &State<Pool>, token: JwtToken) -> status::Custom<Json<JsonResponse>> {
 
-    let id = token.accountid.clone();
+    let id = token.id.clone();
 
     let query = delete_account(pool, token).await;
     match query{

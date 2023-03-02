@@ -8,7 +8,7 @@ mod settings;
 use settings::LdapConfig;
 
 mod api;
-use api::{login,register,modify,remove,leaderboard,create_flag,modify_flag,delete_flag,submit_flag};
+use api::{login,register,modify,remove,leaderboard,create_challenge,modify_challenge,delete_challenge,submit_flag};
 
 mod auth;
 mod tests;
@@ -38,10 +38,10 @@ async fn rocket() -> _ {
                modify::display_user_info,
                remove::remove_account,
                leaderboard::leaderboard,
-               create_flag::create_flag_api,
-               delete_flag::delete_flag_api,
-               modify_flag::modify_flag_api,
-               modify_flag::display_flag,
+               create_challenge::create_challenge_api,
+               delete_challenge::delete_challenge_api,
+               modify_challenge::modify_challenge_api,
+               modify_challenge::display_challenge,
                submit_flag::submit_flag_api
         ])
         .attach(ReRouter)

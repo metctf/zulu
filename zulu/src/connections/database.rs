@@ -14,13 +14,13 @@ use crate::auth::accesslevel::AccessLevel;
 use crate::structs::user::User;
 use crate::structs::login::Login;
 use crate::structs::leaderboard::Leaderboard;
-use crate::structs::flag::Flag;
+use crate::structs::challenge::Challenge;
 
-pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<String, sqlx::Error>{
+pub async fn remove_challenge(id: String, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let result = sqlx::query!(
         r#"
-        DELETE FROM flags
-        WHERE flagID = ?;
+        DELETE FROM challenges
+        WHERE id = ?;
         "#,
         id)
         .fetch_all(&pool.0)
@@ -31,20 +31,20 @@ pub async fn remove_flag(id: String, pool: &State<Pool>) -> Result<String, sqlx:
     }
 }
 
-pub async fn create_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
+pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let uuid = Uuid::new_v4();
     let result = sqlx::query!(
         r#"
-        INSERT INTO flags
-        (flagid, challenge, challengeAuthor, flagString, points)
+        INSERT INTO challenges
+        (id, name, author, flag, points)
         VALUES
         (?,?,?,?,?)
         "#,
         format!("{}", uuid),
-        &flag.challenge,
-        &flag.challengeauthor,
-        &flag.flagstring,
-        &flag.points)
+        &challenge.name,
+        &challenge.author,
+        &challenge.flag,
+        &challenge.points)
         .execute(&pool.0)
         .await;
 
@@ -58,8 +58,8 @@ pub async fn submit_flag(flag: String, pool: &State<Pool>) -> Result<bool, sqlx:
     let result = sqlx::query!(
         r#"
         SELECT *
-        FROM flags
-        WHERE flagString = ?;
+        FROM challenges
+        WHERE flag = ?;
         "#,
         &flag
         )
@@ -72,38 +72,39 @@ pub async fn submit_flag(flag: String, pool: &State<Pool>) -> Result<bool, sqlx:
     }
 }
 
-pub async fn modify_flag(flag: &Form<Flag>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
+pub async fn modify_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let result = sqlx::query!(
         r#"
-        UPDATE flags
-        SET challenge = ?,
-        challengeAuthor = ?,
-        flagString = ?,
+        UPDATE challenges
+        SET name = ?,
+        author = ?,
+        flag = ?,
         points = ?
         WHERE
-        flagID = ?;
+        id = ?;
         "#,
-        &flag.challenge,
-        &flag.challengeauthor,
-        &flag.flagstring,
-        &flag.points,
-        &flag.flagid)
+        &challenge.name,
+        &challenge.author,
+        &challenge.flag,
+        &challenge.points,
+        &challenge.id)
         .execute(&pool.0)
         .await;
 
     match result {
-        Ok(_) => Ok(flag.flagid.clone()),
+        Ok(_) => Ok(challenge.id.clone()),
         Err(_) => Err(sqlx::Error::RowNotFound)
     }
 }
 
-pub async fn return_flag(pool: &State<Pool>, challenge: String) -> Result<Flag, sqlx::Error>{
+pub async fn return_challenge(pool: &State<Pool>, flag: String) -> Result<Challenge, sqlx::Error>{
+    // send a flag to the database to retrieve the corresponding challenge
     let result = sqlx::query_as!(
-        Flag,
-        "SELECT flagid, challenge, challengeauthor, flagstring, points
-        FROM flags
-        WHERE challenge = ?;",
-        challenge)
+        Challenge,
+        "SELECT id, name, author, flag, points
+        FROM challenges
+        WHERE flag = ?;",
+        flag)
         .fetch_one(&pool.0)
         .await?;
    Ok(result) 
@@ -123,13 +124,13 @@ pub async fn login_user(login: &Form<Login>, pool: &State<Pool>) -> Result<User,
     let pass = result.password;
 
     let user = User { 
-        accountid: result.accountid, 
+        accountid: result.id, 
         username: result.username, 
         firstname: result.firstname, 
         lastname: result.lastname, 
         password: pass.unwrap(), 
         origin: Origin::from_str(&result.origin).unwrap(),
-        flagquantity: result.flagquantity, 
+        solves: result.solves, 
         accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
     };
     info!("Logged in user: {}", &user.username);
@@ -149,19 +150,19 @@ pub async fn modify_user(user: &Form<User>, token: JwtToken, pool: &State<Pool>)
         lastName = ?,
         password = ?,
         origin = ?
-        WHERE accountID = ?;
+        WHERE id = ?;
         "#,
         &user.username,
         &user.firstname,
         &user.lastname,
         User::hash_password(&user.password),
         &user.origin.to_string(),
-        &token.accountid
+        &token.id
         )
         .execute(&pool.0)
         .await?;
 
-    Ok(token.accountid)
+    Ok(token.id)
 }
 
 pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,sqlx::Error>{
@@ -174,7 +175,7 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
         r#"
         SELECT *
         FROM accounts
-        WHERE accountID = ?;
+        WHERE id = ?;
         "#,
         &token.body
         )
@@ -186,13 +187,13 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
     match pass {
         Some(pass) => {
             let user = User { 
-                accountid: result.accountid, 
+                accountid: result.id, 
                 username: result.username, 
                 firstname: result.firstname, 
                 lastname: result.lastname, 
                 password: pass, 
                 origin: Origin::from_str(&result.origin).unwrap(),
-                flagquantity: result.flagquantity, 
+                solves: result.solves, 
                 accesslevel: AccessLevel::from_str(&result.accesslevel).unwrap(),
             };
             Ok(user)
@@ -204,8 +205,8 @@ pub async fn get_user_info(token: JwtToken, pool: &State<Pool>) -> Result<User,s
 pub async fn get_top_30(pool: &State<Pool>) -> Result<Vec<Leaderboard>,sqlx::Error> {
     let query = sqlx::query_as!(
         Leaderboard,
-        "SELECT username, flagquantity FROM accounts
-        ORDER BY flagquantity DESC
+        "SELECT username, solves FROM accounts
+        ORDER BY solves DESC
         LIMIT 30;")
         .fetch_all(&pool.0)
         .await?;
@@ -231,7 +232,7 @@ pub async fn register_account(pool: &State<Pool>, user: &User) -> Result<String,
     //Create a new user in the database
     let _query = sqlx::query!(
         r#"
-        INSERT INTO accounts (accountid, username, firstName, lastName, password, origin, accessLevel)
+        INSERT INTO accounts (id, username, firstName, lastName, password, origin, accessLevel)
         VALUES (?,?,?,?,?,?,?);"#,
         format!("{}", uuid),
         &user.username,
@@ -253,8 +254,8 @@ pub async fn delete_account(pool: &State<Pool>, token: JwtToken) -> Result<bool,
     let query = sqlx::query!(
         r#"
         DELETE FROM accounts
-        WHERE accountID = ?;"#,
-        &decoded.accountid
+        WHERE id = ?;"#,
+        &decoded.id
     )
     .execute(&pool.0)
     .await?

@@ -91,7 +91,8 @@ pub async fn retrieve_user(hostname: String, port: u16, bind_dn: String, bind_dn
         username: uid.clone(),  // clone as uid is used earlier in the split
         firstname: split[0].to_string(), 
         lastname: split[1].to_string(), 
-        origin: Origin::from_str("Ldap").unwrap(), 
+        origin: Origin::from_str("CMET").unwrap(), // CHANGEME: Actually ascertain which university
+                                                   // the user is from
         accesslevel: AccessLevel::from_str(&role).unwrap(),
     };
     Ok(user)

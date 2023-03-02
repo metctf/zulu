@@ -1,15 +1,15 @@
 use rocket::form::Form;
 use rocket::State;
-use super::super::structs::flag::Flag;
+use crate::structs::challenge::Challenge;
 use super::super::structs::json::JsonResponse;
 use rocket::serde::{Serialize, json::Json};
 use rocket::response::{content, status};
 use rocket::http::Status;
-use super::super::connections::database::{Pool, create_flag};
+use super::super::connections::database::{Pool, create_challenge};
 
 #[post("/create_flag", data = "<flag>")]
-pub async fn create_flag_api(pool: &State<Pool>, flag: Form<Flag>) -> status::Custom<Json<JsonResponse>> {
-    let query = create_flag(&flag, pool).await;
+pub async fn create_challenge_api(pool: &State<Pool>, flag: Form<Challenge>) -> status::Custom<Json<JsonResponse>> {
+    let query = create_challenge(&flag, pool).await;
 
     match query {
         Ok(query) => {

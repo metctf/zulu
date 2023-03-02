@@ -83,7 +83,7 @@ pub async fn login(pool: &State<Pool>, login: Form<Login>) -> status::Custom<Jso
                         lastname: ldapuser_struct.lastname,
                         password: login.password.clone(),
                         origin: ldapuser_struct.origin,
-                        flagquantity: 0,
+                        solves: 0,
                         accesslevel: ldapuser_struct.accesslevel,
                     };
 

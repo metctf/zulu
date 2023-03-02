@@ -52,7 +52,7 @@ pub async fn display_user_info(pool: &State<Pool>, token: JwtToken) -> status::C
                 lastname: String::from(""),
                 password: String::from(""),
                 origin: Origin::from_str("Internal").unwrap(),
-                flagquantity: 0,
+                solves: 0,
                 accesslevel: AccessLevel::from_str("User").unwrap(),
             };
             status::Custom(Status::InternalServerError, Json(user))

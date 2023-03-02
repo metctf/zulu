@@ -15,6 +15,9 @@ pub struct Login{
 }
 
 impl Verify for Login {
+    fn verify_flag(&self, flag: &str) -> bool { // stub
+        true
+    }
     fn verify_password(&self, password: &str) -> bool{
         let argon2 = Argon2::default();
         let password_u8 = &self.password.as_bytes();

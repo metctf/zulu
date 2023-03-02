@@ -6,7 +6,7 @@ use rocket::response::{content, status};
 use rocket::http::Status;
 use crate::structs::json::JsonResponse;
 
-#[get("/submit_flag/<id>")]
+#[get("/submit_challenge/<id>")]
 pub async fn submit_flag_api(pool: &State<Pool>, id: String) -> status::Custom<Json<bool>> {
     let query = submit_flag(id, pool).await;
     match query {

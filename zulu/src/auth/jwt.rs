@@ -10,7 +10,7 @@ use rocket::outcome::Outcome;
 
 #[derive(Debug)]
 pub struct JwtToken {
-    pub accountid: String,
+    pub id: String,
     pub accesslevel: String,
     pub body: String,
 }
@@ -63,7 +63,7 @@ impl JwtToken {
          */
 
         let mut claims = BTreeMap::new();
-        claims.insert("accountid", accountid);
+        claims.insert("id", accountid);
         claims.insert("accesslevel", accesslevel);
 
         let token_str = claims.sign_with_key(&key).unwrap();
@@ -81,10 +81,10 @@ impl JwtToken {
 
         match token {
             Ok(token) => Ok( JwtToken {
-                accountid: token.claims()["accountid"].to_string(),
+                id: token.claims()["id"].to_string(),
                 accesslevel: token.claims()["accesslevel"].to_string(),
                 body: webtoken}),
-            Err(_) => Err("Couldnt Decode token")
+            Err(_) => Err("Couldn't Decode token")
             }
         }
     }
