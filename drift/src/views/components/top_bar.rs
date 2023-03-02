@@ -35,6 +35,9 @@ pub fn new_bar(props: &Props) -> Html{
         let navigator = navigator.clone();
 
         navigator.push(&MainRoute::DisplayFlag{id: data.searchterm});
+        if let Some(window) = web_sys::window() {
+            window.location().reload().unwrap();
+        }
     });
  
     match &props.tab {

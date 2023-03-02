@@ -12,12 +12,12 @@ pub struct Flag {
 
 #[derive(Properties, PartialEq)]
 pub struct FlagProps {
-    pub flag: Flag,
+    pub flag: Vec<Flag>,
 }
 
 #[function_component(FlagInfo)]
 pub fn flag_info(FlagProps {flag}: &FlagProps) -> Html {
-        html! {
+    flag.iter().map(|flag| html! {
             <>
             <div class={classes!("leaderboard")}>
                 <p>{&flag.challenge}</p>
@@ -25,5 +25,5 @@ pub fn flag_info(FlagProps {flag}: &FlagProps) -> Html {
                 <p>{&flag.points.to_string()}</p>
             </div>
             </>
-        }
+        }).collect()
 }

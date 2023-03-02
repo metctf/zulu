@@ -102,8 +102,8 @@ pub async fn return_challenge(pool: &State<Pool>, flag: String) -> Result<Challe
     let result = sqlx::query_as!(
         Challenge,
         "SELECT id, name, author, flag, points
-        FROM challenges
-        WHERE flag = ?;",
+        FROM challenges 
+        WHERE flag LIKE CONCAT('%',?,'%');",
         flag)
         .fetch_one(&pool.0)
         .await?;
