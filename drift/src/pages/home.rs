@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use super::components::leaderboard::{LeaderboardList, Leaderboard};
+use crate::components::leaderboard::{LeaderboardList, Leaderboard};
 use gloo_net::http::Request;
 
 #[function_component(Home)]

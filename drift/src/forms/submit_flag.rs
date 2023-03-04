@@ -1,8 +1,8 @@
 use yew::prelude::*;
 use std::ops::Deref;
 
-use super::components::text_input::TextInput;
-use super::components::custom_button::CustomButton;
+use crate::components::text_input::TextInput;
+use crate::components::custom_button::CustomButton;
 
 #[derive(Default, Clone)]
 pub struct FlagStringData {

@@ -2,8 +2,8 @@ use yew::prelude::*;
 use yew_router::prelude::*;
 use gloo::console::log;
 
-use crate::views::components::top_bar::{NavBar, Tab};
-use crate::views::register::{Register, RegisterData};
+use crate::components::top_bar::{NavBar, Tab};
+use crate::forms::register_form::{RegisterForm, RegisterData};
 use crate::MainRoute;
 
 
@@ -50,10 +50,10 @@ pub fn modify_component() -> Html {
             html! {
                 <>
                     <NavBar tab={Tab::Authorized}/>
-                    <Register name={"Update User Details"} onsubmit={custom_form_submit}>
+                    <RegisterForm name={"Update User Details"} onsubmit={custom_form_submit}>
                         <br />
                         <button class={classes!("button")} style="background-color:red;" onclick={delete}>{"Delete"}</button>
-                    </Register>
+                    </RegisterForm>
                 </>
             }
 }

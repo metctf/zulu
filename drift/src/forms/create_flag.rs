@@ -1,9 +1,9 @@
 use yew::prelude::*;
 use std::ops::Deref;
 
-use super::components::text_input::TextInput;
-use super::components::custom_button::CustomButton;
-use crate::views::components::number_input::NumberInput;
+use crate::components::text_input::TextInput;
+use crate::components::custom_button::CustomButton;
+use crate::components::number_input::NumberInput;
 
 #[derive(Default, Clone)]
 pub struct FlagData {
@@ -72,6 +72,6 @@ pub fn create_flag(props: &Props) -> Html {
             <br />
             <CustomButton label="Submit" />
             </form>
-            </div>
+        </div>
     }
 }

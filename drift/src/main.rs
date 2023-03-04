@@ -1,8 +1,11 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-mod views;
 mod router;
+mod pages;
+mod components;
+mod forms;
+mod settings;
 
 use crate::router::{MainRoute,switch_main};
 

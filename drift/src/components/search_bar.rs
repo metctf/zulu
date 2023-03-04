@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use std::ops::Deref;
 
-use crate::views::components::text_input::TextInput;
+use crate::components::text_input::TextInput;
 
 #[derive(Default, Clone)]
 pub struct SearchData {

@@ -6,7 +6,7 @@ use serde::{Serialize,Deserialize};
 
 use crate::MainRoute;
 use crate::router::SettingsRoute;
-use crate::views::components::search_bar::SearchBar;
+use crate::components::search_bar::SearchBar;
 
 use super::search_bar::SearchData;
 

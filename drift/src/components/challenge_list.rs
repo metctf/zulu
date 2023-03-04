@@ -17,7 +17,7 @@ pub struct ChallengeProps {
     pub challenge: Vec<Challenge>,
 }
 
-#[function_component(ChallengeInfo)]
+#[function_component(ChallengeInfoList)]
 pub fn challenge_info(ChallengeProps {challenge}: &ChallengeProps) -> Html {
     challenge.iter().map(|challenge| html! {
             <>

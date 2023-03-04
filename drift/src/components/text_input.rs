@@ -24,3 +24,19 @@ pub fn text_input(props: &Props) -> Html {
       <input type="text" class={classes!(props.class.clone())} name={props.name.clone()} onchange={onchange} placeholder={props.name.clone()} />
     }
 }
+
+#[function_component(PasswordInput)]
+pub fn password_input(props: &Props) -> Html {
+    let handle_onchange = props.handle_onchange.clone();
+    let onchange = Callback::from(move |event: Event| {
+        let value = event
+            .target()
+            .unwrap()
+            .unchecked_into::<HtmlInputElement>()
+            .value();
+        handle_onchange.emit(value);
+    });
+    html! {
+      <input type="password" class={classes!(props.class.clone())} name={props.name.clone()} onchange={onchange} placeholder={props.name.clone()} />
+    }
+}

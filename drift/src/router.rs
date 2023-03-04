@@ -5,14 +5,14 @@ use gloo::console::log;
 use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
 
-use crate::views::components::top_bar::{NavBar, Tab};
-use crate::views::createflag::{CreateFlag, FlagData};
-use crate::views::login::LoginComponent;
-use crate::views::home::Home;
-use crate::views::register::RegisterComponent;
-use crate::views::notfound::NotFound;
-use crate::views::settings::modify::ModifyComponent;
-use crate::views::challengeinfo::{DisplayChallenge, ChallengeTemplate};
+use crate::components::top_bar::{NavBar, Tab};
+use crate::pages::register::RegisterComponent;
+use crate::pages::login::LoginComponent;
+use crate::forms::create_flag::{FlagData,CreateFlag};
+use crate::pages::home::Home;
+use crate::pages::challenge_template::{DisplayChallenge, ChallengeTemplate};
+use crate::pages::notfound::NotFound;
+use crate::settings::modify::ModifyComponent;
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum MainRoute{

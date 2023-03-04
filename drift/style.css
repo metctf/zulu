@@ -48,7 +48,7 @@ body {
     display: block;
 }
 
-input[type=text],input[type=number],select { /*Username/password*/
+input[type=text],input[type=number],input[type=password],select { /*Username/password*/
     padding: 12px 20px;
     margin: 2px auto;
     border: 1px solid #ccc;

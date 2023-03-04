@@ -1,9 +1,9 @@
 use gloo_storage::{LocalStorage, Storage};
 use yew::prelude::*;
-use crate::views::challenge::{Challenge, ChallengeInfo};
+use crate::components::challenge_list::{Challenge, ChallengeInfoList};
 use gloo::console::log;
 
-use crate::views::submitflag::{FlagStringData,SubmitFlag};
+use crate::forms::submit_flag::{FlagStringData,SubmitFlag};
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -41,7 +41,7 @@ pub fn challenge(props: &Props) -> Html {
     html! {
         <>
             <div>
-                <ChallengeInfo challenge={(*challenges).clone()}/>
+                <ChallengeInfoList challenge={(*challenges).clone()}/>
             </div>
         </>
     }
