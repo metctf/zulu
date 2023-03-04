@@ -9,23 +9,11 @@ use gloo_storage::Storage;
 use crate::components::top_bar::{NavBar, Tab};
 use crate::MainRoute;
 
-use crate::forms::login_form::Login;
+use crate::forms::login_form::{Login, LoginData};
 
 #[derive(Deserialize)]
 pub struct Jwt {
     pub jwt: String,
-}
-
-#[derive(Default, Clone)]
-pub struct LoginData {
-    pub username: String,
-    pub password: String,
-    pub origin: String,
-}
-
-#[derive(Properties, PartialEq)]
-pub struct Props {
-    pub onsubmit: Callback<LoginData>,
 }
 
 #[function_component(LoginComponent)]

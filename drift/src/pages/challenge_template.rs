@@ -1,9 +1,9 @@
 use gloo_storage::{LocalStorage, Storage};
 use yew::prelude::*;
-use crate::components::challenge_list::{Challenge, ChallengeInfoList};
 use gloo::console::log;
 
 use crate::forms::submit_flag::{FlagStringData,SubmitFlag};
+use crate::components::challenge_list::{Challenge, ChallengeInfoList};
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -51,7 +51,7 @@ pub fn challenge(props: &Props) -> Html {
 #[function_component(ChallengeTemplate)]
 pub fn challenge(props: &Props) -> Html {
 
-    let custom_form_submit = Callback::from(|data: FlagStringData| {
+    let custom_form_submit: Callback<FlagStringData> = Callback::from(|data: FlagStringData| {
         log!("String is", &data.flagstring);
 
         wasm_bindgen_futures::spawn_local( async move {

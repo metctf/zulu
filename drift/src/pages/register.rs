@@ -3,25 +3,8 @@ use yew::prelude::*;
 use yew_router::prelude::use_navigator;
 
 use crate::router::MainRoute;
-use crate::forms::register_form::RegisterForm;
+use crate::forms::register_form::{RegisterForm, RegisterData};
 use crate::components::top_bar::{NavBar, Tab};
-
-#[derive(Default, Clone)]
-pub struct RegisterData {
-    pub username: String,
-    pub firstname: String,
-    pub lastname: String,
-    pub password: String,
-    pub origin: String,
-}
-
-#[derive(Properties, PartialEq)]
-pub struct Props {
-    pub name: String,
-    pub onsubmit: Callback<RegisterData>,
-    #[prop_or_default]
-    pub children: Children,
-}
 
 #[function_component(RegisterComponent)]
 pub fn register_component() -> Html{
