@@ -48,12 +48,13 @@ pub fn origin_selector(props: &Props) -> Html {
 
     html! {
         <select id="origin" class={classes!("form-input")} onchange={onchange}>
-        {
-            origin_vec.iter().map(|uni|
-                html!{
-                    <option value={format!("{}",uni)} >{format!("{}",uni)}</option>
-                }).collect::<Html>()
-        }
+            <option selected={true}>{"Select University"}</option>
+            {
+                origin_vec.iter().map(|uni|
+                    html!{
+                        <option value={format!("{}",uni)} >{format!("{}",uni)}</option>
+                    }).collect::<Html>()
+            }
         </select>
     }
 }
