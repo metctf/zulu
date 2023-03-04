@@ -50,7 +50,10 @@ pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
 
     match result {
         Ok(_) => Ok(format!("{}", uuid)),
-        Err(_) => Err(sqlx::Error::PoolTimedOut)
+        Err(msg) => {
+            error!("{}",msg);
+            Err(sqlx::Error::PoolTimedOut)
+        }
     }
 }
 
@@ -97,13 +100,25 @@ pub async fn modify_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
     }
 }
 
-pub async fn return_challenge(pool: &State<Pool>, flag: String) -> Result<Challenge, sqlx::Error>{
+pub async fn return_challenge(pool: &State<Pool>, flag: String) -> Result<Vec<Challenge>, sqlx::Error>{
     // send a flag to the database to retrieve the corresponding challenge
     let result = sqlx::query_as!(
         Challenge,
         "SELECT id, name, author, flag, points
         FROM challenges 
         WHERE flag LIKE CONCAT('%',?,'%');",
+        flag)
+        .fetch_all(&pool.0)
+        .await?;
+   Ok(result) 
+}
+
+pub async fn return_one_challenge(pool: &State<Pool>, flag: String) -> Result<Challenge, sqlx::Error>{
+    let result = sqlx::query_as!(
+        Challenge,
+        "SELECT id, name, author, flag, points
+        FROM challenges 
+        WHERE flag = ?;",
         flag)
         .fetch_one(&pool.0)
         .await?;

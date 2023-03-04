@@ -2,6 +2,8 @@ use rocket::form::Form;
 use rocket::State;
 use log::log;
 
+use crate::connections::database::return_one_challenge;
+
 use super::super::structs::challenge::Challenge;
 use super::super::auth::jwt::JwtToken;
 use super::super::connections::database::{Pool, modify_challenge, return_challenge};
@@ -43,10 +45,7 @@ pub async fn display_flag(pool: &State<Pool>, flag: String) -> status::Custom<Js
 
     match query {
         Ok(query) => {
-            let mut vec: Vec<Challenge> = vec![];
-            vec.push(query);
-
-            status::Custom(Status::NotFound, Json(vec))
+            status::Custom(Status::Ok, Json(query))
         }
         Err(query) => {
             error!("{:?}",query);
@@ -63,5 +62,15 @@ pub async fn display_flag(pool: &State<Pool>, flag: String) -> status::Custom<Js
             status::Custom(Status::NotFound, Json(vec))
         }
 
+    }
+}
+
+#[get("/get_single_challenge/<flag>")]
+pub async fn single_flag(pool: &State<Pool>, flag: String) -> status::Custom<Json<Challenge>> {
+    let query = return_one_challenge(pool, flag).await;
+
+    match query {
+        Ok(query) => status::Custom(Status::Ok, Json(query)),
+        Err(_) => status::Custom(Status::NotFound, Json(Challenge::default()))
     }
 }

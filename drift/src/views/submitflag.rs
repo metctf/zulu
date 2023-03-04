@@ -10,13 +10,13 @@ pub struct FlagStringData {
 }
 
 #[derive(Properties, PartialEq)]
-pub struct Props {
+pub struct SubmitProps {
     pub onsubmit: Callback<FlagStringData>,
 }
 
 
 #[function_component(SubmitFlag)]
-pub fn submit_flag(props: &Props) -> Html {
+pub fn submit_flag(props: &SubmitProps) -> Html {
 
     let state = use_state(|| FlagStringData::default());
 
@@ -36,13 +36,14 @@ pub fn submit_flag(props: &Props) -> Html {
     });
     
     html! {
-        <div class={classes!("form-div")}>
-            <h1>{"Submit Flag"}</h1>
+        <>
+            <br />
+            <h2>{"Submit Flag"}</h2>
             <form onsubmit={onsubmit}>
             <TextInput name="flagstring" class="form-input" handle_onchange={flagstring_changed} />
             <br />
             <CustomButton label="Submit"  />
             </form>
-        </div>
+        </>
     }
 }

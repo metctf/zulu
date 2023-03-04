@@ -6,5 +6,5 @@ pub mod settings;
 pub mod components;
 pub mod createflag;
 pub mod submitflag;
-pub mod flag;
-pub mod flaginfo;
+pub mod challenge;
+pub mod challengeinfo;

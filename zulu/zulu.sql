@@ -16,7 +16,7 @@ CREATE TABLE zulu.accounts (
 	origin varchar(50) NOT NULL,
     solves int(11) UNSIGNED DEFAULT 0 NOT NULL,
     accesslevel varchar(10) NOT NULL,
-	creationtime timestamp NOT NULL
+	creationtime timestamp
 ); 
 
 
@@ -27,7 +27,7 @@ CREATE TABLE zulu.challenges (
     author varchar(255) NOT NULL,
     flag varchar(255) NOT NULL,
     points int(11) UNSIGNED DEFAULT 0 NOT NULL,
-	creationtime timestamp NOT NULL
+	creationtime timestamp
 ); 
 
 

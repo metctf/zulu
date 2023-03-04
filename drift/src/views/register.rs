@@ -8,6 +8,7 @@ use crate::router::MainRoute;
 use super::components::text_input::TextInput;
 use super::components::custom_button::CustomButton;
 use crate::views::components::top_bar::{NavBar, Tab};
+use crate::views::components::origin::OriginSelector;
 
 #[derive(Default, Clone)]
 pub struct RegisterData {
@@ -86,7 +87,7 @@ pub fn register(props: &Props) -> Html {
                 <br />
                 <TextInput name="password" class="form-input" handle_onchange={password_changed} />
                 <br />
-                <TextInput name="origin" class="form-input" handle_onchange={origin_changed} />
+                <OriginSelector handle_onchange={origin_changed}/>
                 <br />
                 <CustomButton label="Submit"  />
             </form>

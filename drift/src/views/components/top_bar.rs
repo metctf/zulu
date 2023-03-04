@@ -34,7 +34,7 @@ pub fn new_bar(props: &Props) -> Html{
         log!("search for", &data.searchterm);
         let navigator = navigator.clone();
 
-        navigator.push(&MainRoute::DisplayFlag{id: data.searchterm});
+        navigator.push(&MainRoute::DisplayChallenge {id: data.searchterm});
         if let Some(window) = web_sys::window() {
             window.location().reload().unwrap();
         }
@@ -52,7 +52,6 @@ pub fn new_bar(props: &Props) -> Html{
                             <a onclick={logout} style={"cursor:pointer;"}>{"Log Out"}</a>
                         </div>
                     </div>
-                    <Link<MainRoute> classes={classes!("right")} to={MainRoute::SubmitFlag}>{"Submit Flag"}</Link<MainRoute>>
                     <Link<MainRoute> classes={classes!("right")} to={MainRoute::CreateFlag}>{"Create Flag"}</Link<MainRoute>>
                     <div style={"width: 20%; display: inline-block; left: 10px; position: relative;"}>
                         <SearchBar onsubmit={search}/>

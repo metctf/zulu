@@ -11,9 +11,8 @@ use crate::views::login::LoginComponent;
 use crate::views::home::Home;
 use crate::views::register::RegisterComponent;
 use crate::views::notfound::NotFound;
-use crate::views::submitflag::{FlagStringData, SubmitFlag};
 use crate::views::settings::modify::ModifyComponent;
-use crate::views::flaginfo::DisplayFlag;
+use crate::views::challengeinfo::{DisplayChallenge, ChallengeTemplate};
 
 #[derive(Routable, PartialEq, Eq, Clone, Debug)]
 pub enum MainRoute{
@@ -23,12 +22,12 @@ pub enum MainRoute{
     Register,
     #[at("/")]
     Home,
-    #[at("/displayflag/:id")]
-    DisplayFlag {id:String},
+    #[at("/display_challenge/:id")]
+    DisplayChallenge {id:String},
+    #[at("/challenge/:id")]
+    Challenge {id:String},
     #[at("/create_flag")]
     CreateFlag,
-    #[at("/submit_flag")]
-    SubmitFlag,
     #[at("/settings")]
     SettingsRoot,
     #[at("/settings/*")]
@@ -75,15 +74,15 @@ pub fn switch_main(route: MainRoute) -> Html {
         },
         MainRoute::CreateFlag => {
             let custom_form_submit = Callback::from(|data: FlagData| {
-                log!("flagid is", &data.flagid.to_string());
+                log!("challenge is", &data.name.to_string());
 
                 wasm_bindgen_futures::spawn_local( async move {
                     let url = format!("http://127.0.0.1:8000/api/v1/create_flag");
                     let form = (
-                        ("flagid",data.flagid),
-                        ("challenge",data.challenge),
-                        ("challengeauthor",data.challengeauthor),
-                        ("flagstring", data.flagstring),
+                        ("id", "".to_string()),
+                        ("name",data.name),
+                        ("author",data.author),
+                        ("flag", data.flag),
                         ("points", data.points)
                     );
                     let client = reqwest::Client::new();
@@ -102,28 +101,7 @@ pub fn switch_main(route: MainRoute) -> Html {
                 </>
             }
         },
-        MainRoute::SubmitFlag => {
-            let custom_form_submit = Callback::from(|data: FlagStringData| {
-                log!("String is", &data.flagstring);
-
-                wasm_bindgen_futures::spawn_local( async move {
-                    let url = format!("http://127.0.0.1:8000/api/v1/submit_flag/{}", &data.flagstring);
-                    reqwest::Client::new()
-                        .get(&url)
-                        .send()
-                        .await
-                        .unwrap();
-
-                });
-            });
-            html! {
-                <>
-                    <NavBar tab={Tab::Authorized}/>
-                    <SubmitFlag onsubmit={custom_form_submit} />
-                </>
-            }
-        },
-        MainRoute::Home => {
+       MainRoute::Home => {
             
             html! {
             <>
@@ -132,14 +110,22 @@ pub fn switch_main(route: MainRoute) -> Html {
             </>
             }
         },
-        MainRoute::DisplayFlag { id } => {
+        MainRoute::DisplayChallenge { id } => {
             html! {
             <>
                 <NavBar tab={auth}/>
-                <DisplayFlag flag={id}/>
+                <DisplayChallenge flag={id}/>
             </>
             }
         },
+        MainRoute::Challenge { id } => {
+            html! {
+                <>
+                    <NavBar tab={auth}/>
+                    <ChallengeTemplate flag={id} />
+                </>
+            }
+        }
         MainRoute::SettingsRoot | MainRoute::Settings => html! { <Switch<SettingsRoute> render={switch_settings} /> },
         MainRoute::NotFound => {
             html! {

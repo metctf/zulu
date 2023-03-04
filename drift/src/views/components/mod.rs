@@ -4,3 +4,4 @@ pub mod custom_button;
 pub mod top_bar;
 pub mod leaderboard;
 pub mod search_bar;
+pub mod origin;
