@@ -1,4 +1,3 @@
-use gloo_storage::{LocalStorage, Storage};
 use yew::prelude::*;
 use crate::components::challenge_list::{Challenge, ChallengeInfoList};
 
@@ -16,14 +15,12 @@ pub fn challenge(props: &Props) -> Html {
         use_effect_with_deps(move |_| {
             let challenges = challenges.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let jwt: String = LocalStorage::get("_AuthToken").unwrap();
 
                 let client = reqwest::Client::builder()
                     .build()
                     .unwrap();
                 let url = format!("http://127.0.0.1:8000/api/v1/get_challenge/{}", search);
                 let fetched_challenges: Vec<Challenge> = client.get(&url)
-                    .header("auth", jwt)
                     .send()
                     .await
                     .unwrap()
