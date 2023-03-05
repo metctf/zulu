@@ -5,6 +5,7 @@ use yew_router::prelude::use_navigator;
 use crate::router::MainRoute;
 use crate::forms::register_form::{RegisterForm, RegisterData};
 use crate::components::top_bar::{NavBar, Tab};
+use crate::components::footer::Footer;
 
 #[function_component(RegisterComponent)]
 pub fn register_component() -> Html{
@@ -38,6 +39,7 @@ pub fn register_component() -> Html{
             <>
                 <NavBar tab={Tab::Unauthorized}/>
                 <RegisterForm name={"Register"} onsubmit={custom_form_submit} />
+                <Footer />
             </>
         }
 }

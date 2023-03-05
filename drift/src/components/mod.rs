@@ -7,3 +7,4 @@ pub mod search_bar;
 pub mod origin;
 pub mod get_challenges;
 pub mod challenge_list;
+pub mod footer;

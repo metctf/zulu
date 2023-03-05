@@ -84,7 +84,7 @@ pub fn register(props: &Props) -> Html {
                 <br />
                 <OriginSelector handle_onchange={origin_changed}/>
                 <br />
-                <CustomButton label="Submit"  />
+                <CustomButton label="Submit" class="button"  />
             </form>
             { for props.children.iter() }
         </div>

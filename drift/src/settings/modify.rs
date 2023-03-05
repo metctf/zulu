@@ -1,8 +1,11 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 use gloo::console::log;
+use gloo::storage::LocalStorage;
+use gloo_storage::Storage;
 
 use crate::components::top_bar::{NavBar, Tab};
+use crate::components::footer::Footer;
 use crate::forms::register_form::{RegisterForm, RegisterData};
 use crate::MainRoute;
 
@@ -43,7 +46,12 @@ pub fn modify_component() -> Html {
                         .send()
                         .await
                         .unwrap();
+                    
+                    LocalStorage::clear();
                     navigator.push(&MainRoute::Home);
+                    if let Some(window) = web_sys::window() {
+                        window.location().reload().unwrap();
+                    };
                 });
             });
 
@@ -54,6 +62,7 @@ pub fn modify_component() -> Html {
                         <br />
                         <button class={classes!("button")} style="background-color:red;" onclick={delete}>{"Delete"}</button>
                     </RegisterForm>
+                    <Footer />
                 </>
             }
 }

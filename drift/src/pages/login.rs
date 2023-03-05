@@ -7,6 +7,7 @@ use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
 
 use crate::components::top_bar::{NavBar, Tab};
+use crate::components::footer::Footer;
 use crate::MainRoute;
 
 use crate::forms::login_form::{Login, LoginData};
@@ -72,6 +73,7 @@ pub fn login_component() -> Html {
             <>
                 <NavBar tab={auth}/>
                 <Login onsubmit={custom_form_submit} />
+                <Footer />
             </>
         }
 }

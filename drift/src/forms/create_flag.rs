@@ -1,9 +1,11 @@
 use yew::prelude::*;
+use yew_router::prelude::*;
 use std::ops::Deref;
 
 use crate::components::text_input::TextInput;
 use crate::components::custom_button::CustomButton;
 use crate::components::number_input::NumberInput;
+use crate::router::MainRoute;
 
 #[derive(Default, Clone)]
 pub struct FlagData {
@@ -50,12 +52,14 @@ pub fn create_flag(props: &Props) -> Html {
     });
 
 
+    let navigator = use_navigator().unwrap();
     let form_onsubmit = props.onsubmit.clone();
     let cloned_state = state.clone();
     let onsubmit = Callback::from(move |event: SubmitEvent| {
         event.prevent_default();
         let data = cloned_state.deref().clone();
         form_onsubmit.emit(data);
+        navigator.push(&MainRoute::Home);
     });
 
     html! {
@@ -70,7 +74,7 @@ pub fn create_flag(props: &Props) -> Html {
             <br />
             <NumberInput name="points" class="form-input" handle_onchange={points_changed} />
             <br />
-            <CustomButton label="Submit" />
+            <CustomButton label="Submit" class="button" />
             </form>
         </div>
     }

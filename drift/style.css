@@ -1,54 +1,202 @@
+/* Global settings */
+
 * {
-  box-sizing: border-box;
-  font-family: 'IBM Plex Mono', monospace;
+    box-sizing: border-box;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    transition: .4s;
+}
+
+:root[theme="dark"] {
+    --bg1-colour: #3c3836;
+    --bg2-colour: #504945;
+    --bg3-colour: #665c54;
+    --bg4-colour: #7c6f64;
+    --grey-colour: #928374;
+    --main-colour: #98971a;
+    --main-colour-light: #b8bb26;
+    --text-colour: #98971a;
+}
+
+:root[theme="light"] {
+    --bg1-colour: #ebdbb2;
+    --bg2-colour: #d5c4a1;
+    --bg3-colour: #bdae93;
+    --bg4-colour: #a89984;
+    --grey-colour: #a89984;
+    --main-colour: #98971a;
+    --main-colour-light: #79740e;
+    --text-colour: black;
 }
 
 body {
-  font-family: Arial;
-  padding: 10px;
-  margin: 0;
-  background: rgb(85, 92, 100);
-}
-
-/* Style the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-  border: 1px solid black;
-  padding: 0px 20px;
-}
-
-.wide {
-    width: 80%;
-}
-
-/* Style the topnav links */
-.topnav a {
-  min-width: 120px;
-  display: inline-block;
-  color:chartreuse;
-  text-align: center;
-  text-decoration: none;
-  padding: 20px;
-  margin: 10px auto;
-}
-
-/* Change color on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
+    padding: 10px;
+    margin: 0;
+    background: var(--bg3-colour);
 }
 
 .block {
     display: block;
 }
 
+.wide {
+    width: 80%;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+/* Style the top navigation bar */
+
+.topnav {
+    overflow: hidden;
+    background-color: var(--bg1-colour);
+    border: 1px solid black;
+    box-shadow: 5px 5px;
+    padding: 0px 20px;
+}
+
+.topnav a {
+    min-width: 120px;
+    display: inline-block;
+    color: var(--text-colour);
+    text-align: center;
+    text-decoration: none;
+    padding: 20px;
+    margin: 10px auto;
+    border-radius: 4px;
+}
+
+.topnav a:hover {
+    background-color: var(--bg2-colour);
+    color: black;
+}
+
+.label {
+    width: 50px;
+    padding: 10px;
+    margin: 0px 10px;
+    color: var(--text-colour);
+}
+
+/* Footer */
+
+.footer {
+    overflow: hidden;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    width:99%;
+    border: 1px solid black;
+    box-shadow: 5px 5px;
+    background-color: var(--bg1-colour);
+}
+
+.zulu-github {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 10px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text-colour);
+}
+
+/* Theme Switcher */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  top: 5px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--main-colour);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--main-colour);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+} 
+
+/* Form Stylings */
+
 .form-input{
-    width: 30%;
+    width: 100%;
     display: block;
 }
 
-input[type=text],input[type=number],input[type=password],select { /*Username/password*/
+.form-div {
+    justify-content: center;
+    text-align: center;
+    margin: 20px auto;
+    width: 50%;
+    padding: 5%;
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    background: var(--bg2-colour);
+    border: 1px solid black;
+    box-shadow: 5px 5px black;
+    color: var(--text-colour);
+}
+
+
+input[type=text],input[type=number],input[type=password],select {
     padding: 12px 20px;
     margin: 2px auto;
     border: 1px solid #ccc;
@@ -56,8 +204,10 @@ input[type=text],input[type=number],input[type=password],select { /*Username/pas
     box-sizing: border-box;
 }
 
+/* Search Bar */
+
 .search {
-    background-color: #4CAF50;
+    background-color: var(--main-colour);
     color: white;
     padding: 12px 20px;
     margin: 2px 2px;
@@ -67,14 +217,64 @@ input[type=text],input[type=number],input[type=password],select { /*Username/pas
 }
 
 .search:hover {
-    background-color: #0ece34;
+    background-color: var(--main-colour-light);
 }
 
+.search-result {
+    border-radius: 5px;
+    background-color: var(--bg1-colour);
+    border: 1px solid;
+    border-color: black;
+    box-shadow: 5px 5px black;
+    padding: 20px;
+    margin: auto;
+    display: grid;
+    text-align: center;
+    text-transform: capitalize;
+    color: var(--text-colour);
+}   
+
+.search-div {
+    justify-content: center;
+    text-align: center;
+    margin: 20px auto;
+    padding: 10%;
+}
+
+.one {
+    grid-column: 1;
+    grid-row: 1;
+    font-weight: 500;
+    padding: 20px;
+}
+
+.two {
+    grid-column: 2;
+    grid-row: 1;
+    font-weight: 500;
+    padding: 20px;
+}
+
+.three {
+    grid-column: 3;
+    grid-row: 1;
+    margin: auto;
+    font-weight: 500;
+    background-color: var(--main-colour);
+    color: black;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.three:hover {
+    background-color: var(--main-colour-light);
+}
 
 .button {
-    width: 30%;
+    width: 100%;
     display: flex;
-    background-color: #4CAF50;
+    background-color: var(--main-colour);
     color: white;
     padding: 12px 20px;
     margin: 2px auto;
@@ -84,22 +284,18 @@ input[type=text],input[type=number],input[type=password],select { /*Username/pas
 }
 
 .button:hover {
-    background-color: #0ece34;
+    background-color: var(--main-colour-light);
 }
+
+/* Leaderboard Style */
 
 .leaderboard {
     border-radius: 5px;
-    background-color:chartreuse;
+    background-color: var(--main-colour);
     padding: 20px;
     margin: 10px auto;
-}
-
-.form-div {
-    justify-content: center;
-    text-align: center;
-    margin: 20px auto;
-    padding: 10%;
-    background: rgb(85, 92, 100);
+    border: 1px solid black;
+    box-shadow: 5px 5px black;
 }
 
 .leaderboard-div {
@@ -107,53 +303,112 @@ input[type=text],input[type=number],input[type=password],select { /*Username/pas
     text-align: center;
     margin: 20px 20%;
     padding: 2%;
-    background: rgb(85, 92, 100);
-}
-.right {
-    float: right;
+    background: var(--bg2-colour);
+    border: 1px solid black;
+    box-shadow: 5px 5px black;
+    color: var(--text-colour);
 }
 
+/* Menu items */
+
 .dropdown {
-  float: right;
-  overflow: hidden;
+    float: right;
+    overflow: hidden;
 }
 
 .dropdown .dropbtn {
-  border: none;
-  outline: none;
-  background-color: inherit;
-  font-family: inherit; /* Important for vertical align on mobile phones */
+    border: none;
+    outline: none;
+    background-color: inherit;
+    font-family: inherit;
 }
 
-
-/* Dropdown content (hidden by default) */
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #333;
-  min-width: 120px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+    display: none;
+    position: absolute;
+    background-color: var(--bg1-colour);
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
 
-/* Links inside the dropdown */
 .dropdown-content a {
-  float: none;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  margin: 0px;
-  padding: 20px;
+    float: none;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin: 0px;
+    padding: 20px;
 }
 
-/* Add a grey background color to dropdown links on hover */
 .dropdown-content a:hover {
-  background-color: #ddd;
-  color: black;
+    background-color: var(--bg2-colour);
+    color: black;
 
 }
 
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
-  display: block;
+    display: block;
+}
+
+/* Challenge template styles */
+
+.challenge-div {
+    display: grid;
+    grid-template-columns: 400px 200px auto 600px; 
+    grid-template-rows: 200px 300px auto;
+    border: 1px solid black;
+    box-shadow: 5px 5px black;
+    margin: 30px auto;
+    padding: 30px;
+    width: 90%;
+    background-color: var(--bg2-colour);
+    color: var(--text-colour);
+}
+
+.image {
+    grid-row: 1;
+    grid-column: 4;
+    position: relative;
+    left: 25%;
+    top: 15%;
+    border: 2px solid black;
+}
+
+.challenge-title {
+    grid-row: 1;
+    grid-column: 1/3;
+    text-align: center;
+    text-decoration: underline;
+    text-transform: capitalize;
+    padding: 50px 0;
+}
+
+.submit-challenge {
+    grid-row: 3;
+    grid-column: 4;
+    text-align: center;
+}
+
+.challenge-description {
+    grid-row: 2/3;
+    grid-column: 1/3;
+    text-align: center;
+}
+
+.string-input {
+    display: inline;
+    width: 80%;
+}
+
+.submit-button {
+    width: 20%;
+    display: inline;
+    background-color: var(--main-colour);
+    color: white;
+    padding: 12px 20px;
+    margin: 2px auto;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }

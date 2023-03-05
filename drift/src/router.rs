@@ -6,6 +6,7 @@ use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
 
 use crate::components::top_bar::{NavBar, Tab};
+use crate::components::footer::Footer;
 use crate::pages::register::RegisterComponent;
 use crate::pages::login::LoginComponent;
 use crate::forms::create_flag::{FlagData,CreateFlag};
@@ -98,6 +99,7 @@ pub fn switch_main(route: MainRoute) -> Html {
                 <>
                     <NavBar tab={Tab::Authorized}/>
                     <CreateFlag onsubmit={custom_form_submit}/>
+                    <Footer />
                 </>
             }
         },
@@ -107,6 +109,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             <>
                 <NavBar tab={auth}/>
                 <Home />
+                <Footer />
             </>
             }
         },
@@ -115,6 +118,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             <>
                 <NavBar tab={auth}/>
                 <DisplayChallenge flag={id}/>
+                <Footer />
             </>
             }
         },
@@ -123,6 +127,7 @@ pub fn switch_main(route: MainRoute) -> Html {
                 <>
                     <NavBar tab={auth}/>
                     <ChallengeTemplate flag={id} />
+                    <Footer />
                 </>
             }
         }
@@ -132,6 +137,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             <>
                 <NavBar tab={auth}/>
                 <NotFound />
+                <Footer />
             </>
             }
         },

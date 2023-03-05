@@ -4,6 +4,7 @@ use gloo::console::log;
 
 use crate::forms::submit_flag::{FlagStringData,SubmitFlag};
 use crate::components::challenge_list::{Challenge, ChallengeInfoList};
+use crate::components::footer::Footer;
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -40,7 +41,7 @@ pub fn challenge(props: &Props) -> Html {
     }
     html! {
         <>
-            <div>
+            <div class={classes!("search-div")}>
                 <ChallengeInfoList challenge={(*challenges).clone()}/>
             </div>
         </>
@@ -90,11 +91,17 @@ pub fn challenge(props: &Props) -> Html {
     }
     html! {
         <>
-            <div class={classes!("form-div")}>
-                <h1>{&challenge.name}</h1>
-                <p>{"lil desription of the boxes"}</p>
+            <div class={classes!("challenge-div")}>
+                <div class={classes!("challenge-title")}>
+                    <h1>{&challenge.name}</h1>
+                </div>
+                <div class={classes!("challenge-description")}>
+                    <p>{"Zulu is a CTF server currently in development by the Cardiff Met CTF society for use with our challenges produced by members of our society. It will allow us to keep track of the number of flags and points associated with them for each member of our society, which will be displayed on a society-wide leaderboard. Zulu will be designed to be university agnostic and highly configurable, allowing other university societies to use our software for their own uses if they so wish, with their own branding and such. Zulu is licensed under the GPLv3 and is free software."}</p>
+                </div>
+                <img src="../static/images/rust.png" class={classes!("image")} />
                 <SubmitFlag onsubmit={custom_form_submit}/>
             </div>
+            <Footer />
         </>
     }
 }
