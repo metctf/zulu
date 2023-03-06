@@ -51,7 +51,7 @@ pub fn footer() -> Html {
                 <span class="slider round" ></span>
             </label>
             <p class={classes!("label")}>{"Dark"}</p>
-            <a href="https://github.com/metctf/zulu" class={classes!("zulu-github")}>{"Zulu CardiffMet CTF Society 2023 "}</a>
+            <a href="https://github.com/metctf/zulu" class={classes!("zulu-github")}>{"Zulu - Cardiff Met CTF Society 2023 "}</a>
         </div>
     }
 }

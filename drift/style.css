@@ -32,7 +32,7 @@
 body {
     padding: 10px;
     margin: 0;
-    background: var(--bg3-colour);
+    background: var(--bg2-colour);
 }
 
 .block {
@@ -74,7 +74,7 @@ body {
 
 .topnav a:hover {
     background-color: var(--bg2-colour);
-    color: black;
+    color: var(--main-colour);
 }
 
 .label {
@@ -189,7 +189,7 @@ input:checked + .slider:before {
     position: absolute;
     top: 15%;
     left: 25%;
-    background: var(--bg2-colour);
+    background: var(--bg1-colour);
     border: 1px solid black;
     box-shadow: 5px 5px black;
     color: var(--text-colour);
@@ -303,7 +303,7 @@ input[type=text],input[type=number],input[type=password],select {
     text-align: center;
     margin: 20px 20%;
     padding: 2%;
-    background: var(--bg2-colour);
+    background: var(--bg1-colour);
     border: 1px solid black;
     box-shadow: 5px 5px black;
     color: var(--text-colour);
@@ -362,7 +362,7 @@ input[type=text],input[type=number],input[type=password],select {
     margin: 30px auto;
     padding: 30px;
     width: 90%;
-    background-color: var(--bg2-colour);
+    background-color: var(--bg1-colour);
     color: var(--text-colour);
 }
 
