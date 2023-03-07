@@ -53,7 +53,7 @@ pub fn challenge(props: &Props) -> Html {
         log!("String is", &data.flagstring);
 
         wasm_bindgen_futures::spawn_local( async move {
-            let url = format!("http://127.0.0.1:8000/api/v1/submit_flag/{}", &data.flagstring);
+            let url = format!("http://127.0.0.1:8000/api/v1/submit_challenge/{}", &data.flagstring);
             reqwest::Client::new()
                 .get(&url)
                 .send()
