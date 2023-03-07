@@ -2,8 +2,8 @@ use rocket::State;
 use super::super::auth::jwt::JwtToken;
 use super::super::connections::database::{Pool,delete_account};
 
-use rocket::serde::{Serialize, json::Json};
-use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use rocket::response::status;
 use rocket::http::Status;
 use crate::structs::json::JsonResponse;
 

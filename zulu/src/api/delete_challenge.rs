@@ -1,10 +1,10 @@
 use rocket::State;
 use crate::auth::jwt::JwtToken;
 use super::super::connections::database::{Pool,remove_challenge};
-use rocket::response::{content, status};
+use rocket::response::status;
 use rocket::http::Status;
 use super::super::structs::json::JsonResponse;
-use rocket::serde::{Serialize, json::Json};
+use rocket::serde::json::Json;
 
 #[delete("/delete_flag/<id>")]
 pub async fn delete_challenge_api(pool: &State<Pool>, token: JwtToken, id: String) -> status::Custom<Json<JsonResponse>> {

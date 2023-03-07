@@ -24,7 +24,7 @@ pub struct User{
 }
 
 impl Verify for User {
-    fn verify_flag(&self, flag: &str) -> bool { // stub
+    fn verify_flag(&self, _flag: &str) -> bool { // stub
         true
     }
     fn verify_password(&self, password: &str) -> bool{

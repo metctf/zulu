@@ -1,4 +1,4 @@
-use sqlx::mysql::{MySqlPoolOptions, MySqlQueryResult};
+use sqlx::mysql::{MySqlPoolOptions};
 use crate::auth::jwt::JwtToken;
 use crate::structs::origin::Origin;
 
@@ -43,7 +43,7 @@ pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
         format!("{}", uuid),
         &challenge.name,
         &challenge.author,
-        &challenge.flag,
+        Challenge::hash_flag(&challenge.flag),
         &challenge.points)
         .execute(&pool.0)
         .await;

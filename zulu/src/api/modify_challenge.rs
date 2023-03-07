@@ -1,6 +1,5 @@
 use rocket::form::Form;
 use rocket::State;
-use log::log;
 
 use crate::connections::database::return_one_challenge;
 
@@ -8,8 +7,8 @@ use super::super::structs::challenge::Challenge;
 use super::super::auth::jwt::JwtToken;
 use super::super::connections::database::{Pool, modify_challenge, return_challenge};
 
-use rocket::serde::{Serialize, json::Json};
-use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use rocket::response::status;
 use rocket::http::Status;
 use super::super::structs::json::JsonResponse;
 

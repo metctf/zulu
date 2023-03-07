@@ -9,8 +9,8 @@ use crate::structs::user::User;
 use super::super::auth::jwt::JwtToken;
 use super::super::connections::database::{Pool, modify_user, get_user_info};
 
-use rocket::serde::{Serialize, json::Json};
-use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use rocket::response::status;
 use rocket::http::Status;
 use super::super::structs::json::JsonResponse;
 

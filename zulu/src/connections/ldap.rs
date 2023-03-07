@@ -1,10 +1,6 @@
-use ldap3::{LdapConnAsync, Scope, LdapError, ResultEntry, SearchEntry};
-use crate::structs::login::Login;
-use crate::structs::user::User;
-use crate::structs::leaderboard::Leaderboard;
+use ldap3::{LdapConnAsync, Scope, LdapError, SearchEntry};
 use crate::structs::origin::Origin;
 use crate::auth::accesslevel::AccessLevel;
-use log::{info, trace, warn};
 use std::str::FromStr;
 
 pub struct LdapUser {

@@ -2,8 +2,8 @@ use rocket::form::Form;
 use rocket::State;
 use crate::structs::challenge::Challenge;
 use super::super::structs::json::JsonResponse;
-use rocket::serde::{Serialize, json::Json};
-use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use rocket::response::status;
 use rocket::http::Status;
 use super::super::connections::database::{Pool, create_challenge};
 

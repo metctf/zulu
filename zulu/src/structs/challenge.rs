@@ -15,7 +15,7 @@ pub struct Challenge {
 }
 
 impl Verify for Challenge {
-    fn verify_password(&self, password: &str) -> bool { // stub
+    fn verify_password(&self, _password: &str) -> bool { // stub
         true
     }
     fn verify_flag(&self, flag: &str) -> bool{

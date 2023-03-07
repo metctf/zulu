@@ -1,5 +1,4 @@
 use jwt::{Header, Token, VerifyWithKey, SignWithKey};
-use log::info;
 use sha2::Sha256;
 use std::collections::BTreeMap;
 use std::result::Result;

@@ -1,8 +1,8 @@
 use rocket::State;
 use crate::structs::leaderboard::Leaderboard;
 use super::super::connections::database::{Pool,get_top_30};
-use rocket::serde::{Serialize, json::Json};
-use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use rocket::response::status;
 use rocket::http::Status;
 
 #[get("/leaderboard")]

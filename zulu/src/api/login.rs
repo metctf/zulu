@@ -1,19 +1,12 @@
 use rocket::form::Form;
-use rocket::time::{OffsetDateTime, Duration};
-use rocket::http::{Cookie,CookieJar};
 use rocket::State;
-use crate::auth::accesslevel::AccessLevel;
 use crate::structs::json::JsonJwtResponse;
 
-use rocket::serde::{Serialize, json::Json};
-use rocket::response::{content, status};
+use rocket::serde::json::Json;
+use rocket::response::status;
 use rocket::http::Status;
 
 use super::super::connections::database;
-
-use crate::structs::origin::Origin; // for creating origin of new user from LDAP
-
-use std::str::FromStr; // for getting origin and accesslevel from string
 
 use super::super::auth::jwt::JwtToken;
 use crate::structs::login::Login;

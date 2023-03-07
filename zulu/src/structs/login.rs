@@ -15,7 +15,7 @@ pub struct Login{
 }
 
 impl Verify for Login {
-    fn verify_flag(&self, flag: &str) -> bool { // stub
+    fn verify_flag(&self, _flag: &str) -> bool { // stub
         true
     }
     fn verify_password(&self, password: &str) -> bool{

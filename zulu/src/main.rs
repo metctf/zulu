@@ -2,7 +2,6 @@ use env_logger::Builder;
 use log::LevelFilter;
 use crate::auth::rerouter::ReRouter;
 mod connections;
-use connections::ldap;
 
 mod settings;
 use settings::LdapConfig;

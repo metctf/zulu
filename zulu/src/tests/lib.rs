@@ -16,7 +16,7 @@ mod tests{
             r#"
             SELECT *
             FROM accounts
-            WHERE accountID = ?;
+            WHERE id = ?;
             "#,
             accountid
             )
@@ -236,7 +236,7 @@ mod tests{
 
         let login_result = crate::connections::ldap::login_user(settings.hostname, settings.port, settings.bind_dn, settings.password, String::from("jacob.eva"), String::from("password"), settings.search_base, settings.user_filter).await;
 
-        let login = match login_result {
+        let _login = match login_result {
             Ok(login) => login,
             Err(e) => panic!("Error, {}", e),
         };
