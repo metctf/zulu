@@ -31,7 +31,7 @@ impl Verify for User {
         let result = argon2.verify_password(password_u8, &hash_parsed).is_ok();
         result
     }
-    fn verify_flag(&self, flag: &str) -> bool {
+    fn verify_flag(&self, _flag: &str) -> bool {
         true
     }
 }

@@ -5,7 +5,6 @@ pub struct JsonResponse {
     pub id: String,
 }
 
-
 #[derive(Serialize, Deserialize)]
 pub struct JsonJwtResponse {
     pub jwt: String,

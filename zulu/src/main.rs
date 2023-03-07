@@ -1,6 +1,8 @@
 use env_logger::Builder;
 use log::LevelFilter;
 use crate::auth::rerouter::ReRouter;
+use rocket::fs::FileServer;
+use rocket::fs::relative;
 mod connections;
 
 mod settings;
@@ -40,11 +42,12 @@ async fn rocket() -> _ {
                create_challenge::create_challenge_api,
                delete_challenge::delete_challenge_api,
                modify_challenge::modify_challenge_api,
+               submit_challenge::submit_challenge_api,
+               create_challenge::upload_challenge_api,
                modify_challenge::display_flag,
                modify_challenge::single_flag,
-               submit_challenge::submit_challenge_api
         ])
+        .mount("/static", FileServer::from(relative!("/static")))
         .attach(ReRouter)
         .attach(CORS)
-        
 }
