@@ -5,4 +5,5 @@ zulu/Cargo.lock
 zulu/config/local.toml
 zulu/.cargo
 drift/target
+drift/dist
 drift/Cargo.lock
