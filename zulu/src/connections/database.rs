@@ -1,5 +1,6 @@
-use sqlx::mysql::{MySqlPoolOptions};
+use sqlx::mysql::MySqlPoolOptions;
 use crate::auth::jwt::JwtToken;
+use crate::structs::Verify;
 use crate::structs::origin::Origin;
 
 use sqlx::MySqlPool;
@@ -14,7 +15,7 @@ use crate::auth::accesslevel::AccessLevel;
 use crate::structs::user::User;
 use crate::structs::login::Login;
 use crate::structs::leaderboard::Leaderboard;
-use crate::structs::challenge::Challenge;
+use crate::structs::challenge::{Challenge, SubmitChallenge};
 
 pub async fn remove_challenge(id: String, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let result = sqlx::query!(
@@ -57,21 +58,32 @@ pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
     }
 }
 
-pub async fn submit_challenge(flag: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
-    let result = sqlx::query!(
+pub async fn submit_challenge(sent_challenge: Form<SubmitChallenge>, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+    let challenge_db = sqlx::query!(
         r#"
         SELECT *
         FROM challenges
-        WHERE flag = ?;
+        WHERE name = ?;
         "#,
-        &flag
+        sent_challenge.name
         )
         .fetch_one(&pool.0)
-        .await;
+        .await?;
 
-    match result{
-        Ok(_) => Ok(true),
-        Err(_) => Err(sqlx::Error::RowNotFound)
+    let challenge_str = Challenge {
+        id: challenge_db.id,
+        name: sent_challenge.name.clone(),
+        author: challenge_db.author,
+        flag: sent_challenge.flag.clone(),
+        points: challenge_db.points,
+    };
+
+    if challenge_str.verify_flag(&challenge_db.flag) {
+        Ok(true)
+    }
+
+    else {
+        Ok(false)
     }
 }
 
@@ -100,26 +112,26 @@ pub async fn modify_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
     }
 }
 
-pub async fn return_challenge(pool: &State<Pool>, flag: String) -> Result<Vec<Challenge>, sqlx::Error>{
+pub async fn return_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Challenge>, sqlx::Error>{
     // send a flag to the database to retrieve the corresponding challenge
     let result = sqlx::query_as!(
         Challenge,
         "SELECT id, name, author, flag, points
         FROM challenges 
-        WHERE flag LIKE CONCAT('%',?,'%');",
-        flag)
+        WHERE name LIKE CONCAT('%',?,'%');",
+        name)
         .fetch_all(&pool.0)
         .await?;
    Ok(result) 
 }
 
-pub async fn return_one_challenge(pool: &State<Pool>, flag: String) -> Result<Challenge, sqlx::Error>{
+pub async fn return_one_challenge(pool: &State<Pool>, name: String) -> Result<Challenge, sqlx::Error>{
     let result = sqlx::query_as!(
         Challenge,
         "SELECT id, name, author, flag, points
         FROM challenges 
-        WHERE flag = ?;",
-        flag)
+        WHERE name = ?;",
+        name)
         .fetch_one(&pool.0)
         .await?;
    Ok(result) 

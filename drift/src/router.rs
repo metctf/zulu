@@ -78,7 +78,7 @@ pub fn switch_main(route: MainRoute) -> Html {
                 log!("challenge is", &data.name.to_string());
 
                 wasm_bindgen_futures::spawn_local( async move {
-                    let url = format!("http://127.0.0.1:8000/api/v1/create_flag");
+                    let url = format!("http://127.0.0.1:8000/api/v1/create_challenge");
                     let form = (
                         ("id", "".to_string()),
                         ("name",data.name),

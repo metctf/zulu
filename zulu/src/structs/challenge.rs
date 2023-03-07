@@ -14,6 +14,12 @@ pub struct Challenge {
     pub points: u32,
 }
 
+#[derive(FromForm,Serialize,Deserialize)]
+pub struct SubmitChallenge {
+    pub name: String,
+    pub flag: String,
+}
+
 impl Verify for Challenge {
     fn verify_password(&self, _password: &str) -> bool { // stub
         true
@@ -21,6 +27,7 @@ impl Verify for Challenge {
     fn verify_flag(&self, flag: &str) -> bool{
         let argon2 = Argon2::default();
         let flag_u8 = &self.flag.as_bytes();
+        info!("{}", flag);
         let hash_parsed = PasswordHash::new(flag).unwrap();
         let result = argon2.verify_password(flag_u8, &hash_parsed).is_ok();
         result

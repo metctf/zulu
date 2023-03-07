@@ -49,13 +49,17 @@ pub fn challenge(props: &Props) -> Html {
 #[function_component(ChallengeTemplate)]
 pub fn challenge(props: &Props) -> Html {
 
-    let custom_form_submit: Callback<FlagStringData> = Callback::from(|data: FlagStringData| {
+    let search = props.flag.clone();
+    let custom_form_submit: Callback<FlagStringData> = Callback::from(move |data: FlagStringData| {
+        let search = search.clone();
         log!("String is", &data.flagstring);
 
         wasm_bindgen_futures::spawn_local( async move {
-            let url = format!("http://127.0.0.1:8000/api/v1/submit_challenge/{}", &data.flagstring);
+            let url = format!("http://127.0.0.1:8000/api/v1/submit_challenge/");
+            let form = [("name",search.clone()), ("flag", data.flagstring)];
             reqwest::Client::new()
-                .get(&url)
+                .post(&url)
+                .form(&form)
                 .send()
                 .await
                 .unwrap();

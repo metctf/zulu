@@ -24,15 +24,15 @@ pub struct User{
 }
 
 impl Verify for User {
-    fn verify_flag(&self, _flag: &str) -> bool { // stub
-        true
-    }
     fn verify_password(&self, password: &str) -> bool{
         let argon2 = Argon2::default();
         let password_u8 = &self.password.as_bytes();
         let hash_parsed = PasswordHash::new(password).unwrap();
         let result = argon2.verify_password(password_u8, &hash_parsed).is_ok();
         result
+    }
+    fn verify_flag(&self, flag: &str) -> bool {
+        true
     }
 }
 

@@ -6,6 +6,7 @@ use crate::components::custom_button::CustomButton;
 
 #[derive(Default, Clone)]
 pub struct FlagStringData {
+    pub flagname: String,
     pub flagstring: String,
 }
 
