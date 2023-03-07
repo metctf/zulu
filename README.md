@@ -20,12 +20,10 @@ under the GPLv3 and is free software.
 * [x] JWT auth on successful login (@jacob.eva & @connor.bryan)
 
 #### API
-* [ ] Mutual TLS (@jacob.eva)
 * [x] Fix CORS header (https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin) (@connor.bryan)
 
 #### Frontend
 * [x] Login & registration functionality via frontend (@connor.bryan)
-* [ ] Mutual TLS support (@connor.bryan)
 ### v0.2
 #### User roles
 * [x] Lecturer role (for those who make challenges) (@jacob.eva)
