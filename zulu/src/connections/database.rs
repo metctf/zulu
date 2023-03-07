@@ -57,7 +57,7 @@ pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
     }
 }
 
-pub async fn submit_flag(flag: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
+pub async fn submit_challenge(flag: String, pool: &State<Pool>) -> Result<bool, sqlx::Error>{
     let result = sqlx::query!(
         r#"
         SELECT *

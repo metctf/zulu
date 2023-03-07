@@ -6,4 +6,4 @@ pub mod leaderboard;
 pub mod create_challenge;
 pub mod modify_challenge;
 pub mod delete_challenge;
-pub mod submit_flag;
+pub mod submit_challenge;

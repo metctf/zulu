@@ -7,9 +7,9 @@ use rocket::response::status;
 use rocket::http::Status;
 use super::super::connections::database::{Pool, create_challenge};
 
-#[post("/create_flag", data = "<flag>")]
-pub async fn create_challenge_api(pool: &State<Pool>, flag: Form<Challenge>) -> status::Custom<Json<JsonResponse>> {
-    let query = create_challenge(&flag, pool).await;
+#[post("/create_challenge", data = "<challenge>")]
+pub async fn create_challenge_api(pool: &State<Pool>, challenge: Form<Challenge>) -> status::Custom<Json<JsonResponse>> {
+    let query = create_challenge(&challenge, pool).await;
 
     match query {
         Ok(query) => {

@@ -6,7 +6,7 @@ use rocket::http::Status;
 use super::super::structs::json::JsonResponse;
 use rocket::serde::json::Json;
 
-#[delete("/delete_flag/<id>")]
+#[delete("/delete_challenge/<id>")]
 pub async fn delete_challenge_api(pool: &State<Pool>, token: JwtToken, id: String) -> status::Custom<Json<JsonResponse>> {
     let access = JwtToken::decode(token.body);
 

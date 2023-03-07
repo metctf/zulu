@@ -7,7 +7,7 @@ mod settings;
 use settings::LdapConfig;
 
 mod api;
-use api::{login,register,modify,remove,leaderboard,create_challenge,modify_challenge,delete_challenge,submit_flag};
+use api::{login,register,modify,remove,leaderboard,create_challenge,modify_challenge,delete_challenge,submit_challenge};
 
 mod auth;
 mod tests;
@@ -42,7 +42,7 @@ async fn rocket() -> _ {
                modify_challenge::modify_challenge_api,
                modify_challenge::display_flag,
                modify_challenge::single_flag,
-               submit_flag::submit_flag_api
+               submit_challenge::submit_challenge_api
         ])
         .attach(ReRouter)
         .attach(CORS)
