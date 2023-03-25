@@ -35,7 +35,6 @@ under the GPLv3 and is free software.
 * [x] Flag string submission for users (@jacob.eva)
 * [x] Challenge file downloads (@jacob.eva)
 * [x] Hashed flags for challenges in DB (@jacob.eva)
-* [ ] Access control (@jacob.eva)
 
 #### Leaderboard
 * [x] Generate leaderboard (most points) for top 30 users (@connor.bryan)
