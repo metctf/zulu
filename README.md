@@ -32,7 +32,7 @@ under the GPLv3 and is free software.
 
 #### Challenges
 * [x] Challenge creation, deletion and modification (@jacob.eva)
-* [x] Challenge string submission for users (@jacob.eva)
+* [x] Flag string submission for users (@jacob.eva)
 * [ ] Challenge file downloads (@jacob.eva)
 * [x] Hashed flags for challenges in DB (@jacob.eva)
 * [ ] Access control (@jacob.eva)
