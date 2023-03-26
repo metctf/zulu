@@ -79,7 +79,7 @@ pub async fn submit_challenge(sent_challenge: Form<SubmitChallenge>, pool: &Stat
     };
 
     if challenge_str.verify_flag(&challenge_db.flag) {
-        Ok(true)
+        Ok(true) // TODO add entry in solves and add number of points to user's account
     }
 
     else {
