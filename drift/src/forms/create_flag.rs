@@ -10,7 +10,6 @@ use crate::router::MainRoute;
 #[derive(Default, Clone)]
 pub struct FlagData {
     pub name: String,
-    pub author: String,
     pub flag: String,
     pub points: u32,
 }
@@ -27,13 +26,6 @@ pub fn create_flag(props: &Props) -> Html {
     let name_changed = Callback::from(move |name| {
         let mut data = cloned_state.deref().clone();
         data.name = name;
-        cloned_state.set(data);
-    });
-
-    let cloned_state = state.clone();
-    let author_changed = Callback::from(move |author| {
-        let mut data = cloned_state.deref().clone();
-        data.author = author;
         cloned_state.set(data);
     });
 
@@ -66,8 +58,6 @@ pub fn create_flag(props: &Props) -> Html {
             <h1>{"Create a Flag"}</h1>
             <form onsubmit={onsubmit}>
                 <TextInput name="name" class="form-input" handle_onchange={name_changed} />
-                <br />
-                <TextInput name="author" class="form-input" handle_onchange={author_changed} />
                 <br />
                 <TextInput name="flag" class="form-input" handle_onchange={flag_changed} />
                 <br />

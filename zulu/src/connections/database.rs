@@ -32,7 +32,7 @@ pub async fn remove_challenge(id: String, pool: &State<Pool>) -> Result<String, 
     }
 }
 
-pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -> Result<String, sqlx::Error>{
+pub async fn create_challenge(challenge: &Form<Challenge>, author: &String, pool: &State<Pool>) -> Result<String, sqlx::Error>{
     let uuid = Uuid::new_v4();
     let result = sqlx::query!(
         r#"
@@ -43,7 +43,7 @@ pub async fn create_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
         "#,
         format!("{}", uuid),
         &challenge.name,
-        &challenge.author,
+        author,
         Challenge::hash_flag(&challenge.flag),
         &challenge.points)
         .execute(&pool.0)

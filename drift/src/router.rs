@@ -88,7 +88,8 @@ pub fn switch_main(route: MainRoute) -> Html {
                     let form = (
                         ("id", "".to_string()),
                         ("name",data.name),
-                        ("author",data.author),
+                        // Just used to not get an no author error on zulu when its never used
+                        ("author","placeholder"),
                         ("flag", data.flag),
                         ("points", data.points)
                     );

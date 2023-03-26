@@ -1,6 +1,7 @@
 use rocket::form::Form;
 use rocket::State;
 use crate::structs::challenge::Challenge;
+use crate::auth::jwt::JwtToken;
 use super::super::structs::json::JsonResponse;
 use rocket::serde::json::Json;
 use rocket::response::status;
@@ -10,8 +11,8 @@ use super::super::connections::database::{Pool, create_challenge};
 use super::super::connections::filesystem::create_challenge_file;
 
 #[post("/create_challenge", data = "<challenge>")]
-pub async fn create_challenge_api(pool: &State<Pool>, challenge: Form<Challenge>) -> status::Custom<Json<JsonResponse>> {
-    let query = create_challenge(&challenge, pool).await;
+pub async fn create_challenge_api(pool: &State<Pool>, challenge: Form<Challenge>, jwt: JwtToken) -> status::Custom<Json<JsonResponse>> {
+    let query = create_challenge(&challenge, &jwt.id, pool).await;
 
     match query {
         Ok(query) => {
