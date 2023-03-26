@@ -49,8 +49,9 @@ under the GPLv3 and is free software.
 * [ ] Federation between different Zulu instances a la [ActivityPub](https://activitypub.rocks/)
 * [ ] Community made challenges
 * [ ] 4 letter identifiers for instances of Zulu
-* [ ] Challenge categories
+* [ ] Challenge tags
 * [ ] Challenge descriptions
+* [ ] Challenge images
 * [ ] Public and private challenges
 * [ ] Implement caching in drift to cache the current leaderboard status to reduce
 expensive database calls, have it refreshed on correct flag submission.
