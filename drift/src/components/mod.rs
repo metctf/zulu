@@ -8,3 +8,4 @@ pub mod origin;
 pub mod get_challenges;
 pub mod challenge_list;
 pub mod footer;
+pub mod file_upload;

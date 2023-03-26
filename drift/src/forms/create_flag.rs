@@ -51,7 +51,6 @@ pub fn create_flag(props: &Props) -> Html {
         cloned_state.set(data);
     });
 
-
     let navigator = use_navigator().unwrap();
     let form_onsubmit = props.onsubmit.clone();
     let cloned_state = state.clone();
@@ -66,15 +65,15 @@ pub fn create_flag(props: &Props) -> Html {
         <div class={classes!("form-div")}>
             <h1>{"Create a Flag"}</h1>
             <form onsubmit={onsubmit}>
-            <TextInput name="name" class="form-input" handle_onchange={name_changed} />
-            <br />
-            <TextInput name="author" class="form-input" handle_onchange={author_changed} />
-            <br />
-            <TextInput name="flag" class="form-input" handle_onchange={flag_changed} />
-            <br />
-            <NumberInput name="points" class="form-input" handle_onchange={points_changed} />
-            <br />
-            <CustomButton label="Submit" class="button" />
+                <TextInput name="name" class="form-input" handle_onchange={name_changed} />
+                <br />
+                <TextInput name="author" class="form-input" handle_onchange={author_changed} />
+                <br />
+                <TextInput name="flag" class="form-input" handle_onchange={flag_changed} />
+                <br />
+                <NumberInput name="points" class="form-input" handle_onchange={points_changed} />
+                <br />
+                <CustomButton label="Submit" class="button" />
             </form>
         </div>
     }

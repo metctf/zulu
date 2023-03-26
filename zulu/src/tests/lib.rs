@@ -37,8 +37,8 @@ mod tests{
         // Test for adding a user to a database
         let _query = sqlx::query!(
             r#"
-            INSERT INTO accounts (username, firstName, lastName, password, origin, accessLevel)
-            VALUES ("keanu.reeves","Keanu","Reeves","dog","internal", "User");
+            INSERT INTO accounts (id, username, firstName, lastName, password, origin, accessLevel)
+            VALUES ("id", "keanu.reeves","Keanu","Reeves","dog","internal", "User");
             "#)
             .execute(&pool)
             .await;
@@ -78,8 +78,8 @@ mod tests{
         // Test for modifying user info
         sqlx::query!(
             r#"
-            INSERT INTO accounts (username, firstName, lastName, password, origin, accessLevel)
-            VALUES ("keanu.reeves","Keanu","Reeves","dog","Internal", "User");
+            INSERT INTO accounts (id, username, firstName, lastName, password, origin, accessLevel)
+            VALUES ("id","keanu.reeves","Keanu","Reeves","dog","Internal", "User");
             "#)
             .execute(&pool)
             .await

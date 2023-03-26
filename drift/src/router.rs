@@ -12,6 +12,7 @@ use crate::pages::login::LoginComponent;
 use crate::forms::create_flag::{FlagData,CreateFlag};
 use crate::pages::home::Home;
 use crate::pages::challenge_template::{DisplayChallenge, ChallengeTemplate};
+use crate::components::file_upload::FileUploadPoint;
 use crate::pages::notfound::NotFound;
 use crate::settings::modify::ModifyComponent;
 
@@ -29,6 +30,8 @@ pub enum MainRoute{
     Challenge {id:String},
     #[at("/create_flag")]
     CreateFlag,
+    #[at("/upload_challenge/:id")]
+    UploadChallenge {id:String},
     #[at("/settings")]
     SettingsRoot,
     #[at("/settings/*")]
@@ -62,6 +65,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             auth = Tab::Unauthorized;
         }
     }
+
     match route {
         MainRoute::Login => {
             html! {
@@ -127,6 +131,15 @@ pub fn switch_main(route: MainRoute) -> Html {
                 <>
                     <NavBar tab={auth}/>
                     <ChallengeTemplate flag={id} />
+                    <Footer />
+                </>
+            }
+        }
+        MainRoute::UploadChallenge { id } => {
+            html! {
+                <>
+                    <NavBar tab={auth}/>
+                    <FileUploadPoint flag={id} />
                     <Footer />
                 </>
             }

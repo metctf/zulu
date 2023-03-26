@@ -95,9 +95,11 @@ checksum = "5827cebf4670468b8772dd191856768aedcb1b0278a04f989f7766351917b9dc"
 name = "drift"
 version = "0.1.0"
 dependencies = [
+ "base64",
  "gloo 0.6.1",
  "gloo-net 0.2.6",
  "gloo-storage",
+ "js-sys",
  "reqwasm",
  "reqwest",
  "serde",
