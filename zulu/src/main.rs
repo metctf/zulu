@@ -46,6 +46,7 @@ async fn rocket() -> _ {
                create_challenge::upload_challenge_api,
                modify_challenge::display_flag,
                modify_challenge::single_flag,
+               modify_challenge::author_challenge,
         ])
         .mount("/static", FileServer::from(relative!("/static")))
         .attach(ReRouter)

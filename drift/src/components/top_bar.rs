@@ -52,7 +52,8 @@ pub fn new_bar(props: &Props) -> Html{
                             <a onclick={logout} style={"cursor:pointer;"}>{"Log Out"}</a>
                         </div>
                     </div>
-                    <Link<MainRoute> classes={classes!("right")} to={MainRoute::CreateFlag}>{"Create Flag"}</Link<MainRoute>>
+                    <Link<MainRoute> classes={classes!("right")} to={MainRoute::CreateFlag}>{"Create Challenge"}</Link<MainRoute>>
+                    <Link<MainRoute> classes={classes!("right")} to={MainRoute::AuthorChallenges}>{"Manage Challenges"}</Link<MainRoute>>
                     <div style={"width: 20%; display: inline-block; left: 10px; position: relative;"}>
                         <SearchBar onsubmit={search}/>
                     </div>

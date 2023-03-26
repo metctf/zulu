@@ -125,6 +125,19 @@ pub async fn return_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Ch
    Ok(result) 
 }
 
+pub async fn return_author_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Challenge>, sqlx::Error>{
+    // send a flag to the database to retrieve the corresponding challenge
+    let result = sqlx::query_as!(
+        Challenge,
+        "SELECT id, name, author, flag, points
+        FROM challenges 
+        WHERE author = ?;",
+        name)
+        .fetch_all(&pool.0)
+        .await?;
+   Ok(result) 
+}
+
 pub async fn return_one_challenge(pool: &State<Pool>, name: String) -> Result<Challenge, sqlx::Error>{
     let result = sqlx::query_as!(
         Challenge,

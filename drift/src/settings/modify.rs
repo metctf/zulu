@@ -27,8 +27,10 @@ pub fn modify_component() -> Html {
                         ("origin", data.origin)
                     ];
                     let client = reqwest::Client::new();
+                    let jwt: String = LocalStorage::get("_AuthToken").unwrap();
 
                     client.post(&url)
+                        .header("auth", jwt)
                         .form(&form)
                         .send()
                         .await

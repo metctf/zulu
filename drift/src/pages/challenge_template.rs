@@ -1,8 +1,9 @@
+use gloo_storage::{LocalStorage, Storage};
 use yew::prelude::*;
 use gloo::console::log;
 
 use crate::forms::submit_flag::{FlagStringData,SubmitFlag};
-use crate::components::challenge_list::{Challenge, ChallengeInfoList};
+use crate::components::challenge_list::{Challenge, ChallengeInfoList, AuthorsChallenges};
 use crate::components::footer::Footer;
 
 #[derive(Properties, PartialEq)]
@@ -40,6 +41,44 @@ pub fn challenge(props: &Props) -> Html {
         <>
             <div class={classes!("search-div")}>
                 <ChallengeInfoList challenge={(*challenges).clone()}/>
+            </div>
+        </>
+    }
+ 
+}
+
+
+#[function_component(DisplayAuthorChallenge)]
+pub fn challenge() -> Html {
+    let challenges = use_state(|| vec![]);
+    {
+        let challenges = challenges.clone();
+        use_effect_with_deps(move |_| {
+            let challenges = challenges.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+
+                let client = reqwest::Client::builder()
+                    .build()
+                    .unwrap();
+                let jwt: String = LocalStorage::get("_AuthToken").expect("No auth token");
+                let url = format!("http://127.0.0.1:8000/api/v1/get_author_challenge");
+                let fetched_challenges: Vec<Challenge> = client.get(&url)
+                    .header("auth", jwt)
+                    .send()
+                    .await
+                    .unwrap()
+                    .json()
+                    .await
+                    .unwrap();
+                challenges.set(fetched_challenges);
+            });
+            || ()
+        }, ());
+    }
+    html! {
+        <>
+            <div class={classes!("search-div")}>
+                <AuthorsChallenges challenge={(*challenges).clone()}/>
             </div>
         </>
     }

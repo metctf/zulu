@@ -11,7 +11,7 @@ use crate::pages::register::RegisterComponent;
 use crate::pages::login::LoginComponent;
 use crate::forms::create_flag::{FlagData,CreateFlag};
 use crate::pages::home::Home;
-use crate::pages::challenge_template::{DisplayChallenge, ChallengeTemplate};
+use crate::pages::challenge_template::{DisplayChallenge, DisplayAuthorChallenge, ChallengeTemplate};
 use crate::components::file_upload::FileUploadPoint;
 use crate::pages::notfound::NotFound;
 use crate::settings::modify::ModifyComponent;
@@ -30,6 +30,8 @@ pub enum MainRoute{
     Challenge {id:String},
     #[at("/create_flag")]
     CreateFlag,
+    #[at("/author_challenges")]
+    AuthorChallenges,
     #[at("/upload_challenge/:id")]
     UploadChallenge {id:String},
     #[at("/settings")]
@@ -91,8 +93,10 @@ pub fn switch_main(route: MainRoute) -> Html {
                         ("points", data.points)
                     );
                     let client = reqwest::Client::new();
+                    let jwt: String = LocalStorage::get("_AuthToken").unwrap();
 
                     client.post(&url)
+                        .header("auth", jwt)
                         .form(&form)
                         .send()
                         .await
@@ -126,6 +130,15 @@ pub fn switch_main(route: MainRoute) -> Html {
             </>
             }
         },
+        MainRoute::AuthorChallenges => {
+            html! {
+            <>
+                <NavBar tab={auth}/>
+                <DisplayAuthorChallenge />
+                <Footer />
+            </>
+            }
+        }
         MainRoute::Challenge { id } => {
             html! {
                 <>

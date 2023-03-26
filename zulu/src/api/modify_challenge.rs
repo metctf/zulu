@@ -5,7 +5,7 @@ use crate::connections::database::return_one_challenge;
 
 use super::super::structs::challenge::Challenge;
 use super::super::auth::jwt::JwtToken;
-use super::super::connections::database::{Pool, modify_challenge, return_challenge};
+use super::super::connections::database::{Pool, modify_challenge, return_challenge, return_author_challenge};
 
 use rocket::serde::json::Json;
 use rocket::response::status;
@@ -72,4 +72,30 @@ pub async fn single_flag(pool: &State<Pool>, flag: String) -> status::Custom<Jso
         Ok(query) => status::Custom(Status::Ok, Json(query)),
         Err(_) => status::Custom(Status::NotFound, Json(Challenge::default()))
     }
+}
+
+#[get("/get_author_challenge")]
+pub async fn author_challenge(pool: &State<Pool>, jwt: JwtToken) -> status::Custom<Json<Vec<Challenge>>> {
+    log::info!("{}",&jwt.id);
+    let query = return_author_challenge(pool, jwt.id).await;
+
+    match query {
+        Ok(query) => {
+            status::Custom(Status::Ok, Json(query))
+        }
+        Err(query) => {
+            error!("{:?}",query);
+            let challenge = Challenge {
+                id: String::from(""),
+                name: String::from(""),
+                author: String::from(""),
+                flag: String::from(""),
+                points: 0,
+            };
+            let mut vec: Vec<Challenge> = vec![];
+            vec.push(challenge);
+
+            status::Custom(Status::NotFound, Json(vec))
+        }
+    } 
 }
