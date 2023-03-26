@@ -20,7 +20,7 @@ CREATE TABLE zulu.accounts (
 ); 
 
 
-DROP TABLE IF EXISTS zulu.flags;
+DROP TABLE IF EXISTS zulu.challenges;
 CREATE TABLE zulu.challenges (
     id varchar(255) NOT NULL PRIMARY KEY,
     name varchar(255) NOT NULL,
