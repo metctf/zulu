@@ -8,6 +8,10 @@ pub struct Props {
 
 #[function_component(FileUploadPoint)]
 pub fn file_upload(props: &Props) -> Html {
+    // Get input element
+    // Get file from element
+    // File reader read file
+    // reader.onload(callback => send reader.result) 
     let id = props.flag.clone();
     let url = format!("http://127.0.0.1:8000/api/v1/upload_challenge/{}",id);
     html! {

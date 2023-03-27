@@ -107,7 +107,7 @@ pub fn switch_main(route: MainRoute) -> Html {
             html! {
                 <>
                     <NavBar tab={Tab::Authorized}/>
-                    <CreateFlag onsubmit={custom_form_submit}/>
+                    <CreateFlag />
                     <Footer />
                 </>
             }

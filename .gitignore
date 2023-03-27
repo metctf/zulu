@@ -2,8 +2,9 @@
 
 zulu/target
 zulu/Cargo.lock
+zulu/static
 zulu/config/local.toml
 zulu/.cargo
 drift/target
-drift/dist
+drift/dist/*
 drift/Cargo.lock
