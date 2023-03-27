@@ -25,6 +25,9 @@ CREATE TABLE zulu.challenges (
     id varchar(255) NOT NULL PRIMARY KEY,
     name varchar(255) NOT NULL,
     author varchar(255) NOT NULL,
+    authorid varchar(255),
+    CONSTRAINT fk_author FOREIGN KEY (author) REFERENCES accounts (username),
+    CONSTRAINT fk_author_id FOREIGN KEY (authorid) REFERENCES accounts (id),
     flag varchar(255) NOT NULL,
     points int(11) UNSIGNED DEFAULT 0 NOT NULL,
 	creationtime timestamp
