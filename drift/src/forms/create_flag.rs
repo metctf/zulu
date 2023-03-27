@@ -14,54 +14,27 @@ pub struct FlagData {
     pub points: u32,
 }
 
-#[derive(Properties, PartialEq)]
-pub struct Props {
-    pub onsubmit: Callback<FlagData>,
-}
-
 #[function_component(CreateFlag)]
-pub fn create_flag(props: &Props) -> Html {
-    let state = use_state(|| FlagData::default());
-    let cloned_state = state.clone();
-    let name_changed = Callback::from(move |name| {
-        let mut data = cloned_state.deref().clone();
-        data.name = name;
-        cloned_state.set(data);
-    });
+pub fn create_flag() -> Html {
 
-    let cloned_state = state.clone();
-    let flag_changed = Callback::from(move |flag| {
-        let mut data = cloned_state.deref().clone();
-        data.flag = flag;
-        cloned_state.set(data);
-    });
-
-    let cloned_state = state.clone();
-    let points_changed = Callback::from(move |points| {
-        let mut data = cloned_state.deref().clone();
-        data.points = points;
-        cloned_state.set(data);
-    });
-
-    let navigator = use_navigator().unwrap();
-    let form_onsubmit = props.onsubmit.clone();
-    let cloned_state = state.clone();
-    let onsubmit = Callback::from(move |event: SubmitEvent| {
-        event.prevent_default();
-        let data = cloned_state.deref().clone();
-        form_onsubmit.emit(data);
-        navigator.push(&MainRoute::Home);
-    });
-
+    let url = format!("http://127.0.0.1:8000/api/v1/create_challenge");
     html! {
         <div class={classes!("form-div")}>
             <h1>{"Create a Flag"}</h1>
-            <form onsubmit={onsubmit}>
-                <TextInput name="name" class="form-input" handle_onchange={name_changed} />
+            <form method="POST" enctype="multipart/form-data" action={url} >
+                <input type="text" id="name" name="name" class="form-input" placeholder="challenge" />
                 <br />
-                <TextInput name="flag" class="form-input" handle_onchange={flag_changed} />
+                <input type="text" id="author" name="author" class="form-input" placeholder="author" />
                 <br />
-                <NumberInput name="points" class="form-input" handle_onchange={points_changed} />
+                <input type="text" id="flag" name="flag" class="form-input" placeholder="flag" />
+                <br />
+                <input type="number" id="points" name="points" class="form-input" placeholder="points" />
+                <br />
+                <label class={classes!("upload")}>
+                    <i class="fa fa-cloud-upload"></i>
+                    <p>{"Click to select the challenge file to upload"}</p>
+                    <input type="file" accept="*" class={classes!("file_upload")} name="upload" id="upload" placeholder="upload" />
+                </label>
                 <br />
                 <CustomButton label="Submit" class="button" />
             </form>
