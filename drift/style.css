@@ -91,7 +91,7 @@ body {
     padding: 15px;
     display: flex;
     flex-direction: row;
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     margin: 10px;
@@ -355,7 +355,7 @@ input[type=text],input[type=number],input[type=password],select {
 
 .challenge-div {
     display: grid;
-    grid-template-columns: 400px 200px auto 600px; 
+    grid-template-columns: 600px  auto 400px 200px; 
     grid-template-rows: 200px 300px auto;
     border: 1px solid black;
     box-shadow: 5px 5px black;
@@ -367,17 +367,15 @@ input[type=text],input[type=number],input[type=password],select {
 }
 
 .image {
-    grid-row: 1;
-    grid-column: 4;
-    position: relative;
-    left: 25%;
-    top: 15%;
+    grid-row: 1/2;
+    grid-column: 3/5;
     border: 2px solid black;
+    width: 100%;
 }
 
 .challenge-title {
     grid-row: 1;
-    grid-column: 1/3;
+    grid-column: 1/2;
     text-align: center;
     text-decoration: underline;
     text-transform: capitalize;
@@ -386,23 +384,35 @@ input[type=text],input[type=number],input[type=password],select {
 
 .submit-challenge {
     grid-row: 3;
-    grid-column: 4;
+    grid-column: 3/5;
     text-align: center;
 }
 
+.download-button {
+    grid-row: 3;
+    grid-column: 1;
+    background-color: var(--main-colour);
+    color: var(--text-colour);
+    border: none;
+    border-radius: 4px;
+    margin: 0px auto;
+    width: 50%;
+    cursor: pointer;
+}
+
 .challenge-description {
-    grid-row: 2/3;
-    grid-column: 1/3;
+    grid-row: 2;
+    grid-column: 1;
     text-align: center;
 }
 
 .string-input {
     display: inline;
-    width: 80%;
+    width: 70%;
 }
 
 .submit-button {
-    width: 20%;
+    width: 30%;
     display: inline;
     background-color: var(--main-colour);
     color: var(--text-colour);

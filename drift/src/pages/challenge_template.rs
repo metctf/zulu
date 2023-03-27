@@ -1,4 +1,5 @@
 use gloo_storage::{LocalStorage, Storage};
+use reqwest::Client;
 use yew::prelude::*;
 use gloo::console::log;
 
@@ -129,6 +130,23 @@ pub fn challenge(props: &Props) -> Html {
             || ()
         }, ());
     }
+
+    let search = props.flag.clone();
+    let get_challenge_file = Callback::from(move |_| {
+        let search = search.clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            let search = search.clone();
+            let client = reqwest::Client::builder()
+                .build()
+                .unwrap();
+
+            let url = format!("http://127.0.0.1:8000/api/v1/download_challenge/{}", search);
+            client.get(&url)
+                .send()
+                .await
+                .unwrap();
+        });
+    });
     html! {
         <>
             <div class={classes!("challenge-div")}>
@@ -139,6 +157,7 @@ pub fn challenge(props: &Props) -> Html {
                     <p>{"Zulu is a CTF server currently in development by the Cardiff Met CTF society for use with our challenges produced by members of our society. It will allow us to keep track of the number of flags and points associated with them for each member of our society, which will be displayed on a society-wide leaderboard. Zulu will be designed to be university agnostic and highly configurable, allowing other university societies to use our software for their own uses if they so wish, with their own branding and such. Zulu is licensed under the GPLv3 and is free software."}</p>
                 </div>
                 <img src="../static/images/rust.png" class={classes!("image")} />
+                <button class={classes!("download-button")} onclick={get_challenge_file} >{"Click to Download Challenge "}</button>
                 <SubmitFlag onsubmit={custom_form_submit}/>
             </div>
             <Footer />

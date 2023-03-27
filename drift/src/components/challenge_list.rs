@@ -7,7 +7,7 @@ use serde::Deserialize;
 pub struct Challenge {
     pub id: String,
     pub name: String,
-    pub username: String,
+    pub author: String,
     pub flag: String,
     pub points: u32,
 }
@@ -22,7 +22,7 @@ pub fn challenge_info(ChallengeProps {challenge}: &ChallengeProps) -> Html {
     challenge.iter().map(|challenge| html! {
             <>
             <div class={classes!("search-result")}>
-                <p class={classes!("left", "one")}>{format!("{} by {}", &challenge.name, &challenge.username)}</p>
+                <p class={classes!("left", "one")}>{format!("{} by {}", &challenge.name, &challenge.author)}</p>
                 <p class={classes!("left", "two")}>{format!("Awards {} points", &challenge.points.to_string())}</p>
                 <Link<MainRoute> to={MainRoute::Challenge { id: challenge.name.clone() }} classes={classes!("three")}>{"Click to display challenge"}</Link<MainRoute>>
             </div>
