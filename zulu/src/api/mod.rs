@@ -3,7 +3,4 @@ pub mod register;
 pub mod modify;
 pub mod remove;
 pub mod leaderboard;
-pub mod create_challenge;
-pub mod modify_challenge;
-pub mod delete_challenge;
-pub mod submit_challenge;
+pub mod challenge;

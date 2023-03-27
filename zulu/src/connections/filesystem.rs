@@ -1,7 +1,10 @@
 use rocket::data::{Data, ToByteUnit};
 use std::io::Error;
+use std::path::PathBuf;
+use std::fs;
 
-pub async fn create_challenge_file(name: String, file: Data<'_>) -> Result<bool, Error> {
-    file.open(100.megabytes()).into_file(format!("static/challenge/{}", name)).await?;
+pub async fn create_challenge_file(name: &String, path: &PathBuf) -> Result<bool, Error> {
+    // todo, add max file limit
+    fs::copy(path, format!("static/challenge/{}", name))?;
     Ok(true)
 }

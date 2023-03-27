@@ -9,7 +9,7 @@ mod settings;
 use settings::LdapConfig;
 
 mod api;
-use api::{login,register,modify,remove,leaderboard,create_challenge,modify_challenge,delete_challenge,submit_challenge};
+use api::{login,register,modify,remove,leaderboard,challenge};
 
 mod auth;
 mod tests;
@@ -39,14 +39,13 @@ async fn rocket() -> _ {
                modify::display_user_info,
                remove::remove_account,
                leaderboard::leaderboard,
-               create_challenge::create_challenge_api,
-               delete_challenge::delete_challenge_api,
-               modify_challenge::modify_challenge_api,
-               submit_challenge::submit_challenge_api,
-               create_challenge::upload_challenge_api,
-               modify_challenge::display_flag,
-               modify_challenge::single_flag,
-               modify_challenge::author_challenge,
+               challenge::create_challenge_api,
+               challenge::delete_challenge_api,
+               challenge::modify_challenge_api,
+               challenge::submit_challenge_api,
+               challenge::display_flag,
+               challenge::single_flag,
+               challenge::author_challenge,
         ])
         .mount("/static", FileServer::from(relative!("/static")))
         .attach(ReRouter)
