@@ -31,8 +31,8 @@ CREATE TABLE zulu.challenges (
 ); 
 
 
-DROP TABLE IF EXISTS zulu.accountFlags;
-CREATE TABLE zulu.accountFlags (
+DROP TABLE IF EXISTS zulu.solves;
+CREATE TABLE zulu.solves (
     fkaccountid varchar(255),
     fkflagid varchar(255),
     creationtime timestamp NOT NULL,
