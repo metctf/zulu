@@ -227,7 +227,7 @@ input[type=text],input[type=number],input[type=password],select {
     border-color: black;
     box-shadow: 5px 5px black;
     padding: 20px;
-    margin: auto;
+    margin: 10px auto;
     display: grid;
     text-align: center;
     text-transform: capitalize;
@@ -238,7 +238,7 @@ input[type=text],input[type=number],input[type=password],select {
     justify-content: center;
     text-align: center;
     margin: 20px auto;
-    padding: 10%;
+    padding: 5%;
 }
 
 .one {
@@ -471,4 +471,8 @@ input[type="file"] {
 .upload-form i{
     font-size: 16rem;
     padding: 10px;
+}
+
+.upload-point {
+    margin: 0px 0px 10px 0px;
 }

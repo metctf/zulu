@@ -26,6 +26,8 @@ pub enum MainRoute{
     Home,
     #[at("/display_challenge/:id")]
     DisplayChallenge {id:String},
+    #[at("/display_challenge/")]
+    DisplayAllChallenges,
     #[at("/challenge/:id")]
     Challenge {id:String},
     #[at("/create_flag")]
@@ -127,6 +129,15 @@ pub fn switch_main(route: MainRoute) -> Html {
             <>
                 <NavBar tab={auth}/>
                 <DisplayChallenge flag={id}/>
+                <Footer />
+            </>
+            }
+        },
+        MainRoute::DisplayAllChallenges => {
+            html! {
+            <>
+                <NavBar tab={auth}/>
+                <DisplayChallenge flag={""}/>
                 <Footer />
             </>
             }

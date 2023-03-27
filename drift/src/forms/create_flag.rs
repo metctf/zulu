@@ -20,7 +20,7 @@ pub fn create_flag() -> Html {
     let url = format!("http://127.0.0.1:8000/api/v1/create_challenge");
     html! {
         <div class={classes!("form-div")}>
-            <h1>{"Create a Flag"}</h1>
+            <h1>{"Create Challenge"}</h1>
             <form method="POST" enctype="multipart/form-data" action={url} >
                 <input type="text" id="name" name="name" class="form-input" placeholder="challenge" />
                 <br />
@@ -30,12 +30,13 @@ pub fn create_flag() -> Html {
                 <br />
                 <input type="number" id="points" name="points" class="form-input" placeholder="points" />
                 <br />
+                <div class={classes!("upload-point")}>
                 <label class={classes!("upload")}>
                     <i class="fa fa-cloud-upload"></i>
                     <p>{"Click to select the challenge file to upload"}</p>
                     <input type="file" accept="*" class={classes!("file_upload")} name="upload" id="upload" placeholder="upload" />
                 </label>
-                <br />
+                </div>
                 <CustomButton label="Submit" class="button" />
             </form>
         </div>
