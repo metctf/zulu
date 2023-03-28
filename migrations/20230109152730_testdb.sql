@@ -1,13 +1,7 @@
 -- Host: localhost    Database: zulu
 -- Server version	10.9.2-MariaDB
 
-DROP DATABASE IF EXISTS zulu;
-CREATE DATABASE zulu;
-
-GRANT ALL ON zulu.* TO zulu@localhost;
-
-DROP TABLE IF EXISTS zulu.accounts;
-CREATE TABLE zulu.accounts (
+CREATE TABLE accounts (
     id varchar(255) NOT NULL PRIMARY KEY,
     username varchar(50) NOT NULL,
     firstname varchar(50) NOT NULL,
@@ -20,8 +14,7 @@ CREATE TABLE zulu.accounts (
 ); 
 
 
-DROP TABLE IF EXISTS zulu.challenges;
-CREATE TABLE zulu.challenges (
+CREATE TABLE challenges (
     id varchar(255) NOT NULL PRIMARY KEY,
     name varchar(255) NOT NULL,
     author varchar(255) NOT NULL,
@@ -31,8 +24,7 @@ CREATE TABLE zulu.challenges (
 ); 
 
 
-DROP TABLE IF EXISTS zulu.solves;
-CREATE TABLE zulu.solves (
+CREATE TABLE accountFlags (
     fkaccountid varchar(255),
     fkflagid varchar(255),
     creationtime timestamp NOT NULL,
@@ -40,3 +32,7 @@ CREATE TABLE zulu.solves (
     CONSTRAINT accountFlags_ibfk_2 FOREIGN KEY (fkflagid) REFERENCES challenges (id),
     PRIMARY KEY(fkaccountid, fkflagid)
 );
+
+INSERT INTO accounts(id, username, firstname, lastname, password, origin, accesslevel) 
+VALUES ("cd41294a-afb0-11df-bc9b-00241dd75637", "winston.churchill", "Winston", "Churchill", "neversurrender", "CMET", "user");
+

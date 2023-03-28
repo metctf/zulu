@@ -1,6 +1,7 @@
-__pycache__/
-zuluapi-env/
-bazel-bin
-bazel-out
-bazel-testlogs
-bazel-zuluapi
+# Added by cargo
+
+target
+Cargo.lock
+static
+config/local.toml
+.cargo
