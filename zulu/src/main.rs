@@ -47,7 +47,7 @@ async fn rocket() -> _ {
                challenge::single_flag,
                challenge::author_challenge,
         ])
-        .mount("/static", FileServer::from(relative!("/static")))
+        .mount("/static", FileServer::from(relative!("/api/v1/static")))
         .attach(ReRouter)
         .attach(CORS)
 }
