@@ -71,7 +71,6 @@ pub fn create_flag() -> Html {
                 <CustomButton label="Submit" class="button" />
             </form>
         </div>
-        <img src={} />
         </>
     }
 }
