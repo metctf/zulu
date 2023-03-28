@@ -44,6 +44,7 @@ async fn rocket() -> _ {
                challenge::modify_challenge_api,
                challenge::submit_challenge_api,
                challenge::display_flag,
+               challenge::display_all_challenges,
                challenge::single_flag,
                challenge::author_challenge,
         ])

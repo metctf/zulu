@@ -114,15 +114,25 @@ pub async fn modify_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
 
 pub async fn return_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Challenge>, sqlx::Error>{
     // send a flag to the database to retrieve the corresponding challenge
-    let result = sqlx::query_as!(
-        Challenge,
-        "SELECT id, name, author, flag, points
-        FROM challenges 
-        WHERE name LIKE CONCAT('%',?,'%');",
-        name)
-        .fetch_all(&pool.0)
-        .await?;
-   Ok(result) 
+    if name.is_empty() {
+        let result = sqlx::query_as!(
+            Challenge,
+            "SELECT id, name, author, flag, points
+            FROM challenges;")
+            .fetch_all(&pool.0)
+            .await?;
+       Ok(result)
+    }else{
+        let result = sqlx::query_as!(
+            Challenge,
+            "SELECT id, name, author, flag, points
+            FROM challenges 
+            WHERE name LIKE CONCAT('%',?,'%');",
+            name)
+            .fetch_all(&pool.0)
+            .await?;
+        Ok(result)
+    }
 }
 
 pub async fn return_author_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Challenge>, sqlx::Error>{

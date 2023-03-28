@@ -174,6 +174,34 @@ pub async fn display_flag(pool: &State<Pool>, flag: String) -> status::Custom<Js
     }
 }
 
+#[get("/get_challenge",rank=2)]
+pub async fn display_all_challenges(pool: &State<Pool>) -> status::Custom<Json<Vec<Challenge>>> {
+    /*
+     * Return info as json
+     */
+    let query = return_challenge(pool, format!("")).await;
+
+    match query {
+        Ok(query) => {
+            status::Custom(Status::Ok, Json(query))
+        }
+        Err(query) => {
+            error!("{:?}",query);
+            let challenge = Challenge {
+                id: String::from(""),
+                name: String::from(""),
+                author: String::from(""),
+                flag: String::from(""),
+                points: 0,
+            };
+            let mut vec: Vec<Challenge> = vec![];
+            vec.push(challenge);
+
+            status::Custom(Status::NotFound, Json(vec))
+        }
+
+    }
+}
 #[get("/get_single_challenge/<flag>")]
 pub async fn single_flag(pool: &State<Pool>, flag: String) -> status::Custom<Json<Challenge>> {
     let query = return_one_challenge(pool, flag).await;
