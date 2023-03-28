@@ -112,6 +112,17 @@ pub async fn modify_challenge(challenge: &Form<Challenge>, pool: &State<Pool>) -
     }
 }
 
+pub async fn author_id_to_author(pool: &State<Pool>, author_id: String) -> Result<String, sqlx::Error>{
+    let result = sqlx::query!(r#"SELECT username FROM accounts WHERE id=?"#, &author_id)
+        .fetch_one(&pool.0)
+        .await;
+
+    match result {
+        Ok(result) => Ok(result.username),
+        Err(result) => Err(result)
+    }
+}
+
 pub async fn return_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Challenge>, sqlx::Error>{
     // send a flag to the database to retrieve the corresponding challenge
     if name.is_empty() {
@@ -137,12 +148,13 @@ pub async fn return_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Ch
 
 pub async fn return_author_challenge(pool: &State<Pool>, name: String) -> Result<Vec<Challenge>, sqlx::Error>{
     // send a flag to the database to retrieve the corresponding challenge
+    let author = author_id_to_author(&pool, name).await.unwrap();
     let result = sqlx::query_as!(
         Challenge,
         "SELECT id, name, author, flag, points
         FROM challenges 
         WHERE author = ?;",
-        name)
+        author)
         .fetch_all(&pool.0)
         .await?;
    Ok(result) 
