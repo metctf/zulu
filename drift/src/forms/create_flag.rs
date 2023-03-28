@@ -16,6 +16,7 @@ pub struct FlagData {
 #[function_component(CreateFlag)]
 pub fn create_flag() -> Html {
 
+    // Code for reading file element
     let preview = Callback::from(move |e: Event|{
         let file: HtmlInputElement = e.target_unchecked_into();
         let files = file.files();
@@ -59,7 +60,14 @@ pub fn create_flag() -> Html {
                 <br />
                 <input type="text" id="flag" name="flag" class="form-input" placeholder="flag" />
                 <br />
-                <input type="number" id="points" name="points" class="form-input" placeholder="points" />
+                <select name="points" id="points" class="form-input">
+                    <option selected=true>{"Challenge Score"}</option>
+                    <option value=10>{"10"}</option>
+                    <option value=20>{"20"}</option>
+                    <option value=30>{"30"}</option>
+                    <option value=40>{"40"}</option>
+                    <option value=50>{"50"}</option>
+                </select>
                 <br />
                 <div class={classes!("upload-point")}>
                 <label class={classes!("upload")}>
