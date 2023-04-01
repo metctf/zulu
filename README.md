@@ -58,18 +58,8 @@ expensive database calls, have it refreshed on correct flag submission.
 If same frontend requests leaderboard and it hasnt changed use the http status
 code 304 unmodified.
 
-## Running Zulu
-Simply `git clone` this repo and run `cargo run` in your terminal :)
-
-To run the frontend use these commands:
-
-```
-cargo install trunk
-
-rustup target add wasm32-unknown-unknown
-
-trunk serve --open
-```
+## Whitepaper (Running Zulu)
+Read our whitepaper [here](files/whitepaper.pdf).
 
 ## Useful Resources.
 [Rocket](https://rocket.rs/)
