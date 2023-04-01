@@ -86,14 +86,14 @@ pub async fn create_challenge_api(pool: &State<Pool>, content_type: &ContentType
                                         };
                                         return status::Custom(Status::Ok, Json(resp))
                                     },
-                                    Err(_) =>{
-                                        error!("Couldn't create challenge");
+                                    Err(_e) =>{
+                                        error!("Couldn't create challenge: {}", _e);
                                         return status::Custom(Status::InternalServerError, Json(JsonResponse { id: String::from("") }))
                                     } 
                                 }
                             },
-                            Err(_) =>{
-                                error!("Couldn't create challenge");
+                            Err(_e) =>{
+                                error!("Couldn't create challenge: {}", _e);
                                 return status::Custom(Status::InternalServerError, Json(JsonResponse { id: String::from("") }))
                             } 
                         }
